@@ -11,7 +11,6 @@ defineProps<{
   <div class="layout">
     <Header />
     <main class="main-content">
-        <p>some content</p>
       <slot />
     </main>
     <Footer />

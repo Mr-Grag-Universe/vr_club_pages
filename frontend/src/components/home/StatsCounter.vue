@@ -2,21 +2,36 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-const stats = ref([
+interface Stat {
+  label: string
+  target: number
+  current: number
+  suffix: string
+  decimals?: number
+}
+
+const stats = ref<Stat[]>([
   { label: 'довольных игроков', target: 1247, current: 0, suffix: '+' },
   { label: 'квадратных метров арены', target: 500, current: 0, suffix: ' м²' },
   { label: 'игр в каталоге', target: 52, current: 0, suffix: '' },
-  { label: 'средний рейтинг', target: 49, current: 0, suffix: '/5.0' }
+  { label: 'средний рейтинг', target: 4.9, current: 0, suffix: '/5.0', decimals: 1 }
 ])
 
-const animate = (stat: typeof stats.value[0]) => {
+const animate = (stat: Stat) => {
   const duration = 2000
   const start = performance.now()
-  const startValue = 0
   
   const step = (timestamp: number) => {
     const progress = Math.min((timestamp - start) / duration, 1)
-    stat.current = Math.floor(progress * stat.target)
+    const rawValue = progress * stat.target
+    
+    // Для рейтинга используем 1 знак после запятой, для остальных — целые числа
+    if (stat.decimals !== undefined) {
+      const factor = Math.pow(10, stat.decimals)
+      stat.current = Math.round(rawValue * factor) / factor
+    } else {
+      stat.current = Math.floor(rawValue)
+    }
     
     if (progress < 1) {
       requestAnimationFrame(step)
