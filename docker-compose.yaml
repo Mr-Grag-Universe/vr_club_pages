@@ -1,0 +1,52 @@
+version: "3.9"
+services:
+  backend:
+    container_name: vr_backend
+    build:
+      dockerfile: ./backend/Dockerfile
+      context: ./
+    ports:
+      - "8000:8000"
+    volumes:
+      - backend_data:/app
+    command: >
+      sh -c "poetry run python3 -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+    networks:
+      - default
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1024M
+
+  frontend:
+    image: node:20
+    container_name: vr_frontend
+    working_dir: /app
+    ports:
+      - "4000:4000"
+    volumes:
+      - frontend_data:/app
+    command: >
+      sh -c "npm install && npm run dev"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1024M
+    networks:
+      - default
+
+volumes:
+  frontend_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "frontend"
+  backend_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "backend"
