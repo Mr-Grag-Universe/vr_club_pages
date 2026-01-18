@@ -40,7 +40,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 <style scoped>
 .certificate-section {
-  padding: 5rem 2rem;
+  padding: 6rem 3rem;
   background: var(--bg-secondary);
   overflow: hidden;
 }
@@ -48,24 +48,16 @@ const props = withDefaults(defineProps<Props>(), {
 .certificate-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  max-width: 1200px;
+  gap: 3rem;
+  max-width: 1400px;
   margin: 0 auto;
   align-items: center;
 }
 
 .text-column {
-  text-align: left;
-}
-
-.section-title {
-  font-size: 2.5rem;
-  color: var(--accent);
-  margin-bottom: 2rem;
-  font-family: 'Courier New', monospace;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  line-height: 1.2;
+  /* text-align: center; */
+  margin: 0;
+  padding-top: 1rem;
 }
 
 .section-description {
@@ -77,8 +69,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 .image-column {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 3rem;
 }
 
 .image-wrapper {
@@ -129,26 +122,27 @@ const props = withDefaults(defineProps<Props>(), {
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: linear-gradient(
+  /* background: linear-gradient(
     45deg,
     transparent 30%,
     var(--glow) 50%,
     transparent 70%
-  );
-  background-size: 200% 200%;
+  ); */
+  background: repeating-linear-gradient(45deg, transparent 3rem, var(--glow) 3rem, transparent 6rem);
+  background-size: 300% 100%;
   border-radius: 14px;
-  animation: shimmer 4s linear infinite;
+  animation: shimmer 10s linear infinite;
   z-index: 1;
   opacity: 0.5;
 }
 
 @keyframes shimmer {
   0% {
-    background-position: -200% -200%;
+    background-position: 0% 0%;
   }
   100% {
-    background-position: 200% 200%;
-  }
+		background-position: 50% 0%;
+	}
 }
 
 .certificate-image {
@@ -191,6 +185,10 @@ const props = withDefaults(defineProps<Props>(), {
   
   .section-description {
     max-width: 100%;
+  }
+
+  .image-column {
+    margin-right: 0; /* Reset margin on smaller screens */
   }
   
   .image-wrapper {

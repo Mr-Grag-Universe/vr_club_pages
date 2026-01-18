@@ -9,6 +9,8 @@ import StatsCounter from '@/components/home/StatsCounter.vue'
 import Location from '@/components/home/Location.vue'
 import SmartGallary from '@/components/common/SmartGallary.vue'
 import GiftCards from '@/components/home/GiftCards.vue'
+import Events from '@/components/home/Events.vue'
+import ArenaVideos from '@/components/home/ArenaVideos.vue'
 
 import { ref, computed } from 'vue'
 
@@ -39,16 +41,18 @@ import { ref, computed } from 'vue'
       :images="arenaImages" 
       title="VR Arena Gallery"
     />
-    <GiftCards />
     <SmartGallary 
       :images="arenaGamesImages" 
       title="VR Arena Games"
     />
+    <Events />
+    <GiftCards />
+    <ArenaVideos />
+
     <SmartGallary 
       :images="zonesImages" 
       title="VR ZONES Gallery"
     />
-    <!-- <GalleryArena /> -->
     <GamesGrid />
     <StatsCounter />
     <Location />
