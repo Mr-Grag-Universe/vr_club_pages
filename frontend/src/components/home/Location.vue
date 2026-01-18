@@ -4,7 +4,7 @@ import { ref } from 'vue'
 
 const address = ref({
   street: 'пр. Ленина, д. 46',
-  city: ' Владимир',
+  city: 'г. Владимир',
   bus_station: 'ул. Пугачёва (3 мин пешком)'
 })
 
@@ -35,7 +35,7 @@ const work_time = ref({
       <div class="location-info">
         <div class="info-block">
           <span class="info-label">АДРЕС:</span>
-          <p class="info-text">{{ address.street }}, {{ address.city }}</p>
+          <p class="info-text">{{ address.city }}, {{ address.street }}</p>
         </div>
         
         <div class="info-block">
@@ -82,16 +82,6 @@ const work_time = ref({
   padding: 5rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.section-title {
-  font-size: 2.5rem;
-  color: var(--accent);
-  text-align: center;
-  margin-bottom: 3rem;
-  font-family: 'Courier New', monospace;
-  text-transform: uppercase;
-  letter-spacing: 2px;
 }
 
 .location-container {

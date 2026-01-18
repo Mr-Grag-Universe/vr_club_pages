@@ -82,8 +82,11 @@ const hoveredGame = ref<number | null>(null)
 
 <template>
   <section class="games-section">
-    <h2 class="section-title">:: GAMES AVAILABLE ::</h2>
-    
+    <h2 class="section-title">:: VR ZONES' GAMES AVAILABLE ::</h2>
+
+    <p class="description">VR-хиты и новинки с ограниченным перемещением для одного или компаний до 4-х игроков</p>
+    <p></p>
+
     <div class="games-grid">
       <div 
         v-for="game in games" 
@@ -139,16 +142,6 @@ const hoveredGame = ref<number | null>(null)
   padding: 5rem 2rem;
   max-width: 1400px;
   margin: 0 auto;
-}
-
-.section-title {
-  font-size: clamp(2rem, 5vw, 2.5rem);
-  color: var(--accent);
-  text-align: center;
-  margin-bottom: 3rem;
-  font-family: 'Courier New', monospace;
-  text-transform: uppercase;
-  letter-spacing: 2px;
 }
 
 .games-grid {
@@ -311,5 +304,11 @@ const hoveredGame = ref<number | null>(null)
   .action-text {
     font-size: 1.5rem;
   }
+}
+
+.description {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
 }
 </style>

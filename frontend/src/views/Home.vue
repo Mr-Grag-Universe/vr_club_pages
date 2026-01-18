@@ -3,16 +3,52 @@ import BaseLayout from '@/components/base/BaseLayout.vue'
 import HeroSection from '@/components/home/HeroSection.vue'
 import FAQ from '@/components/home/FAQ.vue'
 import GamesGrid from '@/components/home/GamesGrid.vue'
-import Gallery from '@/components/home/Gallery.vue'
+import GalleryArena from '@/components/home/GalleryArena.vue'
 import BookingWidget from '@/components/home/BookingWidget.vue'
 import StatsCounter from '@/components/home/StatsCounter.vue'
 import Location from '@/components/home/Location.vue'
+import SmartGallary from '@/components/common/SmartGallary.vue'
+import GiftCards from '@/components/home/GiftCards.vue'
+
+import { ref, computed } from 'vue'
+
+  const arenaImages = computed(() => 
+    Array.from({ length: 9 }, (_, i) => ({
+      src: `/src/assets/images/arena/${i + 1}.jpg`,
+      alt: `Фото арены ${i + 1}`
+    }))
+  )
+  const zonesImages = computed(() => 
+    Array.from({ length: 6 }, (_, i) => ({
+      src: `/src/assets/images/arena/${i + 1}.jpg`,
+      alt: `Фото VR зоны ${i + 1}`
+    }))
+  )
+  const arenaGamesImages = computed(() => 
+    Array.from({ length: 8 }, (_, i) => ({
+      src: `/src/assets/images/games/arena/${i + 1}.jpg`,
+      alt: `Скрин VR Arena ${i + 1}`
+    }))
+  )
 </script>
 
 <template>
   <BaseLayout title="VR Arena - Погрузись в виртуальную реальность">
     <HeroSection />
-    <Gallery />
+    <SmartGallary 
+      :images="arenaImages" 
+      title="VR Arena Gallery"
+    />
+    <GiftCards />
+    <SmartGallary 
+      :images="arenaGamesImages" 
+      title="VR Arena Games"
+    />
+    <SmartGallary 
+      :images="zonesImages" 
+      title="VR ZONES Gallery"
+    />
+    <!-- <GalleryArena /> -->
     <GamesGrid />
     <StatsCounter />
     <Location />

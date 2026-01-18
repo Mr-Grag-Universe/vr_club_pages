@@ -5,8 +5,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     && rm -rf /var/lib/apt/lists/*
-RUN wget -O- https://install.python-poetry.org | python3 -
-ENV PATH="/root/.local/bin:${PATH}"
+RUN pip install poetry
 RUN poetry --version
 
 COPY backend/pyproject.toml backend/poetry.lock backend/README.md ./

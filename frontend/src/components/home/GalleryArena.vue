@@ -1,14 +1,14 @@
 <!-- Gallery.vue -->
 <script setup lang="ts">
 const images = Array.from({ length: 9 }, (_, i) => ({
-  src: `/src/assets/images/gallery/arena-${i + 1}.jpg`,
+  src: `/src/assets/images/arena/${i + 1}.jpg`,
   alt: `Фото арены ${i + 1}`
 }))
 </script>
 
 <template>
   <section class="gallery-section">
-    <h2 class="section-title">// GALLERY //</h2>
+    <h2 class="section-title">// VR ARENA Gallary //</h2>
     
     <div class="gallery-grid">
       <div 

@@ -99,14 +99,6 @@ const toggle = (index: number) => {
   margin: 0 auto;
 }
 
-.section-title {
-  font-size: 2.5rem;
-  color: var(--accent);
-  text-align: center;
-  margin-bottom: 3rem;
-  font-family: 'Courier New', monospace;
-}
-
 .faq-item {
   margin-bottom: 1rem;
   border: 1px solid var(--bg-accent);
