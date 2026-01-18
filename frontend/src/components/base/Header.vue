@@ -1,5 +1,6 @@
 <script setup lang="ts">
     import SocialLinks from './SocialLinks.vue'
+    import metaforceLogo from '@/assets/icons/metaforce.svg'
 </script>
 
 <template>
@@ -8,9 +9,12 @@
     
     <nav class="nav">
       <div class="nav-left">
-        <a href="/" class="logo glitch" data-text="VR ARENA">
-          VR ARENA
-        </a>
+        <div class="logo-wrapper">
+            <a href="/" class="logo glitch" data-text="VR ARENA">
+                VR ARENA
+            </a>
+            <img :src="metaforceLogo" alt="Metaforce" class="metaforce-logo" />
+        </div>
         
         <ul class="nav-menu">
           <li class="nav-item">
@@ -323,5 +327,27 @@
   .header-phone {
     display: none;
   }
+}
+
+.logo-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.metaforce-logo {
+  width: 80px;
+  height: auto;
+  opacity: 0.6;
+  transition: opacity 0.3s, filter 0.3s, transform 0.3s;
+  /* Зелёная подсветка в стиле сайта */
+  filter: brightness(0) saturate(100%) invert(76%) sepia(40%) saturate(545%) hue-rotate(36deg) brightness(99%) contrast(91%);
+}
+
+.metaforce-logo:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+  filter: brightness(0) saturate(100%) invert(76%) sepia(40%) saturate(545%) hue-rotate(36deg) brightness(120%) contrast(91%);
 }
 </style>
