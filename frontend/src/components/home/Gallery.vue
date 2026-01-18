@@ -88,4 +88,12 @@ const images = Array.from({ length: 9 }, (_, i) => ({
 .image-wrapper:hover .image-overlay {
   opacity: 0.3;
 }
+
+.section-title {
+  font-size: 2.5rem;
+  color: var(--accent);
+  text-align: center;
+  margin-bottom: 3rem;
+  font-family: 'Courier New', monospace;
+}
 </style>

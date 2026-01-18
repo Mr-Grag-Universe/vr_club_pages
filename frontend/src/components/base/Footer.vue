@@ -1,32 +1,156 @@
+<script setup lang="ts">
+    import SocialLinks from './SocialLinks.vue'
+</script>
+
 <template>
   <footer class="footer">
     <div class="footer-content">
-      <p>&copy; 2024 VR Arena. All rights reserved.</p>
-      <div class="social-links">
-        <a href="#">VK</a>
-        <a href="#">TG</a>
+      <div class="footer-section">
+        <div class="footer-title">О нас</div>
+        <ul class="footer-links">
+          <li><a href="https://metaforce.ru/vladimir/price">Цены</a></li>
+          <li><a href="https://metaforce.ru/vladimir/birthday_kids">Мероприятия</a></li>
+          <li><a href="https://metaforce.ru/vladimir#address">Адрес</a></li>
+          <li><a href="https://metaforce.ru/vladimir/games">Игры</a></li>
+          <li><a href="https://metaforce.ru/news">Новости</a></li>
+        </ul>
       </div>
+      
+      <div class="footer-section">
+        <div class="footer-title">Сотрудничество</div>
+        <ul class="footer-links">
+          <li><a href="https://metaforce.ru/franchise">Франшиза</a></li>
+          <li><a href="https://metaforce.ru/rent">Аренда</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <div class="footer-title">Документы</div>
+        <ul class="footer-links">
+          <li><a href="https://metaforce.ru/perm/privacy" target="_blank">Политика конфиденциальности</a></li>
+          <li><a href="https://metaforce.ru/agreement" target="_blank">Пользовательское соглашение</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <div class="footer-contacts">
+          <a href="tel:+79028877457" class="phone-link">+7 (902) 887-74-57</a>
+          <SocialLinks />
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>ИП Кафанов Павел Павлович | ИНН: 370263691865 | ОГРНИП: 325370000041668</p>
+      <p>&copy; 2026 VR Arena Metaforce. Все права защищены.</p>
     </div>
   </footer>
 </template>
 
 <style scoped>
 .footer {
-  padding: 2rem;
+  padding: 3rem 2rem 2rem;
   background: var(--bg-secondary);
+  border-top: 1px solid rgba(173, 240, 98, 0.2);
   margin-top: 4rem;
 }
 
 .footer-content {
   max-width: 1400px;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-section {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.footer-title {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: var(--accent);
+}
+
+.footer-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.phone-link {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.phone-link:hover {
+  color: var(--glow);
 }
 
 .social-links {
   display: flex;
   gap: 1rem;
+}
+
+.social-links svg {
+  width: 24px;
+  height: 24px;
+  color: var(--text-secondary);
+  transition: color 0.3s;
+}
+
+.social-links a:hover svg {
+  color: var(--accent);
+}
+
+.footer-bottom {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(173, 240, 98, 0.1);
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .footer-section {
+    align-items: center;
+  }
 }
 </style>

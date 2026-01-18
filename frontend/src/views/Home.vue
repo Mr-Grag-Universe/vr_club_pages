@@ -6,8 +6,7 @@ import GamesGrid from '@/components/home/GamesGrid.vue'
 import Gallery from '@/components/home/Gallery.vue'
 import BookingWidget from '@/components/home/BookingWidget.vue'
 import StatsCounter from '@/components/home/StatsCounter.vue'
-
-// Импортируй остальные секции по мере создания
+import Location from '@/components/home/Location.vue'
 </script>
 
 <template>
@@ -16,6 +15,7 @@ import StatsCounter from '@/components/home/StatsCounter.vue'
     <Gallery />
     <GamesGrid />
     <StatsCounter />
+    <Location />
     <BookingWidget />
     <FAQ />
     <!-- Добавляй секции по очереди -->
