@@ -1,7 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, nextTick, onMounted } from 'vue'
+import { VideoPlayer } from '@videojs-player/vue'
+import videojs from 'video.js'
+import type { VideoJsPlayer } from 'video.js'
 
 import teamForceVideo from '@/assets/videos/team_force.mp4'
+import spaceWarVideo from '@/assets/videos/space_war.mp4'
+import elevatorsVideo from '@/assets/videos/elevators.mp4'
+import portalsVideo from '@/assets/videos/portals.mp4'
+
+import teamForceAudio from '@/assets/videos/audio/team_force.mp4'
+import spaceWarAudio from '@/assets/videos/audio/space_war.mp4'
+import elevatorsAudio from '@/assets/videos/audio/elevators.mp4'
+import portalsAudio from '@/assets/videos/audio/portals.mp4'
+
+const thumbnail_path = '/src/assets/videos/thumb/'
 
 const videos = ref([
   { 
@@ -9,44 +22,98 @@ const videos = ref([
     name: 'Team Force',  
     description: 'Командный шутер а-ля Counter-Strike. 12 карт для полного разнообразия', 
     actionText: 'PLAY',
-    url: teamForceVideo, // Переместите видео в public/videos/
-    thumbnail: '/images/team_force_thumb.jpg' // Добавьте превью в public/images/
+    url: teamForceVideo,
+    thumbnail: thumbnail_path + 'team_force.jpg',
+    audio: teamForceAudio
   },
-//   { 
-//     id: 2, 
-//     name: 'Star Force', 
-//     description: 'Космический шутер в далекой-далекой галактике. Телепорты в наличии', 
-//     actionText: 'LAUNCH',
-//     url: '/videos/space_war.mp4',
-//     thumbnail: '/images/space_war_thumb.jpg'
-//   },
-//   { 
-//     id: 3, 
-//     name: 'Elevators', 
-//     description: 'Многоэтажный шутер с перемещениями между этажами и зданиями.', 
-//     actionText: 'CLIMB',
-//     url: '/videos/elevators.mp4',
-//     thumbnail: '/images/elevators_thumb.jpg'
-//   },
-//   { 
-//     id: 4, 
-//     name: 'Portals', 
-//     description: 'Аркадный шутер с лифтами и телепортами', 
-//     actionText: 'TELEPORT',
-//     url: '/videos/portals.mp4',
-//     thumbnail: '/images/portals_thumb.jpg'
-//   }
+  { 
+    id: 2, 
+    name: 'Star Force', 
+    description: 'Космический шутер в далекой-далекой галактике. Телепорты в наличии', 
+    actionText: 'LAUNCH',
+    url: spaceWarVideo,
+    thumbnail: thumbnail_path + 'space_war.jpg',
+    audio: spaceWarAudio
+  },
+  { 
+    id: 3, 
+    name: 'Elevators', 
+    description: 'Многоэтажный шутер с перемещениями между этажами и зданиями.', 
+    actionText: 'CLIMB',
+    url: elevatorsVideo,
+    thumbnail: thumbnail_path + 'elevators.jpg',
+    audio: elevatorsAudio
+  },
+  { 
+    id: 4, 
+    name: 'Portals', 
+    description: 'Аркадный шутер с лифтами и телепортами', 
+    actionText: 'TELEPORT',
+    url: portalsVideo,
+    thumbnail: thumbnail_path + 'portals.jpg',
+    audio: portalsAudio
+  }
 ])
 
-const hoveredVideo = ref<number | null>(null);
-const currentVideoUrl = ref<string | null>(null);
+const hoveredVideo = ref<number | null>(null)
+const currentVideoUrl = ref<string | null>(null)
+const currentVideo = ref<any>(null)
+const videoPlayerRef = ref<VideoJsPlayer | null>(null)
 
-const playVideo = (url: string) => {
-  currentVideoUrl.value = url;
+const playVideo = (video: any) => {
+  currentVideo.value = video
+  currentVideoUrl.value = video.url
+  videoPlayerRef.value = null // Сбрасываем ref
 }
 
 const closePlayer = () => {
-  currentVideoUrl.value = null;
+  currentVideoUrl.value = null
+  currentVideo.value = null
+  videoPlayerRef.value = null
+}
+
+// Обработчик готовности плеера
+const handlePlayerReady = () => {
+  // Ждем следующего тика для полной инициализации
+  nextTick(() => {
+    const playerInstance = videoPlayerRef.value as any
+    console.log(playerInstance)
+    
+    // Проверяем различные возможные структуры
+    const player = playerInstance?.player || playerInstance
+    
+    if (!player?.on) {
+      console.error('Video.js player instance not found')
+      return
+    }
+    
+    if (currentVideo.value?.audio) {
+      const audioElement = new Audio(currentVideo.value.audio)
+      audioElement.volume = player.volume ? player.volume() : 1
+      
+      // Синхронизация событий
+      player.on('play', () => {
+        audioElement.play().catch(e => console.warn('Audio play failed:', e))
+      })
+      
+      player.on('pause', () => {
+        audioElement.pause()
+      })
+      
+      player.on('seeking', () => {
+        audioElement.currentTime = player.currentTime()
+      })
+      
+      player.on('volumechange', () => {
+        audioElement.volume = player.volume()
+      })
+      
+      player.on('dispose', () => {
+        audioElement.pause()
+        audioElement.src = ''
+      })
+    }
+  })
 }
 </script>
 
@@ -66,7 +133,7 @@ const closePlayer = () => {
         class="video-card"
         @mouseenter="hoveredVideo = video.id"
         @mouseleave="hoveredVideo = null"
-        @click="playVideo(video.url)"
+        @click="playVideo(video)"
       >
         <div class="card-video">
           <div class="video-placeholder">
@@ -83,7 +150,7 @@ const closePlayer = () => {
         <div 
           class="video-overlay"
           :class="{ active: hoveredVideo === video.id }"
-          @click.stop="playVideo(video.url)"
+          @click.stop="playVideo(video)"
         >
           <div class="overlay-content">
             <span class="action-text">{{ video.actionText }}</span>
@@ -97,6 +164,8 @@ const closePlayer = () => {
       <div class="video-modal-content" @click.stop>
         <button class="close-button" @click="closePlayer">✕</button>
         <VideoPlayer
+          v-if="currentVideoUrl"
+          ref="videoPlayerRef"
           class="video-player-box"
           :options="{
             sources: [{
@@ -109,6 +178,7 @@ const closePlayer = () => {
             playsinline: true,
             autoplay: true,
           }"
+          @ready="handlePlayerReady"
         />
       </div>
     </div>
