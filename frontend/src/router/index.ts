@@ -10,7 +10,15 @@ declare module 'vue-router' {
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', name: 'home', component: Home, meta: { title: "Арена виртуальной реальности во Владимире" } },
+    { 
+      path: '/', 
+      name: 'home', 
+      component: Home, 
+      meta: { 
+        title: "Арена виртуальной реальности во Владимире",
+        icon: '/src/assets/icons/icon_dark.ico',
+      } 
+    },
   ],
 })
 
@@ -19,6 +27,17 @@ router.afterEach((to) => {
   if (typeof document !== 'undefined') {
     const title = to.meta.title || 'VR Arena'
     document.title = title
+
+    const favicon = document.querySelector("link[rel='icon']") as HTMLLinkElement;
+    if (favicon) {  // Check if favicon is not null
+      if (to.name === 'home') {
+        favicon.href = '/src/assets/icons/icon_dark.ico'; // Favicon for home route
+      } else {
+        favicon.href = '/src/assets/icons/icon_dark.ico'; // Default favicon
+      }
+    } else {
+      console.warn("Favicon element not found");
+    }
   }
 })
 
