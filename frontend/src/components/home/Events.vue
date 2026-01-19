@@ -41,7 +41,7 @@ const hoveredEvent = ref<number | null>(null)
 </script>
 
 <template>
-  <section class="events-section">
+  <section class="events-section" id="events">
     <h2 class="section-title">:: WHAT WE CAN CELEBRATE ::</h2>
     
     <p class="description">Праздничные события на VR-арене для любой компании</p>

@@ -53,7 +53,7 @@ const toggle = (index: number) => {
 </script>
 
 <template>
-  <section class="faq-section">
+  <section class="faq-section" id="faq">
     <h2 class="section-title">[ FAQ ]</h2>
     
     <div class="faq-container">

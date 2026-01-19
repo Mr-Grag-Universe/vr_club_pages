@@ -11,6 +11,7 @@ import SmartGallary from '@/components/common/SmartGallary.vue'
 import GiftCards from '@/components/home/GiftCards.vue'
 import Events from '@/components/home/Events.vue'
 import ArenaVideos from '@/components/home/ArenaVideos.vue'
+import BukzaBooking, { type BukzaLoadedEvent, type BukzaErrorEvent } from '@/components/home/BukzaBooking.vue'
 
 import { ref, computed } from 'vue'
 
@@ -32,6 +33,16 @@ import { ref, computed } from 'vue'
       alt: `Скрин VR Arena ${i + 1}`
     }))
   )
+
+const handleWidgetLoaded = (event: BukzaLoadedEvent): void => {
+  console.log('Виджет загружен:', event.widget)
+  // Дополнительная логика при загрузке
+}
+
+const handleWidgetError = (event: BukzaErrorEvent): void => {
+  console.error('Ошибка виджета:', event.type, event.message)
+  // Логика обработки ошибок
+}
 </script>
 
 <template>
@@ -56,8 +67,36 @@ import { ref, computed } from 'vue'
     <GamesGrid />
     <StatsCounter />
     <Location />
-    <BookingWidget />
+    <!-- <BookingWidget /> -->
     <FAQ />
     <!-- Добавляй секции по очереди -->
+    <!-- <div class="bukza-section">
+      <h2>Забронировать время</h2>
+      <BukzaBooking
+        widget-id="your-widget-id-from-bukza"
+        mode="embedded"
+        @loaded="handleWidgetLoaded"
+        @error="handleWidgetError"
+      />
+    </div> -->
   </BaseLayout>
+
 </template>
+
+<script lang="ts">
+</script>
+
+<style scoped>
+.bukza-section {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.bukza-section h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  color: #333;
+}
+</style>

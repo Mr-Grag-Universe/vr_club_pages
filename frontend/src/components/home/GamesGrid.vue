@@ -7,7 +7,7 @@ const games = ref([
     id: 1, 
     name: 'Half-Life: Alyx', 
     genre: 'Action', 
-    duration: '45-90 мин', 
+    duration: '', // '45-90 мин', 
     image: '/src/assets/images/games/hla.jpg',
     actionText: 'ACTIVATE',
     steamUrl: 'https://store.steampowered.com/app/546560/HalfLife_Alyx/'
@@ -16,7 +16,7 @@ const games = ref([
     id: 2, 
     name: 'Beat Saber', 
     genre: 'Rhythm', 
-    duration: '15-30 мин', 
+    duration: '', // '15-30 мин', 
     image: '/src/assets/images/games/beat_saber.jpg',
     actionText: 'LAUNCH',
     steamUrl: 'https://store.steampowered.com/app/620980/Beat_Saber/'
@@ -25,7 +25,7 @@ const games = ref([
     id: 3, 
     name: 'Pavlov VR', 
     genre: 'Shooter', 
-    duration: '30-60 мин', 
+    duration: '', // '30-60 мин', 
     image: '/src/assets/images/games/pavlov.jpg',
     actionText: 'CONNECT',
     steamUrl: 'https://store.steampowered.com/app/555160/Pavlov_VR/'
@@ -34,7 +34,7 @@ const games = ref([
     id: 4, 
     name: 'Superhot VR', 
     genre: 'Puzzle', 
-    duration: '20-40 мин', 
+    duration: '', // '20-40 мин', 
     image: '/src/assets/images/games/superhot.jpg',
     actionText: 'RUN',
     steamUrl: 'https://store.steampowered.com/app/617830/SUPERHOT_VR/'
@@ -43,7 +43,7 @@ const games = ref([
     id: 5, 
     name: 'Vacation Simulator', 
     genre: 'Simulation', 
-    duration: '30-60 мин', 
+    duration: '', // '30-60 мин', 
     image: '/src/assets/images/games/vacation_sim.jpg',
     actionText: 'INITIALIZE',
     steamUrl: 'https://store.steampowered.com/app/726830/Vacation_Simulator/'
@@ -52,7 +52,7 @@ const games = ref([
     id: 6, 
     name: 'Elven Assassin', 
     genre: 'Tower Defense', 
-    duration: '15-45 мин', 
+    duration: '', // '15-45 мин', 
     image: '/src/assets/images/games/elven_assasin.jpg',
     actionText: 'DEPLOY',
     steamUrl: 'https://store.steampowered.com/app/503770/Elven_Assassin/'
@@ -61,7 +61,7 @@ const games = ref([
     id: 7, 
     name: 'Phasmophobia', 
     genre: 'Horror', 
-    duration: '30-90 мин', 
+    duration: '', // '30-90 мин', 
     image: '/src/assets/images/games/phasmo.jpg',
     actionText: 'ENTER',
     steamUrl: 'https://store.steampowered.com/app/739630/Phasmophobia/'
@@ -70,7 +70,7 @@ const games = ref([
     id: 8, 
     name: 'Serious Sam 3: BFE', 
     genre: 'Action-Shooter', 
-    duration: '30-90 мин', 
+    duration: '', // '30-90 мин', 
     image: '/src/assets/images/games/serious_sam.jpg',
     actionText: 'SHOOT',
     steamUrl: 'https://store.steampowered.com/app/567670/Serious_Sam_3_VR_BFE/'
@@ -81,7 +81,7 @@ const hoveredGame = ref<number | null>(null)
 </script>
 
 <template>
-  <section class="games-section">
+  <section class="games-section" id="games">
     <h2 class="section-title">:: VR ZONES' GAMES AVAILABLE ::</h2>
 
     <p class="description">VR-хиты и новинки с ограниченным перемещением для одного или компаний до 4-х игроков</p>
@@ -134,12 +134,23 @@ const hoveredGame = ref<number | null>(null)
         </a>
       </div>
     </div>
+    
+    <div class="view-all-container">
+      <a 
+        href="https://metaforce.ru/vladimir/games" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="view-all-button"
+      >
+        все наши игры
+      </a>
+    </div>
   </section>
 </template>
 
 <style scoped>
 .games-section {
-  padding: 5rem 2rem;
+  padding: 2rem 2rem;
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -310,5 +321,39 @@ const hoveredGame = ref<number | null>(null)
     font-size: 1rem;
     color: var(--text-secondary);
     margin-bottom: 1.5rem;
+}
+
+.view-all-container {
+  text-align: center;
+  margin-bottom: 2rem;
+  margin-top: 1.5rem;
+}
+
+.view-all-button {
+  display: inline-block;
+  padding: 1rem 3rem;
+  background: var(--bg-secondary);
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  color: var(--accent);
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: 2px;
+  font-size: 1.1rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.view-all-button:hover {
+  background: var(--accent);
+  color: var(--bg-primary);
+  box-shadow: 0 0 30px var(--glow);
+  transform: translateY(-3px) scale(1.02);
+}
+
+.view-all-button:active {
+  transform: translateY(0) scale(0.98);
 }
 </style>

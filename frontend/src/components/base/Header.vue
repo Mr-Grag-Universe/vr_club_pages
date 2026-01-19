@@ -18,13 +18,13 @@
         
         <ul class="nav-menu">
           <li class="nav-item">
+            <a href="#events" class="nav-link">Мероприятия</a>
+          </li>
+          <li class="nav-item">
+            <a href="https://metaforce.ru/vladimir/price" class="nav-link">Цены</a>
+          </li>
+          <li class="nav-item">
             <a href="#games" class="nav-link">Игры</a>
-          </li>
-          <li class="nav-item">
-            <a href="#arena" class="nav-link">Арена</a>
-          </li>
-          <li class="nav-item">
-            <a href="#gallery" class="nav-link">Галерея</a>
           </li>
           <li class="nav-item">
             <a href="#faq" class="nav-link">FAQ</a>
@@ -36,10 +36,12 @@
         <SocialLinks />
         
         <div class="cta-wrapper">
-            <button class="cta-button pulse">
-                <span class="cta-text">Забронировать</span>
-            </button>
-            <div class="cta-glow"></div>
+            <a href="https://metaforce.ru/vladimir">
+              <button class="cta-button pulse">
+                  <span class="cta-text">Забронировать</span>
+              </button>
+              <div class="cta-glow"></div>
+            </a>
         </div>
         
         <div class="header-phone">
