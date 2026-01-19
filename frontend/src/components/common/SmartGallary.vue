@@ -1,6 +1,6 @@
 <!-- SmartGallery.vue -->
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 
 interface Props {
   images: Array<{ src: string; alt: string }>
@@ -20,35 +20,32 @@ function isPrime(num: number): boolean {
 }
 
 function computeWH(num: number): [number, number] {
-    if (num < 1) return [0, 0]; // Если число меньше 1, возвращаем (0, 0)
+  if (num < 1) return [0, 0];
 
-    const sqrtNum = Math.sqrt(num);
-    let w: number;
-    let h: number;
+  const sqrtNum = Math.sqrt(num);
+  let w: number;
+  let h: number;
 
-    if (isPrime(num)) {
-        w = Math.max(1, Math.floor(sqrtNum));
-        h = Math.ceil(num / w);
-    } else {
-        // Находим максимальный делитель <= sqrt(num)
-        w = Math.min(5, Math.floor(sqrtNum));
-        while (num % w !== 0 && w > 1) {
-            w--; // уменьшаем w до тех пор, пока не найдем делитель
-        }
-        h = Math.floor(num / w);
+  if (isPrime(num)) {
+    w = Math.max(1, Math.floor(sqrtNum));
+    h = Math.ceil(num / w);
+  } else {
+    w = Math.min(5, Math.floor(sqrtNum));
+    while (num % w !== 0 && w > 1) {
+      w--;
     }
+    h = Math.floor(num / w);
+  }
 
-    if ((w <= 5) && (w < h)) {
-      return [h, w];
-    }
+  if ((w <= 5) && (w < h)) {
+    return [h, w];
+  }
 
-    return [w, h];
+  return [w, h];
 }
 
 const layout = computed(() => {
   const total = props.images.length
-  const title = props.title
-
   const wh = computeWH(total);
   const ratio = wh[0] / wh[1]
   const isHighAspectRatio = ratio > 3 || ratio < 0.3
@@ -57,8 +54,6 @@ const layout = computed(() => {
   const cols = wh[0]
   const remainder = total % cols
   
-  console.log(total, cols, remainder)
-
   return {
     cols,
     remainder,
@@ -87,6 +82,63 @@ function getItemStyle(index: number) {
 const gridStyle = computed(() => ({
   gridTemplateColumns: `repeat(${layout.value.cols}, minmax(250px, 1fr))`
 }))
+
+// Lightbox logic
+const currentIndex = ref(-1)
+const isLightboxOpen = computed(() => currentIndex.value >= 0)
+
+function openLightbox(index: number) {
+  currentIndex.value = index
+  document.body.style.overflow = 'hidden'
+}
+
+function closeLightbox() {
+  currentIndex.value = -1
+  document.body.style.overflow = ''
+}
+
+function next() {
+  if (currentIndex.value < props.images.length - 1) {
+    currentIndex.value++
+  }
+}
+
+function prev() {
+  if (currentIndex.value > 0) {
+    currentIndex.value--
+  }
+}
+
+function handleKeydown(e: KeyboardEvent) {
+  if (!isLightboxOpen.value) return
+  
+  switch(e.key) {
+    case 'Escape':
+      closeLightbox()
+      break
+    case 'ArrowRight':
+      next()
+      break
+    case 'ArrowLeft':
+      prev()
+      break
+  }
+}
+
+function handleOverlayClick(e: MouseEvent) {
+  if (e.target === e.currentTarget) {
+    closeLightbox()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+  document.body.style.overflow = ''
+})
 </script>
 
 <template>
@@ -102,6 +154,7 @@ const gridStyle = computed(() => ({
         :key="img.src"
         class="gallery-item"
         :style="getItemStyle(index)"
+        @click="openLightbox(index)"
       >
         <div class="image-wrapper">
           <img :src="img.src" :alt="img.alt" loading="lazy" />
@@ -109,6 +162,56 @@ const gridStyle = computed(() => ({
         </div>
       </div>
     </div>
+
+    <!-- Lightbox -->
+    <Transition name="fade">
+      <div 
+        v-if="isLightboxOpen" 
+        class="lightbox-overlay"
+        @click="handleOverlayClick"
+      >
+        <button class="close-btn" @click="closeLightbox" aria-label="Close">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+
+        <button 
+          v-if="currentIndex > 0" 
+          class="nav-btn prev-btn" 
+          @click="prev"
+          aria-label="Previous image"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
+        <button 
+          v-if="currentIndex < images.length - 1" 
+          class="nav-btn next-btn" 
+          @click="next"
+          aria-label="Next image"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+
+        <div class="lightbox-content">
+          <img 
+            :src="images[currentIndex]?.src" 
+            :alt="images[currentIndex]?.alt"
+            class="lightbox-image"
+            @click.stop
+          />
+          <!-- <div v-if="images[currentIndex]?.alt" class="image-caption">
+            {{ images[currentIndex]?.alt }}
+          </div> -->
+        </div>
+      </div>
+    </Transition>
   </section>
 </template>
 
@@ -123,6 +226,10 @@ const gridStyle = computed(() => ({
   gap: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.gallery-item {
+  cursor: pointer;
 }
 
 .image-wrapper {
@@ -180,5 +287,140 @@ const gridStyle = computed(() => ({
   text-align: center;
   margin-bottom: 3rem;
   font-family: 'Courier New', monospace;
+}
+
+/* Lightbox Styles */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.lightbox-content {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  max-width: 90%;
+  max-height: 90%;
+  cursor: default;
+  position: relative;
+}
+
+.lightbox-image {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.close-btn {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 1001;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 1001;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.prev-btn {
+  left: 2rem;
+}
+
+.next-btn {
+  right: 2rem;
+}
+
+.image-caption {
+  position: absolute;
+  bottom: -3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 1.1rem;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-btn {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .prev-btn {
+    left: 1rem;
+  }
+  
+  .next-btn {
+    right: 1rem;
+  }
+  
+  .close-btn {
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  .image-caption {
+    font-size: 0.9rem;
+    bottom: -2.5rem;
+  }
 }
 </style>
