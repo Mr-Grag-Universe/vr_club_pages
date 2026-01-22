@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue'
+import Prices from '@/views/Prices.vue'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -16,6 +17,15 @@ const router = createRouter({
       component: Home, 
       meta: { 
         title: "Арена виртуальной реальности во Владимире",
+        icon: '/src/assets/icons/icon_dark.ico',
+      } 
+    },
+    { 
+      path: '/prices', 
+      name: 'prices', 
+      component: Prices, 
+      meta: { 
+        title: "Тарифы",
         icon: '/src/assets/icons/icon_dark.ico',
       } 
     },

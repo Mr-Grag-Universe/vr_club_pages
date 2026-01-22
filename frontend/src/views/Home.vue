@@ -3,8 +3,6 @@ import BaseLayout from '@/components/base/BaseLayout.vue'
 import HeroSection from '@/components/home/HeroSection.vue'
 import FAQ from '@/components/home/FAQ.vue'
 import GamesGrid from '@/components/home/GamesGrid.vue'
-import GalleryArena from '@/components/home/GalleryArena.vue'
-import BookingWidget from '@/components/home/BookingWidget.vue'
 import StatsCounter from '@/components/home/StatsCounter.vue'
 import Location from '@/components/home/Location.vue'
 import SmartGallary from '@/components/common/SmartGallary.vue'
@@ -36,12 +34,10 @@ import { ref, computed } from 'vue'
 
 const handleWidgetLoaded = (event: BukzaLoadedEvent): void => {
   console.log('Виджет загружен:', event.widget)
-  // Дополнительная логика при загрузке
 }
 
 const handleWidgetError = (event: BukzaErrorEvent): void => {
   console.error('Ошибка виджета:', event.type, event.message)
-  // Логика обработки ошибок
 }
 </script>
 
@@ -67,18 +63,7 @@ const handleWidgetError = (event: BukzaErrorEvent): void => {
     <GamesGrid />
     <StatsCounter />
     <Location />
-    <!-- <BookingWidget /> -->
     <FAQ />
-    <!-- Добавляй секции по очереди -->
-    <!-- <div class="bukza-section">
-      <h2>Забронировать время</h2>
-      <BukzaBooking
-        widget-id="your-widget-id-from-bukza"
-        mode="embedded"
-        @loaded="handleWidgetLoaded"
-        @error="handleWidgetError"
-      />
-    </div> -->
   </BaseLayout>
 
 </template>
