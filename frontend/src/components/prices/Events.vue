@@ -8,7 +8,7 @@ const packages = [
   {
     id: 'event-s',
     title: 'ПАКЕТ S',
-    description: 'Час арены на 8 чел. + 1 час 45 мин. лаунж. Общее время 1:45. До 10 человек.',
+    description: '',
     price: 11000,
     hit: false,
     options: [
@@ -16,7 +16,9 @@ const packages = [
       { label: 'ПТ-ВС', value: 'weekend', price: 13000 }
     ],
     features: [
-      'Игра на арене Metaforce',
+      'Общее время 1:45',
+      'До 10 человек',
+      'Час арены на 8 человек',
     //   'Team Force или Star Force',
       'Отдельная лаунж зона',
       'PlayStation 5 и настольные игры',
@@ -26,7 +28,7 @@ const packages = [
   {
     id: 'event-m',
     title: 'ПАКЕТ M',
-    description: '2 часа арены на 8 чел. + 2 часа 45 мин. лаунж. Общее время 2:45. До 16 человек.',
+    description: '',
     price: 14000,
     hit: true,
     options: [
@@ -34,7 +36,9 @@ const packages = [
       { label: 'ПТ-ВС', value: 'weekend', price: 17000 }
     ],
     features: [
-      'Игра на арене Metaforce',
+      'Общее время 2:45',
+      'До 16 человек',
+      '2 часа арены на 8 человек',
     //   'Team Force или Star Force',
       'Отдельная лаунж зона',
       'PlayStation 5 и настольные игры',
@@ -44,7 +48,7 @@ const packages = [
   {
     id: 'event-l',
     title: 'ПАКЕТ L',
-    description: '2 часа арены на 10 чел. + 1 час VR-зон + 2 часа 45 мин. лаунж. Общее время 2:45. Количество гостей: до 20 человек.',
+    description: '',
     price: 18000,
     hit: false,
     options: [
@@ -52,19 +56,20 @@ const packages = [
       { label: 'ПТ-ВС', value: 'weekend', price: 21000 }
     ],
     features: [
-      'Игра на арене Metaforce',
+      'Общее время 2:45',
+      'До 20 человек',
+      '2 часа арены на 10 человек',
     //   'Team Force или Star Force',
       'Отдельная лаунж зона',
       'PlayStation 5 и настольные игры',
-      '2 часа игры в VR-зонах',
+      '1 часа игры в VR-зонах',
       'Чай и кофе бесплатно'
     ]
   },
   {
     id: 'event-xl',
     title: 'ПАКЕТ XL',
-    description:    '3 часа арены на 10 чел. + 2 часа VR-зон + 3 часа 45 мин. лаунж.\n'+
-                    'Общее время 3:45. Количество гостей: до 20 человек. ',
+    description:    '',
     price: 22000,
     hit: false,
     options: [
@@ -72,11 +77,13 @@ const packages = [
       { label: 'ПТ-ВС', value: 'weekend', price: 26000 }
     ],
     features: [
-      'Игра на арене Metaforce',
+      'Общее время 3:45',
+      'До 20 человек',
+      '3 часа арены на 10 человек',
     //   'Team Force или Star Force',
       'Отдельная лаунж зона',
       'PlayStation 5 и настольные игры',
-      '3 часа игры в VR-зонах',
+      '2 часа игры в VR-зонах',
       'Чай и кофе бесплатно'
     ]
   }
@@ -99,7 +106,7 @@ const packages = [
 <style scoped>
 .packages-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 2rem;
 }
 </style>

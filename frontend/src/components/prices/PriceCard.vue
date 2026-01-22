@@ -51,6 +51,7 @@ function handleBook() {
           v-if="options?.length"
           v-model="selectedDay"
           :options="options"
+          @click.stop
         />
         
         <div class="price-value-wrapper">

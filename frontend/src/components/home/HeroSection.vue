@@ -82,6 +82,8 @@ const lightParticles = Array.from({ length: 15 }, (_, i) => ({
   inset: 0;
   filter: grayscale(30%) brightness(0.5) contrast(1.1);
   transition: filter 2.5s ease;
+  background: url('@/assets/images/hero-bg.jpg') no-repeat center center fixed;
+  background-size: cover;
 }
 
 .hero-bg.loaded {
@@ -89,9 +91,16 @@ const lightParticles = Array.from({ length: 15 }, (_, i) => ({
 }
 
 .hero-bg img {
-  width: 100%;
+  display: none;
+  /* width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; */
+}
+
+@media (max-width: 980px) {
+  .hero-bg {
+    background-position: center top; /* Adjust position to keep focus */
+  }
 }
 
 /* Vignette для затемнения краев */

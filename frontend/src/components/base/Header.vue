@@ -1,6 +1,17 @@
 <script setup lang="ts">
-    import SocialLinks from './SocialLinks.vue'
-    import metaforceLogo from '@/assets/icons/metaforce.svg'
+import { ref } from 'vue'
+import SocialLinks from './SocialLinks.vue'
+import metaforceLogo from '@/assets/icons/metaforce.svg'
+
+const isMobileMenuOpen = ref(false)
+
+const toggleMobileMenu = () => {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value
+}
+
+const closeMobileMenu = () => {
+  isMobileMenuOpen.value = false
+}
 </script>
 
 <template>
@@ -8,7 +19,8 @@
     <div class="header-glitch"></div>
     
     <nav class="nav">
-      <div class="nav-left">
+      <!-- Десктопное меню -->
+      <div class="nav-left desktop-menu">
         <div class="logo-wrapper">
             <a href="/" class="logo glitch" data-text="VR ARENA">
                 VR ARENA
@@ -32,7 +44,7 @@
         </ul>
       </div>
       
-      <div class="nav-right">
+      <div class="nav-right desktop-menu">
         <SocialLinks />
         
         <div class="cta-wrapper">
@@ -48,7 +60,51 @@
           <a href="tel:+79028877457" class="phone-link">+7 (902) 887-74-57</a>
         </div>
       </div>
+      
+      <!-- Мобильное меню кнопка -->
+      <button 
+        class="mobile-menu-toggle" 
+        @click="toggleMobileMenu"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+      >
+        <svg class="hamburger-icon" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100" height="12" rx="6" fill="currentColor"/>
+          <rect y="34" width="100" height="12" rx="6" fill="currentColor"/>
+          <rect y="68" width="100" height="12" rx="6" fill="currentColor"/>
+        </svg>
+      </button>
     </nav>
+    
+    <!-- Мобильное меню -->
+    <transition name="slide-down">
+      <div v-if="isMobileMenuOpen" class="mobile-menu">
+        <div class="mobile-menu-content">
+          <ul class="mobile-nav-menu">
+            <li class="mobile-nav-item">
+              <a href="#events" class="mobile-nav-link" @click="closeMobileMenu">Мероприятия</a>
+            </li>
+            <li class="mobile-nav-item">
+              <a href="https://metaforce.ru/vladimir/price" class="mobile-nav-link" @click="closeMobileMenu">Цены</a>
+            </li>
+            <li class="mobile-nav-item">
+              <a href="#games" class="mobile-nav-link" @click="closeMobileMenu">Игры</a>
+            </li>
+            <li class="mobile-nav-item">
+              <a href="#faq" class="mobile-nav-link" @click="closeMobileMenu">FAQ</a>
+            </li>
+          </ul>
+          
+          <div class="mobile-cta-section">
+            <a href="https://metaforce.ru/vladimir" class="mobile-cta-button">
+              Забронировать
+            </a>
+            <a href="tel:+79028877457" class="mobile-phone-link">+7 (902) 887-74-57</a>
+            <SocialLinks class="mobile-social-links" />
+          </div>
+        </div>
+      </div>
+    </transition>
     
     <div class="scanline"></div>
   </header>
@@ -84,17 +140,18 @@
 
 .nav {
   display: flex;
+  gap: 1rem;
   justify-content: space-between;
   align-items: center;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1rem;
 }
 
 .nav-left {
   display: flex;
   align-items: center;
-  gap: 3rem;
+  gap: 2rem;
 }
 
 .logo {
@@ -167,14 +224,15 @@
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 3rem;
 }
 
 .cta-wrapper {
   position: relative;
-  padding: 15px 0; /* Даёт место свечению */
-  margin: -15px 0; /* Компенсирует layout */
+  padding: 15px 0;
+  margin: -15px 0;
   z-index: 1;
+  max-width: 150px;
 }
 
 .cta-button {
@@ -207,7 +265,7 @@
   background: radial-gradient(rectangle, rgba(173, 240, 98, 0.3) 0%, transparent 60%);
   opacity: 0;
   transition: opacity 0.3s;
-  z-index: -1; /* Свет сзади */
+  z-index: -1;
   pointer-events: none;
 }
 
@@ -226,7 +284,6 @@
   z-index: 2;
 }
 
-/* Добавьте псевдоэлемент для подсветки */
 .header-phone::before {
   content: '';
   position: absolute;
@@ -251,84 +308,12 @@
   text-decoration: none;
   font-weight: 700;
   font-size: 1.1rem;
-  transition: color 0.3s, transform 0.3s; /* ← добавлен transform */
-  display: inline-block; /* ← нужно для transform */
+  transition: color 0.3s, transform 0.3s;
+  display: inline-block;
 }
 
 .phone-link:hover {
-  /* color: var(--glow); */
-  transform: translateY(-2px); /* ← приподнимание */
-}
-
-.scanline {
-  /* Замените существующие свойства на: */
-  animation: scan-h 8s linear infinite;
-  opacity: 0.4;
-  filter: blur(1px);
-}
-
-@keyframes scan-h {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-@media (max-width: 1024px) {
-  .nav {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .nav-left {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .nav-menu {
-    gap: 1.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .header {
-    padding: 0.75rem 0;
-  }
-  
-  .nav {
-    padding: 0 1rem;
-  }
-  
-  .nav-left {
-    gap: 1rem;
-  }
-  
-  .logo {
-    font-size: 1.4rem;
-  }
-  
-  .nav-menu {
-    display: none;
-  }
-  
-  .nav-right {
-    gap: 1rem;
-  }
-  
-  .social-links {
-    gap: 0.5rem;
-  }
-  
-  .soc-link {
-    width: 28px;
-    height: 28px;
-  }
-  
-  .cta-button {
-    padding: 0.6rem 1.5rem;
-  }
-  
-  .header-phone {
-    display: none;
-  }
+  transform: translateY(-2px);
 }
 
 .logo-wrapper {
@@ -343,7 +328,6 @@
   height: auto;
   opacity: 0.6;
   transition: opacity 0.3s, filter 0.3s, transform 0.3s;
-  /* Зелёная подсветка в стиле сайта */
   filter: brightness(0) saturate(100%) invert(76%) sepia(40%) saturate(545%) hue-rotate(36deg) brightness(99%) contrast(91%);
 }
 
@@ -351,5 +335,178 @@
   opacity: 1;
   transform: translateY(-2px);
   filter: brightness(0) saturate(100%) invert(76%) sepia(40%) saturate(545%) hue-rotate(36deg) brightness(120%) contrast(91%);
+}
+
+/* Мобильное меню */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.hamburger-icon {
+  width: 32px;
+  height: 24px;
+  color: var(--text-primary);
+  transition: color 0.3s;
+}
+
+.mobile-menu-toggle:hover .hamburger-icon {
+  color: var(--accent);
+}
+
+/* Анимация для мобильного меню */
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.mobile-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--bg-accent);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.mobile-menu-content {
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.mobile-nav-menu {
+  list-style: none;
+  margin: 0 0 2rem 0;
+  padding: 0;
+}
+
+.mobile-nav-item {
+  margin-bottom: 0.75rem; /* Уменьшен отступ */
+}
+
+.mobile-nav-link {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  display: block;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--bg-accent);
+  transition: color 0.3s;
+}
+
+.mobile-nav-link:hover {
+  color: var(--accent);
+}
+
+.mobile-cta-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.mobile-cta-button {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--glow) 100%);
+  color: #000;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.3s;
+  text-align: center;
+  width: 100%;
+  max-width: 300px;
+}
+
+.mobile-cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px var(--glow);
+}
+
+.mobile-phone-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.mobile-social-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Адаптивность */
+@media (max-width: 980px) {
+  .nav {
+    padding: 0 1rem;
+  }
+  
+  .desktop-menu {
+    display: none !important;
+  }
+  
+  .mobile-menu-toggle {
+    display: block !important;
+  }
+  
+  .nav-left {
+    gap: 1rem;
+  }
+  
+  .logo {
+    font-size: 1.4rem;
+  }
+  
+  .metaforce-logo {
+    width: 60px;
+  }
+}
+
+@media (min-width: 980px) {
+  .mobile-menu {
+    display: none;
+  }
+}
+
+.scanline {
+  animation: scan-h 8s linear infinite;
+  opacity: 0.4;
+  filter: blur(1px);
+}
+
+@keyframes scan-h {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 0.75rem 0;
+  }
+  
+  .mobile-menu-content {
+    padding: 1.5rem;
+  }
+  
+  .mobile-cta-button {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9rem;
+  }
 }
 </style>

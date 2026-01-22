@@ -117,7 +117,7 @@ onMounted(() => {
 @import '@/assets/styles/price.css';
 
 .hero-section {
-  padding: 4rem 2rem;
+  padding: 4rem 1rem 2rem 1rem;
   text-align: center;
   background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
 }
@@ -131,7 +131,7 @@ onMounted(() => {
 
 .container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 1rem auto;
   padding: 0 2rem 4rem;
 }
 
