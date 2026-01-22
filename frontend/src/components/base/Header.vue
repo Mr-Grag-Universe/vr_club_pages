@@ -143,9 +143,11 @@ const closeMobileMenu = () => {
   gap: 1rem;
   justify-content: space-between;
   align-items: center;
-  max-width: 1400px;
   margin: 0 auto;
   padding: 0 1rem;
+  max-width: none;
+  width: 100%;
+  flex-wrap: wrap;
 }
 
 .nav-left {
@@ -339,12 +341,13 @@ const closeMobileMenu = () => {
 
 /* Мобильное меню */
 .mobile-menu-toggle {
-  display: none;
+  display: block;
   background: none;
   border: none;
   padding: 0.5rem;
   cursor: pointer;
   margin-left: auto;
+  width: auto;
 }
 
 .hamburger-icon {
@@ -373,6 +376,8 @@ const closeMobileMenu = () => {
 .mobile-menu {
   position: absolute;
   top: 100%;
+  width: auto;
+  max-width: none;
   left: 0;
   right: 0;
   background: var(--bg-secondary);
@@ -429,7 +434,7 @@ const closeMobileMenu = () => {
   font-size: 1rem;
   transition: all 0.3s;
   text-align: center;
-  width: 100%;
+  width: auto;
   max-width: 300px;
 }
 
@@ -452,7 +457,7 @@ const closeMobileMenu = () => {
 }
 
 /* Адаптивность */
-@media (max-width: 980px) {
+@media (max-width: 600px) {
   .nav {
     padding: 0 1rem;
   }
@@ -478,7 +483,7 @@ const closeMobileMenu = () => {
   }
 }
 
-@media (min-width: 980px) {
+@media (min-width: 600px) {
   .mobile-menu {
     display: none;
   }

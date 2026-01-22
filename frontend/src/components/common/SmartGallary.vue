@@ -2,6 +2,19 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue'
 
+const imageWrapperRef = ref<HTMLElement | null>(null);
+const imageWrapperWidth = ref(0);
+
+const galleryGridRef = ref<HTMLElement | null>(null);
+const gridItemWidth = ref(250); // Начальная ширина
+
+const updateGridItemWidth = () => {
+  if (galleryGridRef.value && galleryGridRef.value.children.length > 0) {
+    const firstItem = galleryGridRef.value.children[0] as HTMLElement;
+    gridItemWidth.value = firstItem.clientWidth || 250;
+  }
+};
+
 interface Props {
   images: Array<{ src: string; alt: string }>
   title?: string
@@ -79,9 +92,32 @@ function getItemStyle(index: number) {
   }
 }
 
-const gridStyle = computed(() => ({
-  gridTemplateColumns: `repeat(${layout.value.cols}, minmax(250px, 1fr))`
-}))
+// const gridStyle = computed(() => {
+//     const totalWidth = layout.value.cols * imageWrapperWidth.value; // Calculate total width
+//     const shouldUseAutoFit = window.innerWidth < totalWidth;
+//     console.log(shouldUseAutoFit)
+
+//     return {
+//         gridTemplateColumns: shouldUseAutoFit
+//             ? `repeat(auto-fit, minmax(250px, 1fr))`
+//             : `repeat(${layout.value.cols}, minmax(250px, 1fr))`
+//     };
+// });
+
+const gridStyle = computed(() => {
+    const totalWidth = layout.value.cols * gridItemWidth.value;
+    const shouldUseAutoFit = windowWidth.value < totalWidth;
+    
+    console.log('shouldUseAutoFit:', shouldUseAutoFit, 
+                'windowWidth:', windowWidth.value, 
+                'totalWidth:', totalWidth);
+
+    return {
+        gridTemplateColumns: shouldUseAutoFit
+            ? `repeat(auto-fit, minmax(250px, 1fr))`
+            : `repeat(${layout.value.cols}, minmax(250px, 1fr))`
+    };
+});
 
 // Lightbox logic
 const currentIndex = ref(-1)
@@ -131,14 +167,33 @@ function handleOverlayClick(e: MouseEvent) {
   }
 }
 
+const windowWidth = ref(window.innerWidth);
+
+const updateImageWrapperSize = () => {
+    if (imageWrapperRef.value) {
+        imageWrapperWidth.value = imageWrapperRef.value.clientWidth;
+    }
+};
+
+const handleResize = () => {
+  windowWidth.value = window.innerWidth;
+  updateGridItemWidth();
+};
+
 onMounted(() => {
-  window.addEventListener('keydown', handleKeydown)
-})
+  window.addEventListener('keydown', handleKeydown);
+  window.addEventListener('resize', handleResize);
+  
+  // Инициализация
+  handleResize();
+});
 
 onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeydown)
-  document.body.style.overflow = ''
-})
+  window.removeEventListener('keydown', handleKeydown);
+  window.removeEventListener('resize', handleResize);
+  document.body.style.overflow = '';
+});
+
 </script>
 
 <template>
@@ -148,6 +203,7 @@ onUnmounted(() => {
     <div 
       class="gallery-grid" 
       :style="gridStyle"
+      ref="galleryGridRef"
     >
       <div 
         v-for="(img, index) in images" 
@@ -156,7 +212,7 @@ onUnmounted(() => {
         :style="getItemStyle(index)"
         @click="openLightbox(index)"
       >
-        <div class="image-wrapper">
+        <div class="image-wrapper" ref="imageWrapperRef">
           <img :src="img.src" :alt="img.alt" loading="lazy" />
           <div class="image-overlay"></div>
         </div>
@@ -241,6 +297,10 @@ onUnmounted(() => {
   opacity: 0;
   animation: slideIn 0.6s forwards;
   animation-delay: var(--delay);
+
+  max-width: 100%;
+  min-width: 250px;
+  height: auto;
 }
 
 @keyframes slideIn {
@@ -397,7 +457,7 @@ onUnmounted(() => {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .nav-btn {
     width: 44px;
     height: 44px;
@@ -421,6 +481,35 @@ onUnmounted(() => {
   .image-caption {
     font-size: 0.9rem;
     bottom: -2.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .gallery-section {
+    padding: 4rem 1rem; /* Reduce padding */
+  }
+
+  .image-wrapper {
+    aspect-ratio: 1/1; /* Adjust aspect ratio for better fit on mobile */
+  }
+
+  .section-title {
+    font-size: 2rem; /* Adjust font size for more space */
+  }
+}
+
+@media (max-width: 600px) {
+  .gallery-section {
+    padding: 3rem 0.5rem; /* Further reduce padding */
+  }
+
+  .section-title {
+    font-size: 1.5rem; /* Further adjust font size */
+  }
+
+  .lightbox-image {
+    width: 100%; /* Ensure images take full width in lightbox */
+    height: auto; /* Maintain aspect ratio */
   }
 }
 </style>
