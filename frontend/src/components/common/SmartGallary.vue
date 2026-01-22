@@ -1,12 +1,15 @@
 <!-- SmartGallery.vue -->
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted } from 'vue'
+import { computed, ref, onMounted, onUnmounted, nextTick } from 'vue'
 
 const imageWrapperRef = ref<HTMLElement | null>(null);
 const imageWrapperWidth = ref(0);
 
 const galleryGridRef = ref<HTMLElement | null>(null);
 const gridItemWidth = ref(250); // Начальная ширина
+const containerWidth = ref(0);
+const windowWidth = ref(window.innerWidth);
+const MIN_ITEM_WIDTH = 250;
 
 const updateGridItemWidth = () => {
   if (galleryGridRef.value && galleryGridRef.value.children.length > 0) {
@@ -92,30 +95,26 @@ function getItemStyle(index: number) {
   }
 }
 
-// const gridStyle = computed(() => {
-//     const totalWidth = layout.value.cols * imageWrapperWidth.value; // Calculate total width
-//     const shouldUseAutoFit = window.innerWidth < totalWidth;
-//     console.log(shouldUseAutoFit)
-
-//     return {
-//         gridTemplateColumns: shouldUseAutoFit
-//             ? `repeat(auto-fit, minmax(250px, 1fr))`
-//             : `repeat(${layout.value.cols}, minmax(250px, 1fr))`
-//     };
-// });
-
 const gridStyle = computed(() => {
-    const totalWidth = layout.value.cols * gridItemWidth.value;
-    const shouldUseAutoFit = windowWidth.value < totalWidth;
+    // Рассчитываем требуемую ширину для всех колонок
+    const requiredWidth = layout.value.cols * MIN_ITEM_WIDTH;
+    // Добавляем отступы между колонками (1.5rem * (cols - 1))
+    const gapWidth = (layout.value.cols - 1) * 24; // 1.5rem = 24px
+    const totalRequiredWidth = requiredWidth + gapWidth;
     
-    console.log('shouldUseAutoFit:', shouldUseAutoFit, 
-                'windowWidth:', windowWidth.value, 
-                'totalWidth:', totalWidth);
+    const shouldUseAutoFit = containerWidth.value < totalRequiredWidth;
+    
+    console.log('Grid decision:', {
+        cols: layout.value.cols,
+        containerWidth: containerWidth.value,
+        requiredWidth: totalRequiredWidth,
+        shouldUseAutoFit
+    });
 
     return {
         gridTemplateColumns: shouldUseAutoFit
-            ? `repeat(auto-fit, minmax(250px, 1fr))`
-            : `repeat(${layout.value.cols}, minmax(250px, 1fr))`
+            ? `repeat(auto-fit, minmax(${MIN_ITEM_WIDTH}px, 1fr))`
+            : `repeat(${layout.value.cols}, minmax(${MIN_ITEM_WIDTH}px, 1fr))`
     };
 });
 
@@ -167,7 +166,15 @@ function handleOverlayClick(e: MouseEvent) {
   }
 }
 
-const windowWidth = ref(window.innerWidth);
+const measureContainerWidth = async () => {
+    // Ждём следующего тика, чтобы DOM обновился
+    await nextTick();
+    if (galleryGridRef.value) {
+        const rect = galleryGridRef.value.getBoundingClientRect();
+        containerWidth.value = rect.width;
+        windowWidth.value = window.innerWidth;
+    }
+};
 
 const updateImageWrapperSize = () => {
     if (imageWrapperRef.value) {
@@ -176,22 +183,21 @@ const updateImageWrapperSize = () => {
 };
 
 const handleResize = () => {
-  windowWidth.value = window.innerWidth;
-  updateGridItemWidth();
+    measureContainerWidth();
 };
 
 onMounted(() => {
-  window.addEventListener('keydown', handleKeydown);
-  window.addEventListener('resize', handleResize);
-  
-  // Инициализация
-  handleResize();
+    window.addEventListener('keydown', handleKeydown);
+    window.addEventListener('resize', handleResize);
+    
+    // Инициализация после монтирования
+    measureContainerWidth();
 });
 
 onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeydown);
-  window.removeEventListener('resize', handleResize);
-  document.body.style.overflow = '';
+    window.removeEventListener('keydown', handleKeydown);
+    window.removeEventListener('resize', handleResize);
+    document.body.style.overflow = '';
 });
 
 </script>
@@ -212,7 +218,7 @@ onUnmounted(() => {
         :style="getItemStyle(index)"
         @click="openLightbox(index)"
       >
-        <div class="image-wrapper" ref="imageWrapperRef">
+        <div class="image-wrapper">
           <img :src="img.src" :alt="img.alt" loading="lazy" />
           <div class="image-overlay"></div>
         </div>
@@ -298,10 +304,10 @@ onUnmounted(() => {
   animation: slideIn 0.6s forwards;
   animation-delay: var(--delay);
 
-  max-width: 100%;
-  min-width: 250px;
+  width: 100%;
   height: auto;
 }
+
 
 @keyframes slideIn {
   to {
@@ -454,62 +460,5 @@ onUnmounted(() => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-  .nav-btn {
-    width: 44px;
-    height: 44px;
-  }
-  
-  .prev-btn {
-    left: 1rem;
-  }
-  
-  .next-btn {
-    right: 1rem;
-  }
-  
-  .close-btn {
-    top: 1rem;
-    right: 1rem;
-    width: 40px;
-    height: 40px;
-  }
-
-  .image-caption {
-    font-size: 0.9rem;
-    bottom: -2.5rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .gallery-section {
-    padding: 4rem 1rem; /* Reduce padding */
-  }
-
-  .image-wrapper {
-    aspect-ratio: 1/1; /* Adjust aspect ratio for better fit on mobile */
-  }
-
-  .section-title {
-    font-size: 2rem; /* Adjust font size for more space */
-  }
-}
-
-@media (max-width: 600px) {
-  .gallery-section {
-    padding: 3rem 0.5rem; /* Further reduce padding */
-  }
-
-  .section-title {
-    font-size: 1.5rem; /* Further adjust font size */
-  }
-
-  .lightbox-image {
-    width: 100%; /* Ensure images take full width in lightbox */
-    height: auto; /* Maintain aspect ratio */
-  }
 }
 </style>

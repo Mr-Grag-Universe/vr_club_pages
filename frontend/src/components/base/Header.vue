@@ -410,6 +410,7 @@ const closeMobileMenu = () => {
   padding: 0.75rem 0;
   border-bottom: 1px solid var(--bg-accent);
   transition: color 0.3s;
+  text-align: center;
 }
 
 .mobile-nav-link:hover {
@@ -485,6 +486,9 @@ const closeMobileMenu = () => {
 
 @media (min-width: 600px) {
   .mobile-menu {
+    display: none;
+  }
+  .mobile-menu-toggle {
     display: none;
   }
 }

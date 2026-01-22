@@ -48,18 +48,18 @@ const handleWidgetError = (event: BukzaErrorEvent): void => {
       :images="arenaImages" 
       title="VR Arena Gallery"
     />
-    <!-- <SmartGallary 
+    <SmartGallary 
       :images="arenaGamesImages" 
       title="VR Arena Games"
-    /> -->
+    />
     <Events />
     <GiftCards />
     <ArenaVideos />
 
-    <!-- <SmartGallary 
+    <SmartGallary 
       :images="zonesImages" 
       title="VR ZONES Gallery"
-    /> -->
+    />
     <GamesGrid />
     <StatsCounter />
     <Location />
