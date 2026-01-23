@@ -5,28 +5,58 @@
 const showNotification = ref(false)
 const notificationMessage = ref('Номер скопирован!')
 
-const phoneNumber = '+79028877457'
+const PHONE_NUMBER = '+79028877457'
 
 const copyPhoneNumber = async (e: Event) => {
   e.preventDefault()
   
   try {
-    await navigator.clipboard.writeText(phoneNumber)
-    notificationMessage.value = 'Номер скопирован!'
-    showToast()
+    // Проверяем доступность Clipboard API
+    if (navigator.clipboard && window.isSecureContext) {
+      // Современный метод (работает только на HTTPS)
+      await navigator.clipboard.writeText(PHONE_NUMBER)
+      showNotificationWithMessage('Номер скопирован!')
+    } else {
+      // Fallback для HTTP/старых браузеров
+      const textArea = document.createElement('textarea')
+      textArea.value = PHONE_NUMBER
+      textArea.style.position = 'fixed'
+      textArea.style.opacity = '0'
+      textArea.style.pointerEvents = 'none'
+      document.body.appendChild(textArea)
+      textArea.select()
+      
+      const successful = document.execCommand('copy')
+      document.body.removeChild(textArea)
+      
+      if (successful) {
+        showNotificationWithMessage('Номер скопирован!')
+      } else {
+        throw new Error('Fallback failed')
+      }
+    }
   } catch (err) {
-    console.error(err)
-    notificationMessage.value = 'Ошибка копирования'
-    showToast()
+    console.error('Ошибка копирования:', err)
+    showNotificationWithMessage('Не удалось скопировать. Попробуйте вручную.')
+    // Можно добавить дополнительную обратную связь:
+    // window.open(`tel:${PHONE_NUMBER}`)
   }
 }
 
-const showToast = () => {
+const showNotificationWithMessage = (message: string) => {
+  notificationMessage.value = message
   showNotification.value = true
   setTimeout(() => {
     showNotification.value = false
-  }, 2000)
+  }, 1500)
 }
+
+// const showToast = () => {
+//   showNotification.value = true
+//   setTimeout(() => {
+//     showNotification.value = false
+//   }, 2000)
+// }
 </script>
 
 <template>
