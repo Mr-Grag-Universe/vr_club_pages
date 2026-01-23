@@ -15,6 +15,7 @@ const copyPhoneNumber = async (e: Event) => {
     notificationMessage.value = 'Номер скопирован!'
     showToast()
   } catch (err) {
+    console.error(err)
     notificationMessage.value = 'Ошибка копирования'
     showToast()
   }
