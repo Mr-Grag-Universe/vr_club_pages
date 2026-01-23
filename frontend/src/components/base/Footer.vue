@@ -50,13 +50,6 @@ const showNotificationWithMessage = (message: string) => {
     showNotification.value = false
   }, 1500)
 }
-
-// const showToast = () => {
-//   showNotification.value = true
-//   setTimeout(() => {
-//     showNotification.value = false
-//   }, 2000)
-// }
 </script>
 
 <template>
