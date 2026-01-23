@@ -4,6 +4,10 @@ import SocialLinks from './SocialLinks.vue'
 import metaforceLogo from '@/assets/icons/metaforce.svg'
 
 const isMobileMenuOpen = ref(false)
+const showNotification = ref(false)
+const notificationMessage = ref('Номер скопирован!')
+
+const phoneNumber = '+79028877457'
 
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
@@ -11,6 +15,26 @@ const toggleMobileMenu = () => {
 
 const closeMobileMenu = () => {
   isMobileMenuOpen.value = false
+}
+
+const copyPhoneNumber = async (e: Event) => {
+  e.preventDefault()
+  
+  try {
+    await navigator.clipboard.writeText(phoneNumber)
+    notificationMessage.value = 'Номер скопирован!'
+    showToast()
+  } catch (err) {
+    notificationMessage.value = 'Ошибка копирования'
+    showToast()
+  }
+}
+
+const showToast = () => {
+  showNotification.value = true
+  setTimeout(() => {
+    showNotification.value = false
+  }, 2000)
 }
 </script>
 
@@ -57,7 +81,9 @@ const closeMobileMenu = () => {
         </div>
         
         <div class="header-phone">
-          <a href="tel:+79028877457" class="phone-link">+7 (902) 887-74-57</a>
+          <a href="tel:+79028877457" class="phone-link" @click="copyPhoneNumber">
+            +7 (902) 887-74-57
+          </a>
         </div>
       </div>
       
@@ -99,7 +125,9 @@ const closeMobileMenu = () => {
             <a href="https://metaforce.ru/vladimir" class="mobile-cta-button">
               Забронировать
             </a>
-            <a href="tel:+79028877457" class="mobile-phone-link">+7 (902) 887-74-57</a>
+            <a href="tel:+79028877457" class="mobile-phone-link" @click="copyPhoneNumber">
+              +7 (902) 887-74-57
+            </a>
             <SocialLinks class="mobile-social-links" />
           </div>
         </div>
@@ -108,6 +136,13 @@ const closeMobileMenu = () => {
     
     <div class="scanline"></div>
   </header>
+
+  <!-- Всплывающее уведомление -->
+  <transition name="fade">
+    <div v-if="showNotification" class="notification-toast">
+      {{ notificationMessage }}
+    </div>
+  </transition>
 </template>
 
 <style scoped>
@@ -312,6 +347,7 @@ const closeMobileMenu = () => {
   font-size: 1.1rem;
   transition: color 0.3s, transform 0.3s;
   display: inline-block;
+  cursor: pointer;
 }
 
 .phone-link:hover {
@@ -398,7 +434,7 @@ const closeMobileMenu = () => {
 }
 
 .mobile-nav-item {
-  margin-bottom: 0.75rem; /* Уменьшен отступ */
+  margin-bottom: 0.75rem;
 }
 
 .mobile-nav-link {
@@ -449,6 +485,7 @@ const closeMobileMenu = () => {
   text-decoration: none;
   font-weight: 700;
   font-size: 1.1rem;
+  cursor: pointer;
 }
 
 .mobile-social-links {
@@ -517,5 +554,35 @@ const closeMobileMenu = () => {
     padding: 0.875rem 1.5rem;
     font-size: 0.9rem;
   }
+}
+
+/* Всплывающее уведомление */
+.notification-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(13, 6, 67, 0.95);
+  backdrop-filter: blur(10px);
+  color: var(--accent);
+  padding: 0.75rem 1.5rem;
+  border-radius: 30px;
+  border: 1px solid var(--accent);
+  box-shadow: 0 4px 20px rgba(173, 240, 98, 0.3);
+  z-index: 2000;
+  font-weight: 500;
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(-50%) translateY(20px);
 }
 </style>

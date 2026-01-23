@@ -1,5 +1,31 @@
 <script setup lang="ts">
     import SocialLinks from './SocialLinks.vue'
+    import { ref } from 'vue'
+
+const showNotification = ref(false)
+const notificationMessage = ref('Номер скопирован!')
+
+const phoneNumber = '+79028877457'
+
+const copyPhoneNumber = async (e: Event) => {
+  e.preventDefault()
+  
+  try {
+    await navigator.clipboard.writeText(phoneNumber)
+    notificationMessage.value = 'Номер скопирован!'
+    showToast()
+  } catch (err) {
+    notificationMessage.value = 'Ошибка копирования'
+    showToast()
+  }
+}
+
+const showToast = () => {
+  showNotification.value = true
+  setTimeout(() => {
+    showNotification.value = false
+  }, 2000)
+}
 </script>
 
 <template>
@@ -34,7 +60,9 @@
       
       <div class="footer-section">
         <div class="footer-contacts">
-          <a href="tel:+79028877457" class="phone-link">+7 (902) 887-74-57</a>
+          <a href="tel:+79028877457" class="phone-link" @click="copyPhoneNumber">
+            +7 (902) 887-74-57
+          </a>
           <SocialLinks />
         </div>
       </div>
@@ -45,6 +73,13 @@
       <p>&copy; 2026 VR Arena Metaforce. Все права защищены.</p>
     </div>
   </footer>
+  
+  <!-- Всплывающее уведомление -->
+  <transition name="fade">
+    <div v-if="showNotification" class="notification-toast">
+      {{ notificationMessage }}
+    </div>
+  </transition>
 </template>
 
 <style scoped>
@@ -110,6 +145,7 @@
   font-size: 1.1rem;
   text-decoration: none;
   transition: color 0.3s;
+  cursor: pointer;
 }
 
 .phone-link:hover {
@@ -152,5 +188,35 @@
   .footer-section {
     align-items: center;
   }
+}
+
+/* Всплывающее уведомление */
+.notification-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(13, 6, 67, 0.95);
+  backdrop-filter: blur(10px);
+  color: var(--accent);
+  padding: 0.75rem 1.5rem;
+  border-radius: 30px;
+  border: 1px solid var(--accent);
+  box-shadow: 0 4px 20px rgba(173, 240, 98, 0.3);
+  z-index: 2000;
+  font-weight: 500;
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(-50%) translateY(20px);
 }
 </style>
