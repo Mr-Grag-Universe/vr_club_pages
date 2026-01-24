@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue'
 import Prices from '@/views/Prices.vue'
+import Booking from '@/views/Booking.vue'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -29,6 +30,15 @@ const router = createRouter({
         icon: '/src/assets/icons/icon_dark.ico',
       } 
     },
+    {
+      path: '/booking',
+      name: 'booking',
+      component: Booking,
+      meta: {
+        title: "Бронирование",
+        icon: '/src/assets/icons/icon_dark.ico',
+      }
+    }
   ],
 })
 
