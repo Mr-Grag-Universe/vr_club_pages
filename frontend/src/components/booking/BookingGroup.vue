@@ -17,25 +17,52 @@
       </div>
     </div>
 
-    <!-- Первый элемент (полноценный) -->
-    <div v-if="group.elements.length > 0" class="first-element">
+    <!-- Элемент 1: Тип услуги -->
+    <div v-if="group.elements.length > 0" class="element service-element">
+      <div class="element-label">Тип услуги:</div>
       <ServiceSelect v-model="group.elements[0].service" />
+      <!-- Кнопка удаления для первого элемента -->
+      <button 
+        v-if="group.elements.length === 1"
+        class="delete-btn"
+        @click="deleteElement(0)"
+        title="Удалить услугу"
+      >
+        ×
+      </button>
     </div>
 
-    <!-- Остальные элементы (заглушки) -->
-    <div v-for="(elem, idx) in otherElements" :key="elem.id" class="element-placeholder">
-      <div class="placeholder-content">
-        <span class="slot-number">#{{ idx + 2 }}</span>
-        <span class="placeholder-text">Заглушка</span>
-        <!-- Кнопка удаления только у последнего -->
-        <button 
-          v-if="idx === otherElements.length - 1"
-          class="delete-btn"
-          @click="$emit('deleteElement')"
-        >
-          ×
-        </button>
-      </div>
+    <!-- Элемент 2: Дата -->
+    <div v-if="group.elements.length > 1" class="element date-element">
+      <div class="element-label">Дата:</div>
+      <DatePicker v-model="group.elements[1].params.date" />
+      <!-- Кнопка удаления для второго элемента -->
+      <button 
+        v-if="group.elements.length === 2"
+        class="delete-btn"
+        @click="deleteElement(1)"
+        title="Удалить дату"
+      >
+        ×
+      </button>
+    </div>
+
+    <!-- Элемент 3: Время -->
+    <div v-if="group.elements.length > 2" class="element time-element">
+      <div class="element-label">Время:</div>
+      <TimePicker 
+        v-model="group.elements[2].params.time"
+        :service-type="group.elements[0]?.service"
+        :date="group.elements[1]?.params.date"
+      />
+      <!-- Кнопка удаления для третьего элемента -->
+      <button 
+        class="delete-btn"
+        @click="deleteElement(2)"
+        title="Удалить время"
+      >
+        ×
+      </button>
     </div>
 
     <!-- Кнопка добавить элемент -->
@@ -51,20 +78,24 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import ServiceSelect from './ServiceSelect.vue'
+import DatePicker from './DatePicker.vue'
+import TimePicker from './TimePicker.vue'
 
 const props = defineProps({
-  group: Object
+  group: Object,
+  canAddElement: Boolean
 })
 
 const emit = defineEmits(['addElement', 'deleteElement', 'deleteGroup'])
 
-// Элементы кроме первого (для заглушек)
-const otherElements = computed(() => props.group.elements.slice(1))
+const deleteElement = (index) => {
+  emit('deleteElement', index)
+}
 </script>
 
 <style scoped>
+/* ВСТАВИТЬ ПОЛНОСТЬЮ */
 .booking-group {
   background: var(--bg-secondary);
   border: 2px solid var(--bg-accent);
@@ -126,36 +157,58 @@ const otherElements = computed(() => props.group.elements.slice(1))
   color: white;
 }
 
-.first-element {
-  margin-bottom: 0.75rem;
-}
-
-.element-placeholder {
+.element {
   padding: 0.75rem;
   background: var(--bg-accent);
-  border: 1px dashed var(--text-secondary);
   border-radius: 8px;
-  opacity: 0.6;
+  border-left: 3px solid transparent;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.service-element {
+  border-left-color: var(--accent);
+}
+
+.date-element {
+  border-left-color: #8b5cf6;
+}
+
+.time-element {
+  border-left-color: #10b981;
+}
+
+.element-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
   margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.element-placeholder:last-child {
-  border-left: 3px solid var(--accent);
-}
-
-.placeholder-content {
+.delete-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  border: 2px solid var(--text-secondary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+  transition: all 0.3s;
+  padding: 0;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: center;
 }
 
-.slot-number {
-  font-weight: bold;
-  color: var(--accent);
-}
-
-.placeholder-text {
-  color: var(--text-secondary);
+.delete-btn:hover {
+  border-color: #ef4444;
+  color: #ef4444;
 }
 
 .add-element-btn {
