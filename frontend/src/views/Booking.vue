@@ -116,9 +116,8 @@ function addNewGroup() {
 }
 
 function deleteGroup(groupId) {
-    console.log("delete group")
-    const index = groups.value.findIndex(g => g.id === groupId)
-    console.log(index)
+    console.log("delete group: ", groupId.groupId)
+    const index = groups.value.findIndex(g => g.id == groupId.groupId)
     groups.value.splice(index, 1)
 
     // Создаём пустую группу, если удалили последнюю

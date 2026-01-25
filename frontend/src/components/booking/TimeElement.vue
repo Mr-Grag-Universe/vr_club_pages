@@ -71,25 +71,41 @@ const props = defineProps({
 const emit = defineEmits(['update'])
 
 // Константы
-const OPEN_TIME = 9 * 60 // 12:00
-const CLOSE_TIME = 22 * 60 // 23:00
+const OPEN_TIME = 9 * 60 // 09:00
+const CLOSE_TIME = 22 * 60 // 22:00
 const LAST_BOOKING_TIME = 21 * 60 // 21:00
 const STEP = 30 // шаг 30 минут
 
-// Текущие значения
-const startTime = ref(computed(() => props.options.start || OPEN_TIME))
-const endTime = ref(computed(() => 
-  props.options.end || (props.showEndTime ? OPEN_TIME + 60 : OPEN_TIME + 120)
-))
-console.log(startTime.value, endTime.value)
+// Безопасное получение значений по умолчанию
+const getDefaultStartTime = () => OPEN_TIME
+const getDefaultEndTime = () => props.showEndTime ? OPEN_TIME + 60 : OPEN_TIME + 120
+
+// Текущие значения с защитой от null
+const startTime = ref(getSafeTime(props.options.start, getDefaultStartTime()))
+const endTime = ref(getSafeTime(props.options.end, getDefaultEndTime()))
+
+// Вспомогательная функция для безопасного получения времени
+function getSafeTime(value, defaultValue) {
+  if (value === null || value === undefined || isNaN(value)) {
+    return defaultValue
+  }
+  // Ограничиваем диапазон
+  return Math.max(OPEN_TIME, Math.min(CLOSE_TIME, value))
+}
 
 // Ссылка на контейнер
 const sliderContainer = ref(null)
 
-// Обновление из props
+// Обновление из props с защитой
 watch(() => props.options, (val) => {
-  if (val.start !== undefined) startTime.value = val.start
-  if (val.end !== undefined) endTime.value = val.end
+  if (val) {
+    if (val.start !== undefined && val.start !== null) {
+      startTime.value = getSafeTime(val.start, getDefaultStartTime())
+    }
+    if (val.end !== undefined && val.end !== null) {
+      endTime.value = getSafeTime(val.end, getDefaultEndTime())
+    }
+  }
 }, { immediate: true, deep: true })
 
 // Перетаскивание
@@ -104,23 +120,23 @@ const updateSliderRect = () => {
 
 const startDrag = (type) => {
   dragging.value = type
-  nextTick(() => {
-    updateSliderRect()
-  })
+  updateSliderRect()
+  document.body.style.userSelect = 'none'
 }
 
 const onMouseMove = (e) => {
-  if (!dragging.value) return
+  if (!dragging.value || !sliderRect.value) return
   updateFromPosition(e.clientX)
 }
 
 const onTouchMove = (e) => {
-  if (!dragging.value) return
+  if (!dragging.value || !e.touches[0] || !sliderRect.value) return
   updateFromPosition(e.touches[0].clientX)
 }
 
 const onMouseUp = () => {
   dragging.value = null
+  document.body.style.userSelect = ''
 }
 
 const updateFromPosition = (clientX) => {
@@ -128,7 +144,10 @@ const updateFromPosition = (clientX) => {
   
   const rect = sliderRect.value
   const percent = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width))
-  const newTime = Math.round((OPEN_TIME + percent * (CLOSE_TIME - OPEN_TIME)) / STEP) * STEP
+  let newTime = Math.round((OPEN_TIME + percent * (CLOSE_TIME - OPEN_TIME)) / STEP) * STEP
+  
+  // Ограничиваем диапазон
+  newTime = Math.max(OPEN_TIME, Math.min(CLOSE_TIME, newTime))
   
   if (dragging.value === 'start') {
     // Ограничения для начала
@@ -147,20 +166,35 @@ const updateFromPosition = (clientX) => {
   } else if (dragging.value === 'end' && props.showEndTime) {
     // Ограничения для конца
     const minEnd = startTime.value + 60
-    endTime.value = Math.max(newTime, minEnd)
+    endTime.value = Math.max(newTime, Math.max(minEnd, OPEN_TIME))
   }
   
   updateValue()
 }
 
 const updateValue = () => {
-  emit('update', { start: startTime.value, end: endTime.value })
+  // Дополнительная валидация перед эмитом
+  const safeStart = getSafeTime(startTime.value, getDefaultStartTime())
+  const safeEnd = getSafeTime(endTime.value, getDefaultEndTime())
+  
+  emit('update', { 
+    start: safeStart, 
+    end: props.showEndTime ? safeEnd : safeStart + 120 
+  })
 }
 
-// Стиль ползунков
+// Стиль ползунков - ИСПРАВЛЕНО: приоритет операторов
 const sliderWidth = CLOSE_TIME - OPEN_TIME
-const startPercent = computed(() => ((startTime.value - OPEN_TIME) / sliderWidth) * 100)
-const endPercent = computed(() => ((endTime.value - OPEN_TIME) / sliderWidth) * 100)
+
+const startPercent = computed(() => {
+  const safeStartTime = getSafeTime(startTime.value, getDefaultStartTime())
+  return ((safeStartTime - OPEN_TIME) / sliderWidth) * 100
+})
+
+const endPercent = computed(() => {
+  const safeEndTime = getSafeTime(endTime.value, getDefaultEndTime())
+  return ((safeEndTime - OPEN_TIME) / sliderWidth) * 100
+})
 
 const startThumbStyle = computed(() => ({
   left: `calc(${startPercent.value}% - 15px)`
@@ -170,35 +204,41 @@ const endThumbStyle = computed(() => ({
   left: `calc(${endPercent.value}% - 15px)`
 }))
 
-const rangeStyle = computed(() => ({
-  left: `${startPercent.value}%`,
-  width: `${endPercent.value - startPercent.value}%`
-}))
+const rangeStyle = computed(() => {
+  const start = startPercent.value
+  const end = endPercent.value
+  return {
+    left: `${start}%`,
+    width: `${Math.max(0, end - start)}%`
+  }
+})
 
 // Отображение времени
 const displayTime = computed(() => {
-    console.log("start:")
-  const start = formatTime(startTime.value)
-    console.log("end:")
-  const end = formatTime(endTime.value)
+  const safeStart = getSafeTime(startTime.value, getDefaultStartTime())
+  const safeEnd = getSafeTime(endTime.value, getDefaultEndTime())
+  
+  const start = formatTime(safeStart)
+  const end = formatTime(safeEnd)
   return `${start} - ${end}`
 })
 
 const formatTime = (minutes) => {
-    console.log("min: ", minutes)
-  const hour = Math.floor(minutes / 60)
-  const minute = minutes % 60
+  const safeMinutes = getSafeTime(minutes, getDefaultStartTime())
+  const hour = Math.floor(safeMinutes / 60)
+  const minute = safeMinutes % 60
   return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
 }
 
 // Валидация
 const isValid = computed(() => {
-  return (endTime.value - startTime.value) >= 60
+  const safeStart = getSafeTime(startTime.value, getDefaultStartTime())
+  const safeEnd = getSafeTime(endTime.value, getDefaultEndTime())
+  return (safeEnd - safeStart) >= 60
 })
 
 // Метки
 const timeMarks = computed(() => {
-    console.log("time marks:")
   const marks = []
   for (let time = OPEN_TIME; time <= CLOSE_TIME; time += 60) {
     const label = formatTime(time)
@@ -227,6 +267,7 @@ onUnmounted(() => {
   window.removeEventListener('touchmove', onTouchMove)
   window.removeEventListener('touchend', onMouseUp)
   window.removeEventListener('resize', updateSliderRect)
+  document.body.style.userSelect = ''
 })
 </script>
 
