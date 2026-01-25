@@ -4,28 +4,15 @@
     
     <div class="groups-list">
       <BookingGroup
-        v-for="(group, index) in groups"
+        v-for="group in groups"
         :key="group.id"
         :group="group"
         :can-add-element="group.elements.length < 3"
-        @add-element="addToGroup(group.id)"
+        @update-element="updateElement"
         @delete-element="deleteElement"
-        @delete-group="deleteGroup(group.id)"
-      >
-        <template #service="{ element }">
-          <ServiceSelect v-model="element.service" />
-        </template>
-        <template #date="{ element }">
-          <DatePicker v-model="element.params.date" />
-        </template>
-        <template #time="{ element }">
-          <TimePicker 
-            v-model="element.params.time"
-            :service-type="group.elements[0]?.service"
-            :date="element.params.date"
-          />
-        </template>
-      </BookingGroup>
+        @delete-group="deleteGroup"
+        @add-element="addElement(group.id)"
+      />
     </div>
 
     <button 
@@ -41,64 +28,106 @@
 <script setup>
 import { ref, computed } from 'vue'
 import BookingGroup from '@/components/booking/BookingGroup.vue'
-import ServiceSelect from '@/components/booking/ServiceSelect.vue'
-import DatePicker from '@/components/booking/DatePicker.vue'
-import TimePicker from '@/components/booking/TimePicker.vue'
 
+// === СТРУКТУРА ДАННЫХ ===
 const groups = ref([
   {
-    id: Date.now(),
+    id: generateId(),
     elements: [
-      { id: Date.now() + 1, service: null, params: {} },
-      { id: Date.now() + 2, service: null, params: {} },
-      { id: Date.now() + 3, service: null, params: {} }
+      { id: generateId(), type: 'service', options: { type: null, subtype: null } },
+      { id: generateId(), type: 'date', options: { date: null } },
+      { id: generateId(), type: 'time', options: { start: null, end: null } }
     ]
   }
 ])
 
+// === ГЕНЕРАТОР ID ===
+function generateId() {
+  return `elem-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+}
+
+// === ЛИМИТЫ ===
 const canAddGroup = computed(() => groups.value.length < 5)
 
-const addToGroup = (groupId) => {
+// === ОПЕРАЦИИ С ЭЛЕМЕНТАМИ ===
+function addElement(groupId) {
   const group = groups.value.find(g => g.id === groupId)
   if (!group || group.elements.length >= 3) return
   
-  group.elements.push({
-    id: Date.now(),
-    service: null,
-    params: {}
-  })
+  if (group.elements.length == 0) {
+    group.elements.push({
+        id: generateId(),
+        type: 'service',
+        options: { type: null, subtype: null }
+    })
+  } else if (group.elements.length == 1) {
+    group.elements.push({
+        id: generateId(),
+        type: 'date',
+        options: { date: null }
+    })
+  } else if (group.elements.length == 2) {
+    group.elements.push({
+        id: generateId(),
+        type: 'time',
+        options: { start: null, end: null }
+    })
+  }
 }
 
-const addNewGroup = () => {
-  if (!canAddGroup.value) return
-  
-  groups.value.push({
-    id: Date.now(),
-    elements: []
-  })
-}
-
-const deleteElement = (groupId, elementIndex) => {
+function updateElement({ groupId, elementId, options }) {
   const group = groups.value.find(g => g.id === groupId)
   if (!group) return
   
-  group.elements.splice(elementIndex, 1)
+  const element = group.elements.find(e => e.id === elementId)
+  if (!element) return
   
+  element.options = { ...element.options, ...options }
+  
+  // Специальная логика для услуг
+  if (element.type === 'service' && (options.type === 'arena' || options.type === 'zones')) {
+    element.options.subtype = 'default'
+  }
+}
+
+function deleteElement({ groupId, elementId }) {
+  const group = groups.value.find(g => g.id === groupId)
+  if (!group) return
+  
+  const index = group.elements.findIndex(e => e.id === elementId)
+  if (index === -1) return
+  
+  group.elements.splice(index, 1)
+  
+  // Удаляем пустую группу, если она не последняя
   if (group.elements.length === 0 && groups.value.length > 1) {
     deleteGroup(groupId)
   }
 }
 
-const deleteGroup = (groupId) => {
-  const index = groups.value.findIndex(g => g.id === groupId)
-  if (index > -1) groups.value.splice(index, 1)
+// === ОПЕРАЦИИ С ГРУППАМИ ===
+function addNewGroup() {
+  if (!canAddGroup.value) return
   
-  if (groups.value.length === 0) {
-    groups.value.push({
-      id: Date.now(),
-      elements: []
-    })
-  }
+  groups.value.push({
+    id: generateId(),
+    elements: []
+  })
+}
+
+function deleteGroup(groupId) {
+    console.log("delete group")
+    const index = groups.value.findIndex(g => g.id === groupId)
+    console.log(index)
+    groups.value.splice(index, 1)
+
+    // Создаём пустую группу, если удалили последнюю
+    if (groups.value.length === 0) {
+        groups.value.push({
+            id: generateId(),
+            elements: []
+        })
+    }
 }
 </script>
 

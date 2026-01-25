@@ -1,5 +1,5 @@
 <template>
-  <div class="time-picker">
+  <div class="time-element">
     <div class="time-display">
       <span class="label">Время:</span>
       <span class="value">{{ displayTime }}</span>
@@ -23,9 +23,8 @@
         @touchstart.prevent="startDrag('start')"
       ></div>
 
-      <!-- Ползунок конца (только для арены/зон) -->
+      <!-- Ползунок конца -->
       <div 
-        v-if="!isPackage"
         class="slider-thumb end-thumb"
         :style="endThumbStyle"
         @mousedown.prevent="startDrag('end')"
@@ -55,42 +54,40 @@
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 
 const props = defineProps({
-  modelValue: {
+  options: {
     type: Object,
     default: () => ({ start: null, end: null })
   },
   serviceType: {
     type: String,
     default: null
+  },
+  showEndTime: {
+    type: Boolean,
+    default: false
   }
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update'])
 
 // Константы
-const OPEN_TIME = 12 * 60 // 12:00
-const CLOSE_TIME = 23 * 60 // 23:00
+const OPEN_TIME = 9 * 60 // 12:00
+const CLOSE_TIME = 22 * 60 // 23:00
 const LAST_BOOKING_TIME = 21 * 60 // 21:00
 const STEP = 30 // шаг 30 минут
 
-const isPackage = computed(() => props.serviceType && props.serviceType.startsWith('package'))
-
 // Текущие значения
-const startTime = ref(props.modelValue.start || OPEN_TIME)
-const endTime = ref(props.modelValue.end || (isPackage.value ? OPEN_TIME + 120 : OPEN_TIME + 60))
+const startTime = ref(computed(() => props.options.start || OPEN_TIME))
+const endTime = ref(computed(() => 
+  props.options.end || (props.showEndTime ? OPEN_TIME + 60 : OPEN_TIME + 120)
+))
+console.log(startTime.value, endTime.value)
 
 // Ссылка на контейнер
 const sliderContainer = ref(null)
 
-// Для пакетов конец фиксирован
-watch(() => isPackage.value, (isPkg) => {
-  if (isPkg) {
-    endTime.value = startTime.value + 120
-    updateValue()
-  }
-}, { immediate: true })
-
-watch(() => props.modelValue, (val) => {
+// Обновление из props
+watch(() => props.options, (val) => {
   if (val.start !== undefined) startTime.value = val.start
   if (val.end !== undefined) endTime.value = val.end
 }, { immediate: true, deep: true })
@@ -135,11 +132,11 @@ const updateFromPosition = (clientX) => {
   
   if (dragging.value === 'start') {
     // Ограничения для начала
-    const maxStart = isPackage.value ? CLOSE_TIME - 120 : LAST_BOOKING_TIME
+    const maxStart = props.showEndTime ? LAST_BOOKING_TIME : CLOSE_TIME - 120
     startTime.value = Math.min(newTime, maxStart)
     
     // Корректируем конец, если нужно
-    if (!isPackage.value) {
+    if (props.showEndTime) {
       const minEnd = startTime.value + 60
       if (endTime.value < minEnd) {
         endTime.value = minEnd
@@ -147,7 +144,7 @@ const updateFromPosition = (clientX) => {
     } else {
       endTime.value = startTime.value + 120
     }
-  } else if (dragging.value === 'end' && !isPackage.value) {
+  } else if (dragging.value === 'end' && props.showEndTime) {
     // Ограничения для конца
     const minEnd = startTime.value + 60
     endTime.value = Math.max(newTime, minEnd)
@@ -157,10 +154,7 @@ const updateFromPosition = (clientX) => {
 }
 
 const updateValue = () => {
-  emit('update:modelValue', {
-    start: startTime.value,
-    end: endTime.value
-  })
+  emit('update', { start: startTime.value, end: endTime.value })
 }
 
 // Стиль ползунков
@@ -183,12 +177,15 @@ const rangeStyle = computed(() => ({
 
 // Отображение времени
 const displayTime = computed(() => {
+    console.log("start:")
   const start = formatTime(startTime.value)
+    console.log("end:")
   const end = formatTime(endTime.value)
   return `${start} - ${end}`
 })
 
 const formatTime = (minutes) => {
+    console.log("min: ", minutes)
   const hour = Math.floor(minutes / 60)
   const minute = minutes % 60
   return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
@@ -201,6 +198,7 @@ const isValid = computed(() => {
 
 // Метки
 const timeMarks = computed(() => {
+    console.log("time marks:")
   const marks = []
   for (let time = OPEN_TIME; time <= CLOSE_TIME; time += 60) {
     const label = formatTime(time)
@@ -233,11 +231,8 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.time-picker {
-  background: var(--bg-accent);
-  padding: 1rem;
-  border-radius: 8px;
-  margin: 0.5rem 0;
+.time-element {
+  position: relative;
 }
 
 .time-display {

@@ -11,65 +11,53 @@
       </div>
       
       <div class="group-controls">
-        <button class="delete-group-btn" @click="$emit('deleteGroup')">
+        <button class="delete-group-btn" @click="$emit('delete-group', { groupId: group.id })">
           Удалить группу
         </button>
       </div>
     </div>
 
-    <!-- Элемент 1: Тип услуги -->
-    <div v-if="group.elements.length > 0" class="element service-element">
-      <div class="element-label">Тип услуги:</div>
-      <ServiceSelect v-model="group.elements[0].service" />
-      <!-- Кнопка удаления для первого элемента -->
-      <button 
-        v-if="group.elements.length === 1"
-        class="delete-btn"
-        @click="deleteElement(0)"
-        title="Удалить услугу"
-      >
-        ×
-      </button>
-    </div>
+    <!-- Рендеринг элементов по типу -->
+    <div 
+      v-for="element in group.elements" 
+      :key="element.id"
+      class="element"
+      :class="`element-${element.type}`"
+    >
+      <!-- Заголовок элемента -->
+      <div class="element-header">
+        <span class="element-type">{{ elementTypes[element.type] }}</span>
+        <button 
+          v-if="group.elements[group.elements.length - 1].id === element.id"
+          class="delete-btn"
+          @click="$emit('delete-element', { 
+            groupId: group.id, 
+            elementId: element.id 
+          })"
+        >
+          ×
+        </button>
+      </div>
 
-    <!-- Элемент 2: Дата -->
-    <div v-if="group.elements.length > 1" class="element date-element">
-      <div class="element-label">Дата:</div>
-      <DatePicker v-model="group.elements[1].params.date" />
-      <!-- Кнопка удаления для второго элемента -->
-      <button 
-        v-if="group.elements.length === 2"
-        class="delete-btn"
-        @click="deleteElement(1)"
-        title="Удалить дату"
-      >
-        ×
-      </button>
-    </div>
-
-    <!-- Элемент 3: Время -->
-    <div v-if="group.elements.length > 2" class="element time-element">
-      <div class="element-label">Время:</div>
-      <TimePicker 
-        v-model="group.elements[2].params.time"
-        :service-type="group.elements[0]?.service"
-        :date="group.elements[1]?.params.date"
+      <!-- Контент элемента -->
+      <component 
+        :is="getComponent(element.type)"
+        :options="element.options"
+        :service-type="group.elements[0]?.options.type"
+        :show-end-time="group.elements[0]?.options.type === 'arena' || group.elements[0]?.options.type === 'zones'"
+        @update="(options) => $emit('update-element', { 
+          groupId: group.id, 
+          elementId: element.id, 
+          options 
+        })"
       />
-      <!-- Кнопка удаления для третьего элемента -->
-      <button 
-        class="delete-btn"
-        @click="deleteElement(2)"
-        title="Удалить время"
-      >
-        ×
-      </button>
     </div>
 
     <!-- Кнопка добавить элемент -->
     <button 
       v-if="group.elements.length < 3"
       class="add-element-btn"
-      @click="$emit('addElement')"
+      @click="$emit('add-element')"
     >
       <span class="plus">+</span>
       Добавить в эту группу
@@ -78,19 +66,33 @@
 </template>
 
 <script setup>
-import ServiceSelect from './ServiceSelect.vue'
-import DatePicker from './DatePicker.vue'
-import TimePicker from './TimePicker.vue'
+import ServiceElement from './ServiceElement.vue'
+import DateElement from './DateElement.vue'
+import TimeElement from './TimeElement.vue'
 
-const props = defineProps({
+defineProps({
   group: Object,
   canAddElement: Boolean
 })
 
-const emit = defineEmits(['addElement', 'deleteElement', 'deleteGroup'])
+defineEmits(['update-element', 'delete-element', 'delete-group', 'add-element'])
 
-const deleteElement = (index) => {
-  emit('deleteElement', index)
+// Маппинг типов
+const elementTypes = {
+  service: 'Тип услуги',
+  date: 'Дата',
+  time: 'Время'
+}
+
+// Маппинг компонентов
+const componentMap = {
+  service: ServiceElement,
+  date: DateElement,
+  time: TimeElement
+}
+
+function getComponent(type) {
+  return componentMap[type] || 'div'
 }
 </script>
 
@@ -161,35 +163,41 @@ const deleteElement = (index) => {
   padding: 0.75rem;
   background: var(--bg-accent);
   border-radius: 8px;
+  margin-bottom: 0.5rem;
   border-left: 3px solid transparent;
-  transition: all 0.3s;
-  position: relative;
 }
 
-.service-element {
+.element:last-child {
+  margin-bottom: 0;
+}
+
+.element.service-element {
   border-left-color: var(--accent);
 }
 
-.date-element {
+.element.date-element {
   border-left-color: #8b5cf6;
 }
 
-.time-element {
+.element.time-element {
   border-left-color: #10b981;
 }
 
-.element-label {
+.element-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.element-type {
   font-size: 0.8rem;
   color: var(--text-secondary);
-  margin-bottom: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .delete-btn {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -204,6 +212,7 @@ const deleteElement = (index) => {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .delete-btn:hover {
