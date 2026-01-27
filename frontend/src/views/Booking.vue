@@ -34,7 +34,7 @@ const groups = ref([
   {
     id: generateId(),
     elements: [
-      { id: generateId(), type: 'service', options: { type: null, subtype: null } },
+      { id: generateId(), type: 'service', options: { type: null, subtype: null, people: null } },
       { id: generateId(), type: 'date', options: { date: null } },
       { id: generateId(), type: 'time', options: { start: null, end: null } }
     ]
@@ -54,23 +54,23 @@ function addElement(groupId) {
   const group = groups.value.find(g => g.id === groupId)
   if (!group || group.elements.length >= 3) return
   
-  if (group.elements.length == 0) {
+  if (group.elements.length === 0) {
     group.elements.push({
-        id: generateId(),
-        type: 'service',
-        options: { type: null, subtype: null }
+      id: generateId(),
+      type: 'service',
+      options: { type: null, subtype: null, people: null }
     })
-  } else if (group.elements.length == 1) {
+  } else if (group.elements.length === 1) {
     group.elements.push({
-        id: generateId(),
-        type: 'date',
-        options: { date: null }
+      id: generateId(),
+      type: 'date',
+      options: { date: null }
     })
-  } else if (group.elements.length == 2) {
+  } else if (group.elements.length === 2) {
     group.elements.push({
-        id: generateId(),
-        type: 'time',
-        options: { start: null, end: null }
+      id: generateId(),
+      type: 'time',
+      options: { start: null, end: null }
     })
   }
 }
@@ -82,12 +82,38 @@ function updateElement({ groupId, elementId, options }) {
   const element = group.elements.find(e => e.id === elementId)
   if (!element) return
   
-  element.options = { ...element.options, ...options }
+  // Создаем новый объект опций для реактивности
+  const newOptions = { ...element.options, ...options }
   
   // Специальная логика для услуг
-  if (element.type === 'service' && (options.type === 'arena' || options.type === 'zones')) {
-    element.options.subtype = 'default'
+  if (element.type === 'service') {
+    // Сбрасываем людей ТОЛЬКО при смене типа или подтипа
+    if (options.type && options.type !== element.options.type) {
+      newOptions.people = null
+      if (!options.subtype) {
+        newOptions.subtype = null
+      }
+    }
+    
+    // Сбрасываем людей ТОЛЬКО при смене подтипа
+    if (options.subtype && options.subtype !== element.options.subtype) {
+      if (
+        (newOptions.type === 'arena' && options.subtype === 'full') ||
+        (newOptions.type === 'zones' && options.subtype === 'minutes')
+      ) {
+        newOptions.people = null
+      } else if (
+        (newOptions.type === 'arena' && options.subtype === 'jointly') ||
+        (newOptions.type === 'zones' && options.subtype === 'jointly')
+      ) {
+        newOptions.people = 1 // минимальное значение по умолчанию
+      }
+    }
+    // Если обновляем только людей - не сбрасываем ничего!
   }
+  
+  // Обновляем опции
+  element.options = newOptions
 }
 
 function deleteElement({ groupId, elementId }) {
@@ -116,17 +142,18 @@ function addNewGroup() {
 }
 
 function deleteGroup(groupId) {
-    console.log("delete group: ", groupId.groupId)
-    const index = groups.value.findIndex(g => g.id == groupId.groupId)
-    groups.value.splice(index, 1)
+  const index = groups.value.findIndex(g => g.id === groupId)
+  if (index === -1) return
+  
+  groups.value.splice(index, 1)
 
-    // Создаём пустую группу, если удалили последнюю
-    if (groups.value.length === 0) {
-        groups.value.push({
-            id: generateId(),
-            elements: []
-        })
-    }
+  // Создаём пустую группу, если удалили последнюю
+  if (groups.value.length === 0) {
+    groups.value.push({
+      id: generateId(),
+      elements: []
+    })
+  }
 }
 </script>
 

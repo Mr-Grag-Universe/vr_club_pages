@@ -1,7 +1,8 @@
 <template>
   <div class="booking-group" :class="{ 
     'has-space': group.elements.length < 3,
-    'is-full': group.elements.length === 3
+    'is-full': group.elements.length === 3,
+    'is-collapsed': isCollapsed
   }">
     <!-- Шапка -->
     <div class="group-header">
@@ -11,6 +12,9 @@
       </div>
       
       <div class="group-controls">
+        <button class="toggle-collapse-btn" @click="toggleCollapse">
+          {{ isCollapsed ? 'Развернуть' : 'Свернуть' }}
+        </button>
         <button class="delete-group-btn" @click="$emit('delete-group', { groupId: group.id })">
           Удалить группу
         </button>
@@ -18,62 +22,71 @@
     </div>
 
     <!-- Рендеринг элементов по типу -->
-    <div 
-      v-for="element in group.elements" 
-      :key="element.id"
-      class="element"
-      :class="`element-${element.type}`"
-    >
-      <!-- Заголовок элемента -->
-      <div class="element-header">
-        <span class="element-type">{{ elementTypes[element.type] }}</span>
-        <button 
-          v-if="group.elements[group.elements.length - 1].id === element.id"
-          class="delete-btn"
-          @click="$emit('delete-element', { 
+    <div v-if="!isCollapsed">
+      <div 
+        v-for="element in group.elements" 
+        :key="element.id"
+        class="element"
+        :class="`element-${element.type}`"
+      >
+        <!-- Заголовок элемента -->
+        <div class="element-header">
+          <span class="element-type">{{ elementTypes[element.type] }}</span>
+          <button 
+            v-if="group.elements[group.elements.length - 1].id === element.id"
+            class="delete-btn"
+            @click="$emit('delete-element', { 
+              groupId: group.id, 
+              elementId: element.id 
+            })"
+          >
+            ×
+          </button>
+        </div>
+
+        <!-- Контент элемента -->
+        <component 
+          :is="getComponent(element.type)"
+          :options="element.options"
+          :service-type="group.elements[0]?.options.type"
+          :show-end-time="group.elements[0]?.options.type === 'arena' || group.elements[0]?.options.type === 'zones'"
+          @update="(options) => $emit('update-element', { 
             groupId: group.id, 
-            elementId: element.id 
+            elementId: element.id, 
+            options 
           })"
-        >
-          ×
-        </button>
+        />
       </div>
 
-      <!-- Контент элемента -->
-      <component 
-        :is="getComponent(element.type)"
-        :options="element.options"
-        :service-type="group.elements[0]?.options.type"
-        :show-end-time="group.elements[0]?.options.type === 'arena' || group.elements[0]?.options.type === 'zones'"
-        @update="(options) => $emit('update-element', { 
-          groupId: group.id, 
-          elementId: element.id, 
-          options 
-        })"
-      />
+      <!-- Кнопка добавить элемент -->
+      <button 
+        v-if="group.elements.length < 3"
+        class="add-element-btn"
+        @click="$emit('add-element')"
+      >
+        <span class="plus">+</span>
+        Добавить в эту группу
+      </button>
     </div>
-
-    <!-- Кнопка добавить элемент -->
-    <button 
-      v-if="group.elements.length < 3"
-      class="add-element-btn"
-      @click="$emit('add-element')"
-    >
-      <span class="plus">+</span>
-      Добавить в эту группу
-    </button>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import ServiceElement from './ServiceElement.vue'
 import DateElement from './DateElement.vue'
 import TimeElement from './TimeElement.vue'
 
-defineProps({
+const props = defineProps({
   group: Object,
   canAddElement: Boolean
 })
+
+const isCollapsed = ref(false)
+
+function toggleCollapse() {
+  isCollapsed.value = !isCollapsed.value
+}
 
 defineEmits(['update-element', 'delete-element', 'delete-group', 'add-element'])
 
@@ -115,6 +128,10 @@ function getComponent(type) {
   border-color: var(--accent);
 }
 
+.booking-group.is-collapsed {
+  padding-bottom: 0;
+}
+
 .group-header {
   display: flex;
   justify-content: space-between;
@@ -142,6 +159,21 @@ function getComponent(type) {
 .group-controls {
   display: flex;
   gap: 0.5rem;
+}
+
+.toggle-collapse-btn {
+  padding: 0.5rem 1rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.toggle-collapse-btn:hover {
+  background: var(--accent);
+  color: white;
 }
 
 .delete-group-btn {
