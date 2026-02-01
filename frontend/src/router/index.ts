@@ -17,7 +17,7 @@ const router = createRouter({
       name: 'home', 
       component: Home, 
       meta: { 
-        title: "Арена виртуальной реальности во Владимире",
+        title: "VR Arena Metaforce | VR клуб во Владимире - VR арена",
         icon: '/src/assets/icons/icon_dark.ico',
       } 
     },

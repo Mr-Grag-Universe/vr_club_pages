@@ -1,6 +1,7 @@
 <!-- src/components/home/Events.vue -->
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { glitchText } from '@/composables/glitchEffects'
 
 const events = ref([
   { 
@@ -38,12 +39,34 @@ const events = ref([
 ])
 
 const hoveredEvent = ref<number | null>(null)
+
+const displayTitle = ref('CELEBRATIONS')
+const titleRef = ref<HTMLElement | null>(null)
+const isAnimating = ref(false)
+
+onMounted(() => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && displayTitle.value === 'CELEBRATIONS') {
+        setTimeout(() => {
+          glitchText('ПРАЗДНИКИ У НАС', isAnimating, displayTitle, 1200)
+        }, 1800)
+      }
+    })
+  }, { threshold: 0.5 })
+  
+  if (titleRef.value) {
+    observer.observe(titleRef.value)
+  }
+})
 </script>
 
 <template>
   <section class="events-section" id="events">
-    <h2 class="section-title">:: WHAT WE CAN CELEBRATE ::</h2>
-    
+    <h2 ref="titleRef" class="section-title glitch-title" :class="{ 'glitching': isAnimating }">
+      :: {{ displayTitle }} ::
+    </h2>
+
     <p class="description">Праздничные события на VR-арене для любой компании</p>
 
     <div class="events-grid">

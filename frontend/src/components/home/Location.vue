@@ -1,9 +1,10 @@
 <!-- src/components/home/Location.vue -->
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { glitchText } from '@/composables/glitchEffects'
 
 const address = ref({
-  street: 'пр. Ленина, д. 46',
+  street: 'пр. Ленина, д. 46. ТЦ КрейсеR',
   city: 'г. Владимир',
   bus_station: 'ул. Пугачёва (3 мин пешком)'
 })
@@ -18,11 +19,33 @@ const work_time = ref({
     to: "22:00"
 })
 
+const displayTitle = ref('LOCATION')
+const titleRef = ref<HTMLElement | null>(null)
+const isAnimating = ref(false)
+
+onMounted(() => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && displayTitle.value === 'LOCATION') {
+        setTimeout(() => {
+          glitchText('РАСПОЛОЖЕНИЕ', isAnimating, displayTitle, 1200)
+        }, 1800)
+      }
+    })
+  }, { threshold: 0.5 })
+  
+  if (titleRef.value) {
+    observer.observe(titleRef.value)
+  }
+})
+
 </script>
 
 <template>
   <section class="location-section">
-    <h2 class="section-title">// LOCATION //</h2>
+    <h2 ref="titleRef" class="section-title glitch-title" :class="{ 'glitching': isAnimating }">
+      // {{ displayTitle }} //
+    </h2>
     
     <div class="location-container">
       <!-- Фото места -->

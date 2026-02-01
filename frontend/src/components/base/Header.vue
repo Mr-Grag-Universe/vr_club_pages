@@ -96,7 +96,7 @@ const showNotificationWithMessage = (message: string) => {
         <SocialLinks />
         
         <div class="cta-wrapper">
-            <a href="https://metaforce.ru/vladimir">
+            <a href="https://metaforce.ru/vladimir/price">
               <button class="cta-button pulse">
                   <span class="cta-text">Забронировать</span>
               </button>
@@ -146,7 +146,7 @@ const showNotificationWithMessage = (message: string) => {
           </ul>
           
           <div class="mobile-cta-section">
-            <a href="https://metaforce.ru/vladimir" class="mobile-cta-button">
+            <a href="https://metaforce.ru/vladimir/price" class="mobile-cta-button">
               Забронировать
             </a>
             <a href="tel:+79028877457" class="mobile-phone-link" @click="copyPhoneNumber">

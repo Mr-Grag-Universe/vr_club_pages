@@ -1,6 +1,7 @@
 <!-- SmartGallery.vue -->
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { glitchText } from '@/composables/glitchEffects';
 
 const imageWrapperRef = ref<HTMLElement | null>(null);
 const imageWrapperWidth = ref(0);
@@ -20,11 +21,11 @@ const updateGridItemWidth = () => {
 
 interface Props {
   images: Array<{ src: string; alt: string }>
-  title?: string
+  title?: {ru: string, en: string}
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  title: ""
+  title: () => ({ ru: '', en: '' })
 })
 
 function isPrime(num: number): boolean {
@@ -186,12 +187,30 @@ const handleResize = () => {
     measureContainerWidth();
 };
 
+const displayTitle = ref(props.title["en"])
+const titleRef = ref<HTMLElement | null>(null)
+const isAnimating = ref(false)
+
 onMounted(() => {
     window.addEventListener('keydown', handleKeydown);
     window.addEventListener('resize', handleResize);
     
     // Инициализация после монтирования
     measureContainerWidth();
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && displayTitle.value === props.title["en"]) {
+          setTimeout(() => {
+            glitchText(props.title["ru"], isAnimating, displayTitle, 1200)
+          }, 1800)
+        }
+      })
+    }, { threshold: 0.5 })
+    
+    if (titleRef.value) {
+      observer.observe(titleRef.value)
+    }
 });
 
 onUnmounted(() => {
@@ -204,7 +223,9 @@ onUnmounted(() => {
 
 <template>
   <section class="gallery-section">
-    <h2 class="section-title">// {{ title }} //</h2>
+    <h2 ref="titleRef" class="section-title glitch-title" :class="{ 'glitching': isAnimating }">
+      // {{ displayTitle }} //
+    </h2>
     
     <div 
       class="gallery-grid" 

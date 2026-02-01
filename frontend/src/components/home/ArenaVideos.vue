@@ -3,6 +3,7 @@ import { ref, nextTick, onMounted } from 'vue'
 import { VideoPlayer } from '@videojs-player/vue'
 import videojs from 'video.js'
 import type { VideoJsPlayer } from 'video.js'
+import { glitchText } from '@/composables/glitchEffects'
 
 import teamForceVideo from '@/assets/videos/team_force.mp4'
 import spaceWarVideo from '@/assets/videos/space_war.mp4'
@@ -115,14 +116,36 @@ const handlePlayerReady = () => {
     }
   })
 }
+
+const displayTitle = ref('VR ARENA\'S GAMEPLAY')
+const titleRef = ref<HTMLElement | null>(null)
+const isAnimating = ref(false)
+
+onMounted(() => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && displayTitle.value === 'VR ARENA\'S GAMEPLAY') {
+        setTimeout(() => {
+          glitchText('ГЕЙМПЛЕЙ VR-АРЕНЫ', isAnimating, displayTitle, 1200)
+        }, 1800)
+      }
+    })
+  }, { threshold: 0.5 })
+  
+  if (titleRef.value) {
+    observer.observe(titleRef.value)
+  }
+})
 </script>
 
 <template>
   <section class="arena-section">
-    <h2 class="section-title">:: VR ARENA'S EXCLUSIVE GAMES ::</h2>
+    <h2 ref="titleRef" class="section-title glitch-title" :class="{ 'glitching': isAnimating }">
+      :: {{ displayTitle }} ::
+    </h2>
     
     <div class="section-header">
-      <h3 class="section-subtitle">VR-арена</h3>
+      <!-- <h3 class="section-subtitle">VR-арена</h3> -->
       <p class="section-description">Игры собственной разработки со свободным перемещением для компаний до 10 человек</p>
     </div>
 
@@ -346,7 +369,7 @@ const handlePlayerReady = () => {
   }
 }
 
-.section-title {
+/* .section-title {
   font-size: 2.5rem;
   font-weight: 900;
   text-align: center;
@@ -356,7 +379,7 @@ const handlePlayerReady = () => {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: 2px;
-}
+} */
 
 /* Стили для модального окна плеера */
 .video-modal {

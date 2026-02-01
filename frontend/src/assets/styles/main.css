@@ -36,3 +36,48 @@ body {
   text-transform: uppercase;
   letter-spacing: 2px;
 }
+
+.section-title {
+  transition: all 0.3s ease;
+  letter-spacing: 2px;
+}
+
+.glitch-title {
+  font-family: 'Courier New', monospace;
+  /* position: relative; */
+  /* display: inline-block; */
+  min-height: 1.2em;
+}
+
+.glitch-title.glitching {
+  animation: glitch-skew 0.3s infinite;
+  text-shadow:
+    2px 0 #ff0000,
+    -2px 0 #00ff00;
+}
+
+@keyframes glitch-skew {
+  0% {
+    transform: translate(0)
+  }
+
+  20% {
+    transform: translate(-2px, 2px)
+  }
+
+  40% {
+    transform: translate(-2px, -2px)
+  }
+
+  60% {
+    transform: translate(2px, 2px)
+  }
+
+  80% {
+    transform: translate(2px, -2px)
+  }
+
+  100% {
+    transform: translate(0)
+  }
+}

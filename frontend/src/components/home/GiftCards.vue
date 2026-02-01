@@ -1,23 +1,48 @@
 <!-- GiftCertificate.vue -->
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { glitchText } from '@/composables/glitchEffects'
+
 interface Props {
-  title?: string
+  title?: {ru: string, en: string}
   description?: string
   imageSrc?: string
   alt?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  title: '// Gift Cards //',
+  title:  () => ({ ru: '', en: '' }),
   description: 'Сертификат можно приобрести на любую сумму и закрыть любые услуги клуба: полностью или частично.',
   imageSrc: '/src/assets/images/gift-cards/gift-card-pack.jpg',
   alt: 'Gift Certificate'
+})
+
+const displayTitle = ref(props.title["en"])
+const titleRef = ref<HTMLElement | null>(null)
+const isAnimating = ref(false)
+
+onMounted(() => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && displayTitle.value === props.title["en"]) {
+        setTimeout(() => {
+          glitchText(props.title["ru"], isAnimating, displayTitle, 1200)
+        }, 1800)
+      }
+    })
+  }, { threshold: 0.5 })
+  
+  if (titleRef.value) {
+    observer.observe(titleRef.value)
+  }
 })
 </script>
 
 <template>
   <section class="certificate-section">
-    <h2 class="section-title">{{ title }}</h2>
+    <h2 ref="titleRef" class="section-title glitch-title" :class="{ 'glitching': isAnimating }">
+      // {{ displayTitle }} //
+    </h2>
     <div class="certificate-container">
       <!-- Левая колонка: текст -->
       <div class="text-column">

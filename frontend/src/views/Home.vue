@@ -9,7 +9,6 @@ import SmartGallary from '@/components/common/SmartGallary.vue'
 import GiftCards from '@/components/home/GiftCards.vue'
 import Events from '@/components/home/Events.vue'
 import ArenaVideos from '@/components/home/ArenaVideos.vue'
-import BukzaBooking, { type BukzaLoadedEvent, type BukzaErrorEvent } from '@/components/home/BukzaBooking.vue'
 
 import { ref, computed } from 'vue'
 
@@ -31,14 +30,6 @@ import { ref, computed } from 'vue'
       alt: `Скрин VR Arena ${i + 1}`
     }))
   )
-
-const handleWidgetLoaded = (event: BukzaLoadedEvent): void => {
-  console.log('Виджет загружен:', event.widget)
-}
-
-const handleWidgetError = (event: BukzaErrorEvent): void => {
-  console.error('Ошибка виджета:', event.type, event.message)
-}
 </script>
 
 <template>
@@ -46,20 +37,20 @@ const handleWidgetError = (event: BukzaErrorEvent): void => {
     <HeroSection />
     <SmartGallary 
       :images="arenaImages" 
-      title="VR Arena Gallery"
+      :title="{ en: 'VR Arena Gallery', ru: 'Фото VR-арены' }"
     />
     <SmartGallary 
       :images="arenaGamesImages" 
-      title="VR Arena Games"
+      :title="{ en: 'VR Arena Games', ru: 'Игры на VR-арене' }"
     />
     <Events />
-    <GiftCards />
+    <GiftCards :title="{en: 'GIFT CARDS', ru: 'ПОДАРОЧНЫЕ КАРТЫ'}" />
     <ArenaVideos />
 
-    <SmartGallary 
+    <!-- <SmartGallary 
       :images="zonesImages" 
-      title="VR ZONES Gallery"
-    />
+      :title="{ en: 'VR Zones Gallary', ru: 'Фото VR-зон' }"
+    /> -->
     <GamesGrid />
     <StatsCounter />
     <Location />

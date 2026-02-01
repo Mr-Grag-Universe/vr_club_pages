@@ -1,6 +1,7 @@
 <!-- src/components/home/GamesGrid.vue -->
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { glitchText } from '@/composables/glitchEffects'
 
 const games = ref([
   { 
@@ -78,13 +79,36 @@ const games = ref([
 ])
 
 const hoveredGame = ref<number | null>(null)
+
+
+const displayTitle = ref('VR ZONES\' GAMES AVAILABLE')
+const titleRef = ref<HTMLElement | null>(null)
+const isAnimating = ref(false)
+
+onMounted(() => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && displayTitle.value === 'VR ZONES\' GAMES AVAILABLE') {
+        setTimeout(() => {
+          glitchText('ИГРЫ В VR ЗОНАХ', isAnimating, displayTitle, 1200)
+        }, 1800)
+      }
+    })
+  }, { threshold: 0.5 })
+  
+  if (titleRef.value) {
+    observer.observe(titleRef.value)
+  }
+})
 </script>
 
 <template>
   <section class="games-section" id="games">
-    <h2 class="section-title">:: VR ZONES' GAMES AVAILABLE ::</h2>
+    <h2 ref="titleRef" class="section-title glitch-title" :class="{ 'glitching': isAnimating }">
+      :: {{ displayTitle }} ::
+    </h2>
 
-    <p class="description">VR-хиты и новинки с ограниченным перемещением для одного или компаний до 4-х игроков</p>
+    <p class="description">VR-хиты и новинки с ограниченным перемещением для одного или компаний до 3-х игроков</p>
     <p></p>
 
     <div class="games-grid">
@@ -318,7 +342,7 @@ const hoveredGame = ref<number | null>(null)
 }
 
 .description {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: var(--text-secondary);
     margin-bottom: 1.5rem;
 }
