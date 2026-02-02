@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import type { Component } from 'vue'
-import Header from '@/components/base/Header.vue'
-import Footer from '@/components/base/Footer.vue'
-import BookingModal from '@/components/prices/BookingModal.vue'
-import Events from '@/components/prices/Events.vue'
-import VrArenaTab from '@/components/prices/VrArenaTab.vue'
-import VrZonesTab from '@/components/prices/VrZonesTab.vue'
+import Header from '@/src/components/base/Header.vue'
+import Footer from '@/src/components/base/Footer.vue'
+import BookingModal from '@/src/components/prices/BookingModal.vue'
+import Events from '@/src/components/prices/Events.vue'
+import VrArenaTab from '@/src/components/prices/VrArenaTab.vue'
+import VrZonesTab from '@/src/components/prices/VrZonesTab.vue'
 
 interface Tab {
   id: string

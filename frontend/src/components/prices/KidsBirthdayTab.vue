@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PriceCard from './PriceCard.vue'
-import { useBookingModal } from '@/composables/useBookingModal'
+import { useBookingModal } from '@/src/composables/useBookingModal'
 
 const { openModal } = useBookingModal()
 

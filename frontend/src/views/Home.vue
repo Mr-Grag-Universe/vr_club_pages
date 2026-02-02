@@ -1,35 +1,39 @@
 <script setup lang="ts">
-import BaseLayout from '@/components/base/BaseLayout.vue'
-import HeroSection from '@/components/home/HeroSection.vue'
-import FAQ from '@/components/home/FAQ.vue'
-import GamesGrid from '@/components/home/GamesGrid.vue'
-import StatsCounter from '@/components/home/StatsCounter.vue'
-import Location from '@/components/home/Location.vue'
-import SmartGallary from '@/components/common/SmartGallary.vue'
-import GiftCards from '@/components/home/GiftCards.vue'
-import Events from '@/components/home/Events.vue'
-import ArenaVideos from '@/components/home/ArenaVideos.vue'
+import BaseLayout from '@/src/components/base/BaseLayout.vue'
+import HeroSection from '@/src/components/home/HeroSection.vue'
+import FAQ from '@/src/components/home/FAQ.vue'
+import GamesGrid from '@/src/components/home/GamesGrid.vue'
+import StatsCounter from '@/src/components/home/StatsCounter.vue'
+import Location from '@/src/components/home/Location.vue'
+import SmartGallary from '@/src/components/common/SmartGallary.vue'
+import GiftCards from '@/src/components/home/GiftCards.vue'
+import Events from '@/src/components/home/Events.vue'
+import ArenaVideos from '@/src/components/home/ArenaVideos.vue'
 
 import { ref, computed } from 'vue'
 
-  const arenaImages = computed(() => 
-    Array.from({ length: 9 }, (_, i) => ({
-      src: `/src/assets/images/arena/${i + 1}.jpg`,
-      alt: `Фото арены ${i + 1}`
-    }))
-  )
-  const zonesImages = computed(() => 
-    Array.from({ length: 6 }, (_, i) => ({
-      src: `/src/assets/images/arena/${i + 1}.jpg`,
-      alt: `Фото VR зоны ${i + 1}`
-    }))
-  )
-  const arenaGamesImages = computed(() => 
-    Array.from({ length: 8 }, (_, i) => ({
-      src: `/src/assets/images/games/arena/${i + 1}.jpg`,
-      alt: `Скрин VR Arena ${i + 1}`
-    }))
-  )
+const arenaImagesGlob = import.meta.glob('@/assets/images/arena/*.jpg', { 
+  eager: true,
+  import: 'default'
+})
+const arenaGamesImagesGlob = import.meta.glob('@/assets/images/games/arena/*.jpg', { 
+  eager: true,
+  import: 'default'
+})
+
+const arenaImages = computed(() => 
+  Object.entries(arenaImagesGlob).map(([path, src], i) => ({
+    src: src as string,  // URL с хешем
+    alt: `Фото арены ${i + 1}`
+  }))
+)
+console.log(arenaImages)
+const arenaGamesImages = computed(() => 
+  Object.entries(arenaGamesImagesGlob).map(([path, src], i) => ({
+    src: src as string,  // URL с хешем
+    alt: `Скрин VR Arena ${i + 1}`
+  }))
+)
 </script>
 
 <template>

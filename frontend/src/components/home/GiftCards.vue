@@ -1,7 +1,8 @@
 <!-- GiftCertificate.vue -->
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { glitchText } from '@/composables/glitchEffects'
+import { glitchText } from '@/src/composables/glitchEffects'
+import cardImg from '@/assets/images/gift-cards/gift-card-pack.jpg'
 
 interface Props {
   title?: {ru: string, en: string}
@@ -13,7 +14,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   title:  () => ({ ru: '', en: '' }),
   description: 'Сертификат можно приобрести на любую сумму и закрыть любые услуги клуба: полностью или частично.',
-  imageSrc: '/src/assets/images/gift-cards/gift-card-pack.jpg',
+  imageSrc: cardImg,
   alt: 'Gift Certificate'
 })
 
@@ -202,10 +203,6 @@ onMounted(() => {
   
   .text-column {
     text-align: center;
-  }
-  
-  .section-title {
-    font-size: 2rem;
   }
   
   .section-description {

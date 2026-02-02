@@ -27,7 +27,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import BookingGroup from '@/components/booking/BookingGroup.vue'
+import BookingGroup from '@/src/components/booking/BookingGroup.vue'
 
 // === СТРУКТУРА ДАННЫХ ===
 const groups = ref([

@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/views/Home.vue'
-import Prices from '@/views/Prices.vue'
-import Booking from '@/views/Booking.vue'
+import Home from '@/src/views/Home.vue'
+import iconImg from '@/assets/icons/icon_dark.ico'
+// import Prices from '@/views/Prices.vue'
+// import Booking from '@/views/Booking.vue'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -18,27 +19,27 @@ const router = createRouter({
       component: Home, 
       meta: { 
         title: "VR Arena Metaforce | VR клуб во Владимире - VR арена",
-        icon: '/src/assets/icons/icon_dark.ico',
+        icon: iconImg,
       } 
     },
-    { 
-      path: '/prices', 
-      name: 'prices', 
-      component: Prices, 
-      meta: { 
-        title: "Тарифы",
-        icon: '/src/assets/icons/icon_dark.ico',
-      } 
-    },
-    {
-      path: '/booking',
-      name: 'booking',
-      component: Booking,
-      meta: {
-        title: "Бронирование",
-        icon: '/src/assets/icons/icon_dark.ico',
-      }
-    }
+    // { 
+    //   path: '/prices', 
+    //   name: 'prices', 
+    //   component: Prices, 
+    //   meta: { 
+    //     title: "Тарифы",
+    //     icon: '/src/assets/icons/icon_dark.ico',
+    //   } 
+    // },
+    // {
+    //   path: '/booking',
+    //   name: 'booking',
+    //   component: Booking,
+    //   meta: {
+    //     title: "Бронирование",
+    //     icon: '/src/assets/icons/icon_dark.ico',
+    //   }
+    // }
   ],
 })
 
@@ -51,9 +52,9 @@ router.afterEach((to) => {
     const favicon = document.querySelector("link[rel='icon']") as HTMLLinkElement;
     if (favicon) {  // Check if favicon is not null
       if (to.name === 'home') {
-        favicon.href = '/src/assets/icons/icon_dark.ico'; // Favicon for home route
+        favicon.href = iconImg; // Favicon for home route
       } else {
-        favicon.href = '/src/assets/icons/icon_dark.ico'; // Default favicon
+        favicon.href = iconImg; // Default favicon
       }
     } else {
       console.warn("Favicon element not found");

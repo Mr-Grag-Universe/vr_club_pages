@@ -1,7 +1,7 @@
 <!-- SmartGallery.vue -->
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted, nextTick } from 'vue'
-import { glitchText } from '@/composables/glitchEffects';
+import { glitchText } from '@/src/composables/glitchEffects';
 
 const imageWrapperRef = ref<HTMLElement | null>(null);
 const imageWrapperWidth = ref(0);
@@ -24,9 +24,12 @@ interface Props {
   title?: {ru: string, en: string}
 }
 
+
 const props = withDefaults(defineProps<Props>(), {
   title: () => ({ ru: '', en: '' })
 })
+
+console.log(props.images)
 
 function isPrime(num: number): boolean {
   if (num < 2) return false
@@ -91,8 +94,8 @@ function getItemStyle(index: number) {
   
   return {
     '--delay': `${index * 0.1}s`,
-    'grid-column': gridColumn,
-    'justify-self': shouldCenter && isInLastRow ? 'center' : undefined
+    // 'grid-column': gridColumn,
+    // 'justify-self': shouldCenter && isInLastRow ? 'center' : undefined
   }
 }
 
@@ -366,14 +369,6 @@ onUnmounted(() => {
 
 .image-wrapper:hover .image-overlay {
   opacity: 0.3;
-}
-
-.section-title {
-  font-size: 2.5rem;
-  color: var(--accent);
-  text-align: center;
-  margin-bottom: 3rem;
-  font-family: 'Courier New', monospace;
 }
 
 /* Lightbox Styles */

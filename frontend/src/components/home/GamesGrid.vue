@@ -1,7 +1,21 @@
 <!-- src/components/home/GamesGrid.vue -->
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { glitchText } from '@/composables/glitchEffects'
+import { glitchText } from '@/src/composables/glitchEffects'
+
+let _ = import.meta.glob('@/assets/images/games/*.jpg', { 
+  eager: true,
+  import: 'default'
+})
+
+import hlaImg from '@/assets/images/games/hla.jpg'
+import beatImg from '@/assets/images/games/beat_saber.jpg'
+import pavlovImg from '@/assets/images/games/pavlov.jpg'
+import suprhotImg from '@/assets/images/games/superhot.jpg'
+import vacationSimImg from '@/assets/images/games/vacation_sim.jpg'
+import elvenAssasinImg from '@/assets/images/games/elven_assasin.jpg'
+import phasmoImg from '@/assets/images/games/phasmo.jpg'
+import seriousSamImg from '@/assets/images/games/serious_sam.jpg'
 
 const games = ref([
   { 
@@ -9,7 +23,7 @@ const games = ref([
     name: 'Half-Life: Alyx', 
     genre: 'Action', 
     duration: '', // '45-90 мин', 
-    image: '/src/assets/images/games/hla.jpg',
+    image: hlaImg,
     actionText: 'ACTIVATE',
     steamUrl: 'https://store.steampowered.com/app/546560/HalfLife_Alyx/'
   },
@@ -18,7 +32,7 @@ const games = ref([
     name: 'Beat Saber', 
     genre: 'Rhythm', 
     duration: '', // '15-30 мин', 
-    image: '/src/assets/images/games/beat_saber.jpg',
+    image: beatImg,
     actionText: 'LAUNCH',
     steamUrl: 'https://store.steampowered.com/app/620980/Beat_Saber/'
   },
@@ -27,7 +41,7 @@ const games = ref([
     name: 'Pavlov VR', 
     genre: 'Shooter', 
     duration: '', // '30-60 мин', 
-    image: '/src/assets/images/games/pavlov.jpg',
+    image: pavlovImg,
     actionText: 'CONNECT',
     steamUrl: 'https://store.steampowered.com/app/555160/Pavlov_VR/'
   },
@@ -36,7 +50,7 @@ const games = ref([
     name: 'Superhot VR', 
     genre: 'Puzzle', 
     duration: '', // '20-40 мин', 
-    image: '/src/assets/images/games/superhot.jpg',
+    image: suprhotImg,
     actionText: 'RUN',
     steamUrl: 'https://store.steampowered.com/app/617830/SUPERHOT_VR/'
   },
@@ -45,7 +59,7 @@ const games = ref([
     name: 'Vacation Simulator', 
     genre: 'Simulation', 
     duration: '', // '30-60 мин', 
-    image: '/src/assets/images/games/vacation_sim.jpg',
+    image: vacationSimImg,
     actionText: 'INITIALIZE',
     steamUrl: 'https://store.steampowered.com/app/726830/Vacation_Simulator/'
   },
@@ -54,7 +68,7 @@ const games = ref([
     name: 'Elven Assassin', 
     genre: 'Tower Defense', 
     duration: '', // '15-45 мин', 
-    image: '/src/assets/images/games/elven_assasin.jpg',
+    image: elvenAssasinImg,
     actionText: 'DEPLOY',
     steamUrl: 'https://store.steampowered.com/app/503770/Elven_Assassin/'
   },
@@ -63,7 +77,7 @@ const games = ref([
     name: 'Phasmophobia', 
     genre: 'Horror', 
     duration: '', // '30-90 мин', 
-    image: '/src/assets/images/games/phasmo.jpg',
+    image: phasmoImg,
     actionText: 'ENTER',
     steamUrl: 'https://store.steampowered.com/app/739630/Phasmophobia/'
   },
@@ -72,7 +86,7 @@ const games = ref([
     name: 'Serious Sam 3: BFE', 
     genre: 'Action-Shooter', 
     duration: '', // '30-90 мин', 
-    image: '/src/assets/images/games/serious_sam.jpg',
+    image: seriousSamImg,
     actionText: 'SHOOT',
     steamUrl: 'https://store.steampowered.com/app/567670/Serious_Sam_3_VR_BFE/'
   }

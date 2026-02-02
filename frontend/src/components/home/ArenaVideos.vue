@@ -3,7 +3,7 @@ import { ref, nextTick, onMounted } from 'vue'
 import { VideoPlayer } from '@videojs-player/vue'
 import videojs from 'video.js'
 import type { VideoJsPlayer } from 'video.js'
-import { glitchText } from '@/composables/glitchEffects'
+import { glitchText } from '@/src/composables/glitchEffects'
 
 import teamForceVideo from '@/assets/videos/team_force.mp4'
 import spaceWarVideo from '@/assets/videos/space_war.mp4'
@@ -15,7 +15,13 @@ import spaceWarAudio from '@/assets/videos/audio/space_war.mp4'
 import elevatorsAudio from '@/assets/videos/audio/elevators.mp4'
 import portalsAudio from '@/assets/videos/audio/portals.mp4'
 
-const thumbnail_path = '/src/assets/videos/thumb/'
+import teamForceThumb from '@/assets/videos/thumb/team_force.jpg'
+import spaceWarThumb from '@/assets/videos/thumb/space_war.jpg'
+import elevatorsThumb from '@/assets/videos/thumb/elevators.jpg'
+import portalsThumb from '@/assets/videos/thumb/portals.jpg'
+
+
+const thumbnail_path = '/assets/videos/thumb/'
 
 const videos = ref([
   { 
@@ -24,7 +30,7 @@ const videos = ref([
     description: 'Командный шутер а-ля Counter-Strike. 12 карт для полного разнообразия', 
     actionText: 'PLAY',
     url: teamForceVideo,
-    thumbnail: thumbnail_path + 'team_force.jpg',
+    thumbnail: teamForceThumb,
     audio: teamForceAudio
   },
   { 
@@ -33,7 +39,7 @@ const videos = ref([
     description: 'Космический шутер в далекой-далекой галактике. Телепорты в наличии', 
     actionText: 'LAUNCH',
     url: spaceWarVideo,
-    thumbnail: thumbnail_path + 'space_war.jpg',
+    thumbnail: spaceWarThumb,
     audio: spaceWarAudio
   },
   { 
@@ -42,7 +48,7 @@ const videos = ref([
     description: 'Многоэтажный шутер с перемещениями между этажами и зданиями.', 
     actionText: 'CLIMB',
     url: elevatorsVideo,
-    thumbnail: thumbnail_path + 'elevators.jpg',
+    thumbnail: elevatorsThumb,
     audio: elevatorsAudio
   },
   { 
@@ -51,7 +57,7 @@ const videos = ref([
     description: 'Аркадный шутер с лифтами и телепортами', 
     actionText: 'TELEPORT',
     url: portalsVideo,
-    thumbnail: thumbnail_path + 'portals.jpg',
+    thumbnail: portalsThumb,
     audio: portalsAudio
   }
 ])
@@ -439,10 +445,6 @@ onMounted(() => {
   
   .action-text {
     font-size: 1.5rem;
-  }
-  
-  .section-title {
-    font-size: 2rem;
   }
   
   .video-modal {

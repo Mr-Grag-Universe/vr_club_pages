@@ -1,7 +1,7 @@
 <!-- src/components/home/Location.vue -->
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { glitchText } from '@/composables/glitchEffects'
+import { glitchText } from '@/src/composables/glitchEffects'
 
 const address = ref({
   street: 'пр. Ленина, д. 46. ТЦ КрейсеR',

@@ -1,14 +1,19 @@
 <!-- src/components/home/Events.vue -->
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { glitchText } from '@/composables/glitchEffects'
+import { glitchText } from '@/src/composables/glitchEffects'
+
+import imgKidsBD from '@/assets/images/events/birthday_child.jpg'
+import imgAdultBD from '@/assets/images/events/birthday_adult.jpg'
+import imgGraduation from '@/assets/images/events/graduate.jpg'
+import imgCoop from '@/assets/images/events/coops.jpg'
 
 const events = ref([
   { 
     id: 1, 
     name: 'Детские дни рождения', 
     description: 'Подарите ребенку праздник, который он запомнит надолго', 
-    image: '/src/assets/images/events/birthday_child.jpg',
+    image: imgKidsBD,
     actionText: 'CELEBRATE',
     url: 'https://metaforce.ru/vladimir/birthday_kids'
   },
@@ -16,7 +21,7 @@ const events = ref([
     id: 2, 
     name: 'Выпускной', 
     description: 'Много детей - много радости', 
-    image: '/src/assets/images/events/graduate.jpg',
+    image: imgGraduation,
     actionText: 'GRADUATE',
     url: 'https://metaforce.ru/vladimir/graduation'
   },
@@ -24,7 +29,7 @@ const events = ref([
     id: 3, 
     name: 'Взрослые дни рождения', 
     description: 'Поиграли - и можно по барам', 
-    image: '/src/assets/images/events/birthday_adult.jpg',
+    image: imgAdultBD,
     actionText: 'PARTY',
     url: 'https://metaforce.ru/vladimir/birthday_adult'
   },
@@ -32,7 +37,7 @@ const events = ref([
     id: 4, 
     name: 'Корпоративы', 
     description: 'Когда у вас еще будет шанс пострелять в коллег', 
-    image: '/src/assets/images/events/coops.jpg',
+    image: imgCoop,
     actionText: 'TEAM UP',
     url: 'https://metaforce.ru/vladimir/corp_party'
   }
@@ -288,10 +293,6 @@ onMounted(() => {
   
   .action-text {
     font-size: 1.5rem;
-  }
-  
-  .section-title {
-    font-size: 2rem;
   }
 }
 </style>
