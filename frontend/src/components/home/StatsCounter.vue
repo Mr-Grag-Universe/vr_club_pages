@@ -11,7 +11,7 @@ interface Stat {
 }
 
 const stats = ref<Stat[]>([
-  { label: 'довольных игроков', target: 100, current: 0, suffix: '+' },
+  { label: 'довольных игроков', target: 1000, current: 0, suffix: '+' },
   { label: 'квадратных метров арены', target: 200, current: 0, suffix: ' м²' },
   { label: 'игр в каталоге', target: 48+4, current: 0, suffix: '' },
   { label: 'средний рейтинг', target: 4.75, current: 0, suffix: '/5.0', decimals: 1 },

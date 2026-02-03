@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/src/views/Home.vue'
 import iconImg from '@/assets/icons/icon_dark.ico'
-// import Prices from '@/views/Prices.vue'
-// import Booking from '@/views/Booking.vue'
+import Prices from '@/src/views/Prices.vue'
+import Booking from '@/src/views/Booking.vue'
+import Games from '@/src/views/Games.vue'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -22,24 +23,33 @@ const router = createRouter({
         icon: iconImg,
       } 
     },
-    // { 
-    //   path: '/prices', 
-    //   name: 'prices', 
-    //   component: Prices, 
-    //   meta: { 
-    //     title: "Тарифы",
-    //     icon: '/src/assets/icons/icon_dark.ico',
-    //   } 
-    // },
-    // {
-    //   path: '/booking',
-    //   name: 'booking',
-    //   component: Booking,
-    //   meta: {
-    //     title: "Бронирование",
-    //     icon: '/src/assets/icons/icon_dark.ico',
-    //   }
-    // }
+    { 
+      path: '/prices', 
+      name: 'prices', 
+      component: Prices, 
+      meta: { 
+        title: "Тарифы",
+        icon: '/src/assets/icons/icon_dark.ico',
+      } 
+    },
+    {
+      path: '/booking',
+      name: 'booking',
+      component: Booking,
+      meta: {
+        title: "Бронирование",
+        icon: '/src/assets/icons/icon_dark.ico',
+      }
+    },
+    {
+      path: '/games',
+      name: 'games',
+      component: Games,
+      meta: {
+        title: "VR Arena Metaforce | Игры",
+        icon: iconImg
+      }
+    }
   ],
 })
 
