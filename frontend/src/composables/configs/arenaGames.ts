@@ -3,15 +3,17 @@ import spaceWarVideo from '@/assets/videos/space_war.mp4'
 import elevatorsVideo from '@/assets/videos/elevators.mp4'
 import portalsVideo from '@/assets/videos/portals.mp4'
 
-import teamForceAudio from '@/assets/videos/audio/team_force.mp4'
-import spaceWarAudio from '@/assets/videos/audio/space_war.mp4'
-import elevatorsAudio from '@/assets/videos/audio/elevators.mp4'
-import portalsAudio from '@/assets/videos/audio/portals.mp4'
-
 import teamForceThumb from '@/assets/videos/thumb/team_force.jpg'
 import spaceWarThumb from '@/assets/videos/thumb/space_war.jpg'
 import elevatorsThumb from '@/assets/videos/thumb/elevators.jpg'
 import portalsThumb from '@/assets/videos/thumb/portals.jpg'
+
+import teamForceImg1 from '@/assets/images/games/arena/1.jpg'
+import teamForceImg2 from '@/assets/images/games/arena/7.jpg'
+import teamForceImg3 from '@/assets/images/games/arena/3.jpg'
+
+import spaceWarImg1 from '@/assets/images/games/arena/2.jpg'
+import spaceWarImg2 from '@/assets/images/games/arena/5.jpg'
 
 export interface ArenaGame {
   id: string
@@ -20,6 +22,7 @@ export interface ArenaGame {
   description: string
   features: string[]
   videoUrl: string
+  thumbnail: string  // Добавлено превью
   screenshots: string[]
   color: string
 }
@@ -32,10 +35,11 @@ export const arenaGames: ArenaGame[] = [
     description: 'Командный шутер а-ля Counter-Strike. 12 карт для полного разнообразия',
     features: ['До 10 игроков', '12 карт', 'PvP', 'Свободное перемещение'],
     videoUrl: teamForceVideo,
+    thumbnail: teamForceThumb,
     screenshots: [
-      '/images/arena/team-force-1.jpg',
-      '/images/arena/team-force-2.jpg',
-      '/images/arena/team-force-3.jpg'
+      teamForceImg1,
+      teamForceImg2,
+      teamForceImg3
     ],
     color: '#ef4444'
   },
@@ -46,9 +50,10 @@ export const arenaGames: ArenaGame[] = [
     description: 'Космический шутер в далекой-далекой галактике. Телепорты в наличии',
     features: ['Sci-Fi обстановка', 'Телепорты', 'PvE/PvP', 'Zero-G бои'],
     videoUrl: spaceWarVideo,
+    thumbnail: spaceWarThumb,
     screenshots: [
-      '/images/arena/star-force-1.jpg',
-      '/images/arena/star-force-2.jpg'
+      spaceWarImg1,
+      spaceWarImg2
     ],
     color: '#8b5cf6'
   },
@@ -59,6 +64,7 @@ export const arenaGames: ArenaGame[] = [
     description: 'Многоэтажный шутер с перемещениями между этажами и зданиями',
     features: ['Вертикальный геймплей', 'Динамичные бои', 'Кооператив', 'Лифты'],
     videoUrl: elevatorsVideo,
+    thumbnail: elevatorsThumb,
     screenshots: [
       '/images/arena/elevators-1.jpg',
       '/images/arena/elevators-2.jpg'
@@ -72,6 +78,7 @@ export const arenaGames: ArenaGame[] = [
     description: 'Аркадный шутер с лифтами и телепортами',
     features: ['Аркадная механика', 'Телепорты', 'Быстрые сессии', 'Power-ups'],
     videoUrl: portalsVideo,
+    thumbnail: portalsThumb,
     screenshots: [
       '/images/arena/portals-1.jpg',
       '/images/arena/portals-2.jpg'

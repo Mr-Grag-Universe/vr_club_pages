@@ -12,6 +12,7 @@ const activeTab = ref<TabType>('arena')
 const displayTitle = ref('GAME CATALOG')
 const titleRef = ref<HTMLElement | null>(null)
 const isAnimating = ref(false)
+const hasAnimated = ref(false) // Флаг, чтобы анимация сработала только один раз
 
 const switchTab = (tab: TabType) => {
   activeTab.value = tab
@@ -22,10 +23,14 @@ const switchTab = (tab: TabType) => {
 onMounted(() => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
+      // Срабатывает только при первом появлении в viewport
+      if (entry.isIntersecting && !hasAnimated.value) {
+        hasAnimated.value = true
         setTimeout(() => {
           glitchText('ARENA GAMES', isAnimating, displayTitle, 1000)
         }, 500)
+        // Отключаем observer после первого срабатывания
+        observer.disconnect()
       }
     })
   }, { threshold: 0.3 })

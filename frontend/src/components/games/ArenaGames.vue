@@ -46,7 +46,7 @@ watch(selectedGameId, (id) => {
         @mouseleave="hoveredGame = null"
         @click="openGame(game.id)"
       >
-        <!-- Превью -->
+        <!-- Превью с изображением -->
         <div class="arena-media">
           <video 
             v-if="hoveredGame === game.id"
@@ -55,9 +55,13 @@ watch(selectedGameId, (id) => {
           >
             <source :src="game.videoUrl" type="video/mp4">
           </video>
+          
+          <!-- Превьюшка как в ArenaVideos -->
           <div v-else class="video-placeholder" :style="{ background: game.color }">
-            <span class="play-icon">▶</span>
+            <img :src="game.thumbnail" class="video-thumbnail" :alt="game.name" />
+            <div class="play-icon">▶</div>
           </div>
+          
           <div class="media-overlay"></div>
         </div>
 
@@ -135,31 +139,51 @@ watch(selectedGameId, (id) => {
   background: var(--bg-primary);
 }
 
-.game-video,
-.video-placeholder {
+.game-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
 }
 
+/* Стили превью как в ArenaVideos */
 .video-placeholder {
+  width: 100%;
+  height: 100%;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--game-color), var(--bg-accent));
+}
+
+.video-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.arena-card:hover .video-thumbnail {
+  opacity: 0.5;
 }
 
 .play-icon {
-  font-size: 4rem;
-  opacity: 0.8;
-  transition: all 0.3s;
-  filter: drop-shadow(0 0 20px rgba(0,0,0,0.5));
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  color: var(--game-color);
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
 }
 
 .arena-card:hover .play-icon {
-  transform: scale(1.1);
   opacity: 1;
+  transform: translate(-50%, -50%) scale(1.2);
 }
 
 .arena-card:hover .game-video {
