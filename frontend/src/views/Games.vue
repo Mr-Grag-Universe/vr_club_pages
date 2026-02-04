@@ -16,7 +16,7 @@ const hasAnimated = ref(false) // Флаг, чтобы анимация сраб
 
 const switchTab = (tab: TabType) => {
   activeTab.value = tab
-  const title = tab === 'arena' ? 'ARENA GAMES' : 'ZONES LIBRARY'
+  const title = tab === 'arena' ? 'ИГРЫ НА VR-АРЕНЕ' : 'ИГРЫ В VR-ЗОНАХ'
   glitchText(title, isAnimating, displayTitle, 800)
 }
 
@@ -27,7 +27,7 @@ onMounted(() => {
       if (entry.isIntersecting && !hasAnimated.value) {
         hasAnimated.value = true
         setTimeout(() => {
-          glitchText('ARENA GAMES', isAnimating, displayTitle, 1000)
+          glitchText('ИГРЫ НА АРЕНЕ', isAnimating, displayTitle, 1000)
         }, 500)
         // Отключаем observer после первого срабатывания
         observer.disconnect()

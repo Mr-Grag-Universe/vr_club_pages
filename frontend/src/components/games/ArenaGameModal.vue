@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import type { ArenaGame } from '@/src/composables/configs/arenaGames'
 
 const props = defineProps<{
@@ -10,11 +10,20 @@ const emit = defineEmits<{
   close: []
 }>()
 
+// Состояние галереи: 'video' или индекс скриншота
+const activeMedia = ref<'video' | number>('video')
+
 const handleKeydown = (e: KeyboardEvent) => {
   if (e.key === 'Escape') {
     emit('close')
   }
 }
+
+watch(() => props.game, (newGame) => {
+  if (!newGame) {
+    activeMedia.value = 'video'
+  }
+}, { immediate: true })
 
 onMounted(() => {
   window.addEventListener('keydown', handleKeydown)
@@ -23,6 +32,17 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeydown)
 })
+
+// Получаем URL активного медиа
+const activeMediaUrl = computed(() => {
+  if (!props.game) return ''
+  if (activeMedia.value === 'video') return props.game.videoUrl
+  return props.game.screenshots[activeMedia.value] || ''
+})
+
+// Проверка активности
+const isVideoActive = computed(() => activeMedia.value === 'video')
+const isScreenshotActive = (idx: number) => activeMedia.value === idx
 </script>
 
 <template>
@@ -43,21 +63,61 @@ onUnmounted(() => {
 
         <!-- Медиа секция -->
         <div class="modal-media-section">
-          <video 
-            autoplay muted loop playsinline
-            class="modal-video"
-          >
-            <source :src="game.videoUrl" type="video/mp4">
-          </video>
-          
-          <!-- Галерея скриншотов -->
-          <div class="screenshots-gallery">
+          <!-- Основная область -->
+          <div class="main-media">
+            <!-- Видео (по умолчанию) -->
+            <video 
+              v-if="isVideoActive"
+              autoplay muted loop playsinline
+              class="modal-video"
+            >
+              <source :src="game.videoUrl" type="video/mp4">
+            </video>
+            
+            <!-- Скриншот (когда выбран) -->
             <div 
+              v-else
+              class="modal-screenshot"
+              :style="{ backgroundImage: `url(${activeMediaUrl})` }"
+            ></div>
+            
+            <!-- Индикатор типа медиа -->
+            <div class="media-badge">
+              {{ isVideoActive ? '▶ VIDEO' : '🖼 SCREENSHOT' }}
+            </div>
+          </div>
+          
+          <!-- Галерея превью -->
+          <div class="media-gallery">
+            <!-- Кнопка видео -->
+            <button 
+              class="gallery-thumb"
+              :class="{ active: isVideoActive }"
+              @click="activeMedia = 'video'"
+            >
+              <video muted class="thumb-video">
+                <source :src="game.videoUrl" type="video/mp4">
+              </video>
+              <div class="thumb-overlay">
+                <span class="thumb-icon">▶</span>
+              </div>
+              <span class="thumb-label">Video</span>
+            </button>
+            
+            <!-- Скриншоты -->
+            <button 
               v-for="(screenshot, idx) in game.screenshots" 
               :key="idx"
-              class="gallery-item"
-              :style="{ backgroundImage: `url(${screenshot})` }"
-            ></div>
+              class="gallery-thumb"
+              :class="{ active: isScreenshotActive(idx) }"
+              @click="activeMedia = idx"
+            >
+              <div 
+                class="thumb-image"
+                :style="{ backgroundImage: `url(${screenshot})` }"
+              ></div>
+              <span class="thumb-label">Shot {{ idx + 1 }}</span>
+            </button>
           </div>
         </div>
 
@@ -163,37 +223,155 @@ onUnmounted(() => {
   flex-direction: column;
 }
 
-.modal-video {
+/* Основная область медиа */
+.main-media {
+  position: relative;
   flex: 1;
-  width: 100%;
-  object-fit: cover;
-  min-height: 300px;
+  min-height: 350px;
+  background: var(--bg-secondary);
+  overflow: hidden;
 }
 
-.screenshots-gallery {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
+.modal-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-screenshot {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: var(--bg-secondary);
+}
+
+.media-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--game-color);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--game-color);
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  backdrop-filter: blur(4px);
+}
+
+/* Галерея превью */
+.media-gallery {
+  display: flex;
+  gap: 0.75rem;
   padding: 1rem;
   background: var(--bg-secondary);
+  border-top: 1px solid var(--bg-accent);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--game-color) var(--bg-accent);
 }
 
-.gallery-item {
-  aspect-ratio: 16/10;
+.media-gallery::-webkit-scrollbar {
+  height: 6px;
+}
+
+.media-gallery::-webkit-scrollbar-track {
   background: var(--bg-accent);
+  border-radius: 3px;
+}
+
+.media-gallery::-webkit-scrollbar-thumb {
+  background: var(--game-color);
+  border-radius: 3px;
+}
+
+.gallery-thumb {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100px;
+  height: 70px;
   border-radius: 8px;
-  background-size: cover;
-  background-position: center;
+  overflow: hidden;
+  border: 2px solid var(--bg-accent);
+  background: var(--bg-primary);
   cursor: pointer;
   transition: all 0.3s;
-  border: 2px solid transparent;
+  padding: 0;
 }
 
-.gallery-item:hover {
+.gallery-thumb:hover {
   border-color: var(--game-color);
-  transform: scale(1.05);
+  transform: translateY(-2px);
 }
 
+.gallery-thumb.active {
+  border-color: var(--game-color);
+  box-shadow: 0 0 0 2px var(--game-color), 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.thumb-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+}
+
+.thumb-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.gallery-thumb:hover .thumb-image,
+.gallery-thumb.active .thumb-image,
+.gallery-thumb:hover .thumb-video,
+.gallery-thumb.active .thumb-video {
+  opacity: 1;
+}
+
+.thumb-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.thumb-icon {
+  font-size: 1.5rem;
+  color: white;
+  opacity: 0.8;
+}
+
+.thumb-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.25rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--text-secondary);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+}
+
+.gallery-thumb.active .thumb-label {
+  color: var(--game-color);
+  font-weight: 700;
+}
+
+/* Инфо секция */
 .modal-info-section {
   padding: 3rem;
   display: flex;
@@ -341,8 +519,8 @@ onUnmounted(() => {
     max-height: 95vh;
   }
   
-  .modal-media-section {
-    max-height: 40vh;
+  .main-media {
+    min-height: 250px;
   }
   
   .modal-title {
@@ -365,8 +543,13 @@ onUnmounted(() => {
     max-height: 100vh;
   }
   
-  .screenshots-gallery {
-    grid-template-columns: repeat(2, 1fr);
+  .main-media {
+    min-height: 200px;
+  }
+  
+  .gallery-thumb {
+    width: 80px;
+    height: 60px;
   }
   
   .modal-actions {

@@ -15,6 +15,14 @@ import teamForceImg3 from '@/assets/images/games/arena/3.jpg'
 import spaceWarImg1 from '@/assets/images/games/arena/2.jpg'
 import spaceWarImg2 from '@/assets/images/games/arena/5.jpg'
 
+import portalsImg1 from '@/assets/images/games/library/arena/portals-1.jpg'
+import portalsImg2 from '@/assets/images/games/library/arena/portals-2.jpg'
+import portalsImg3 from '@/assets/images/games/library/arena/portals-3.jpg'
+
+import elevatorsImg1 from '@/assets/images/games/library/arena/elevators-1.jpg'
+import elevatorsImg2 from '@/assets/images/games/library/arena/elevators-2.jpg'
+import elevatorsImg3 from '@/assets/images/games/library/arena/elevators-3.jpg'
+
 export interface ArenaGame {
   id: string
   name: string
@@ -33,7 +41,7 @@ export const arenaGames: ArenaGame[] = [
     name: 'Team Force',
     genre: 'Tactical Shooter',
     description: 'Командный шутер а-ля Counter-Strike. 12 карт для полного разнообразия',
-    features: ['До 10 игроков', '12 карт', 'PvP', 'Свободное перемещение'],
+    features: ['12 карт', 'Реалистичное оружие'],
     videoUrl: teamForceVideo,
     thumbnail: teamForceThumb,
     screenshots: [
@@ -48,7 +56,7 @@ export const arenaGames: ArenaGame[] = [
     name: 'Star Force',
     genre: 'Space Shooter',
     description: 'Космический шутер в далекой-далекой галактике. Телепорты в наличии',
-    features: ['Sci-Fi обстановка', 'Телепорты', 'PvE/PvP', 'Zero-G бои'],
+    features: ['Sci-Fi обстановка', 'Телепорты'],
     videoUrl: spaceWarVideo,
     thumbnail: spaceWarThumb,
     screenshots: [
@@ -62,12 +70,13 @@ export const arenaGames: ArenaGame[] = [
     name: 'Elevators',
     genre: 'Vertical Shooter',
     description: 'Многоэтажный шутер с перемещениями между этажами и зданиями',
-    features: ['Вертикальный геймплей', 'Динамичные бои', 'Кооператив', 'Лифты'],
+    features: ['Вертикальный геймплей', 'Реалистичное оружие', 'Лифты'],
     videoUrl: elevatorsVideo,
     thumbnail: elevatorsThumb,
     screenshots: [
-      '/images/arena/elevators-1.jpg',
-      '/images/arena/elevators-2.jpg'
+      elevatorsImg1,
+      elevatorsImg2,
+      elevatorsImg3
     ],
     color: '#10b981'
   },
@@ -76,12 +85,13 @@ export const arenaGames: ArenaGame[] = [
     name: 'Portals',
     genre: 'Arcade Shooter',
     description: 'Аркадный шутер с лифтами и телепортами',
-    features: ['Аркадная механика', 'Телепорты', 'Быстрые сессии', 'Power-ups'],
+    features: ['Вертикальный геймплей', 'Аркадная механика', 'Телепорты', 'Оружие на локации'],
     videoUrl: portalsVideo,
     thumbnail: portalsThumb,
     screenshots: [
-      '/images/arena/portals-1.jpg',
-      '/images/arena/portals-2.jpg'
+      portalsImg1,
+      portalsImg2,
+      portalsImg3
     ],
     color: '#f59e0b'
   }

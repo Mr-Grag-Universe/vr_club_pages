@@ -18,8 +18,8 @@ const emit = defineEmits<{
       @click="emit('switch', 'arena')"
     >
       <span class="tab-icon">◈</span>
-      <span class="tab-text">Arena</span>
-      <span class="tab-badge">4 games</span>
+      <span class="tab-text">VR-Арена</span>
+      <span class="tab-badge">4 игры</span>
     </button>
     <button 
       class="tab-button" 
@@ -27,8 +27,8 @@ const emit = defineEmits<{
       @click="emit('switch', 'zones')"
     >
       <span class="tab-icon">◉</span>
-      <span class="tab-text">Zones</span>
-      <span class="tab-badge">40+ games</span>
+      <span class="tab-text">VR-Зоны</span>
+      <span class="tab-badge">40+ игр</span>
     </button>
   </div>
 </template>
