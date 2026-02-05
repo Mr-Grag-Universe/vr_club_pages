@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import BaseLayout from '@/src/components/base/BaseLayout.vue'
 import { glitchText } from '@/src/composables/glitchEffects'
 import GamesTabs from '@/src/components/games/GamesTabs.vue'
@@ -38,7 +38,18 @@ onMounted(() => {
   if (titleRef.value) {
     observer.observe(titleRef.value)
   }
+//   setTimeout(() => {
+//     console.log("> scroll up!!!")
+//     window.scrollTo({ top: 0, behavior: 'smooth' })
+//   }, 1000)
+  nextTick(() => {
+    console.log("> scroll up!!!")
+    // const scrollingElement = document.documentElement || document.body; 
+    // document.body.scrollTo({ top: 0, behavior: 'smooth' });
+    document.body.scrollTo(0, 600);
+  });
 })
+
 </script>
 
 <template>

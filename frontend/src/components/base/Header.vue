@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import SocialLinks from './SocialLinks.vue'
 import metaforceLogo from '@/assets/icons/metaforce.svg'
@@ -11,12 +11,22 @@ const isMobileMenuOpen = ref(false)
 const showNotification = ref(false)
 const notificationMessage = ref('Номер скопирован!')
 
+// Проверка, находимся ли на главной
+const isHomePage = computed(() => route.path === '/')
+
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
 }
 
 const closeMobileMenu = () => {
   isMobileMenuOpen.value = false
+}
+
+const goToHome = () => {
+  closeMobileMenu()
+  if (!isHomePage.value) {
+    router.push({ name: 'home' })
+  }
 }
 
 const PHONE_NUMBER = '+79028877457'
@@ -65,13 +75,13 @@ const navigateToAnchor = async (anchor: string) => {
   closeMobileMenu()
   
   // Если уже на главной — просто скроллим
-  if (route.path === '/') {
+  if (isHomePage.value) {
     scrollToAnchor(anchor)
     return
   }
   
   // Иначе переходим на главную с якорем
-  if (route.path == '/games' && anchor == 'games') {
+  if (route.path === '/games' && anchor === 'games') {
     return
   }
   await router.push({ path: '/', hash: `#${anchor}` })
@@ -118,6 +128,16 @@ const scrollToAnchor = (anchor: string) => {
       </div>
       
       <div class="nav-right desktop-menu">
+        <!-- Кнопка "На главную" (только если не на главной) -->
+        <button 
+          v-if="!isHomePage" 
+          class="home-button"
+          @click="goToHome"
+        >
+          <span class="home-icon">←</span>
+          <span class="home-text">На главную</span>
+        </button>
+        
         <SocialLinks />
         
         <div class="cta-wrapper">
@@ -155,6 +175,16 @@ const scrollToAnchor = (anchor: string) => {
     <transition name="slide-down">
       <div v-if="isMobileMenuOpen" class="mobile-menu">
         <div class="mobile-menu-content">
+          <!-- Кнопка "На главную" в мобильном меню -->
+          <button 
+            v-if="!isHomePage" 
+            class="mobile-home-button"
+            @click="goToHome"
+          >
+            <span class="home-icon">←</span>
+            На главную
+          </button>
+          
           <ul class="mobile-nav-menu">
             <li class="mobile-nav-item">
               <a href="#" class="mobile-nav-link" @click.prevent="navigateToAnchor('events')">Мероприятия</a>
@@ -310,7 +340,42 @@ const scrollToAnchor = (anchor: string) => {
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 3rem;
+  gap: 2rem;
+}
+
+/* Кнопка "На главную" */
+.home-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background: transparent;
+  border: 1px solid var(--accent);
+  border-radius: 20px;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.home-button:hover {
+  background: var(--accent);
+  color: var(--bg-primary);
+  box-shadow: 0 0 15px var(--glow);
+  transform: translateX(-3px);
+}
+
+.home-icon {
+  font-size: 1rem;
+  transition: transform 0.3s;
+}
+
+.home-button:hover .home-icon {
+  transform: translateX(-3px);
 }
 
 .cta-wrapper {
@@ -474,6 +539,33 @@ const scrollToAnchor = (anchor: string) => {
   padding: 2rem;
   max-width: 600px;
   margin: 0 auto;
+}
+
+/* Кнопка "На главную" в мобильном меню */
+.mobile-home-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  background: transparent;
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  color: var(--accent);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.mobile-home-button:hover {
+  background: var(--accent);
+  color: var(--bg-primary);
 }
 
 .mobile-nav-menu {

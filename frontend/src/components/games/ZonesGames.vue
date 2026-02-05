@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { zonesGames, gameGenres } from '@/src/composables/configs/zonesGames'
 
 const itemsPerPage = 8
@@ -46,10 +46,11 @@ watch(currentPage, () => {
 })
 
 const scrollToTop = () => {
-  const section = document.getElementById('games-catalog')
-  if (section) {
-    section.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
+//   const section = document.getElementById('games-catalog')
+//   if (section) {
+//     section.scrollIntoView({ behavior: 'smooth', block: 'start' })
+//   }
+    window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 // Навигация с прокруткой

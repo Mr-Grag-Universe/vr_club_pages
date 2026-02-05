@@ -173,7 +173,7 @@ onMounted(() => {
       </div>
     </div>
     
-    <div class="view-all-container">
+    <!-- <div class="view-all-container">
       <a 
         href="https://metaforce.ru/vladimir/games" 
         target="_blank" 
@@ -182,6 +182,14 @@ onMounted(() => {
       >
         все наши игры
       </a>
+    </div> -->
+    <div class="view-all-container">
+      <RouterLink 
+        to="/games"
+        class="view-all-button"
+      >
+        все наши игры
+      </RouterLink>
     </div>
   </section>
 </template>

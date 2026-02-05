@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/src/views/Home.vue'
 import iconImg from '@/assets/icons/icon_dark.ico'
-import Prices from '@/src/views/Prices.vue'
-import Booking from '@/src/views/Booking.vue'
+// import Prices from '@/src/views/Prices.vue'
+// import Booking from '@/src/views/Booking.vue'
 import Games from '@/src/views/Games.vue'
 
 declare module 'vue-router' {
@@ -23,24 +23,24 @@ const router = createRouter({
         icon: iconImg,
       } 
     },
-    { 
-      path: '/prices', 
-      name: 'prices', 
-      component: Prices, 
-      meta: { 
-        title: "Тарифы",
-        icon: '/src/assets/icons/icon_dark.ico',
-      } 
-    },
-    {
-      path: '/booking',
-      name: 'booking',
-      component: Booking,
-      meta: {
-        title: "Бронирование",
-        icon: '/src/assets/icons/icon_dark.ico',
-      }
-    },
+    // { 
+    //   path: '/prices', 
+    //   name: 'prices', 
+    //   component: Prices, 
+    //   meta: { 
+    //     title: "Тарифы",
+    //     icon: '/src/assets/icons/icon_dark.ico',
+    //   } 
+    // },
+    // {
+    //   path: '/booking',
+    //   name: 'booking',
+    //   component: Booking,
+    //   meta: {
+    //     title: "Бронирование",
+    //     icon: '/src/assets/icons/icon_dark.ico',
+    //   }
+    // },
     {
       path: '/games',
       name: 'games',
@@ -51,6 +51,17 @@ const router = createRouter({
       }
     }
   ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    }
+    // При переходе на /games всегда наверх
+    if (to.name === 'games') {
+      return { top: 0, behavior: 'smooth' }
+    }
+    // Для остальных — по умолчанию
+    return { top: 0 }
+  }
 })
 
 router.afterEach((to) => {

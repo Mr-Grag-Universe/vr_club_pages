@@ -453,8 +453,12 @@ export type GameGenre = typeof gameGenres[number]
 const images = import.meta.glob('/assets/images/games/library/zones/*.jpg', { eager: true });
 const imageMap = Object.fromEntries(
   Object.entries(images).map(([key, value]) => {
-    const imageName = key.split('/').pop().split('.')[0];
-    return [imageName, value];
+    let path_items = key.split('/').pop()
+    if (path_items) {
+        const imageName = path_items.split('.')[0];
+        return [imageName, value];
+    }
+    return [undefined, value]
   })
 );
 
