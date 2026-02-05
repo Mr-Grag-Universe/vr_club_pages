@@ -95,7 +95,7 @@ export const zonesGames: ZoneGame[] = [
     name: 'Minecraft VR',
     genre: 'Sandbox',
     steamUrl: 'https://www.minecraft.net/',
-    image: '/images/games/minecraft.jpg',
+    image: 'minecraft.jpg',
     actionText: 'BUILD'
   },
   {
@@ -103,7 +103,7 @@ export const zonesGames: ZoneGame[] = [
     name: 'Spider-Man: Far From Home',
     genre: 'Action',
     steamUrl: 'https://store.steampowered.com/app/1067800/SpiderMan_Far_From_Home_Virtual_Reality_Experience/',
-    image: '/images/games/spiderman_ffh.jpg',
+    image: 'spiderman_ffh.jpg',
     actionText: 'SWING'
   },
   {
@@ -119,7 +119,7 @@ export const zonesGames: ZoneGame[] = [
     name: 'Among Us VR',
     genre: 'Social',
     steamUrl: 'https://store.steampowered.com/app/1849900/Among_Us_VR/',
-    image: '/images/games/among_us.jpg',
+    image: 'among_us.jpg',
     actionText: 'SUSPECT'
   },
   {
@@ -135,8 +135,8 @@ export const zonesGames: ZoneGame[] = [
     id: 15,
     name: 'Guns and Stories: Bulletproof VR',
     genre: 'Shooter',
-    steamUrl: 'https://store.steampowered.com/app/544610/Guns_and_Stories_Bulletproof_VR/',
-    image: '/images/games/guns_stories.jpg',
+    steamUrl: 'https://store.steampowered.com/app/685690/GunsnStories_Bulletproof_VR/',
+    image: 'guns_and_stories.jpg',
     actionText: 'DRAW',
     available: true,
   },
@@ -145,15 +145,15 @@ export const zonesGames: ZoneGame[] = [
     name: 'Tilt Brush',
     genre: 'Creative',
     steamUrl: 'https://store.steampowered.com/app/327140/Tilt_Brush/',
-    image: '//tilt_brush.jpg',
+    image: 'tilt_brush.jpg',
     actionText: 'PAINT'
   },
   {
     id: 17,
     name: 'Home - Spacewalk',
     genre: 'Experience',
-    steamUrl: 'https://store.steampowered.com/app/610080/Home_A_Drone_Simulator/',
-    image: '//home_spacewalk.jpg',
+    steamUrl: 'https://store.steampowered.com/app/512270/Home__A_VR_Spacewalk/',
+    image: 'home_spacewalk.jpg',
     actionText: 'FLOAT'
   },
   {
@@ -179,7 +179,7 @@ export const zonesGames: ZoneGame[] = [
     name: 'Creed: Rise to Glory',
     genre: 'Fighting',
     steamUrl: 'https://store.steampowered.com/app/804490/Creed_Rise_to_Glory/',
-    image: '//creed.jpg',
+    image: 'creed.jpg',
     actionText: 'FIGHT'
   },
   {
@@ -212,8 +212,8 @@ export const zonesGames: ZoneGame[] = [
     id: 24,
     name: 'Eagle Flight',
     genre: 'Simulation',
-    steamUrl: 'https://store.steampowered.com/app/408110/Eagle_Flight/',
-    image: '//eagle_flight.jpg',
+    steamUrl: 'https://store.steampowered.com/app/408250/Eagle_Flight/',
+    image: 'eagle_flight.jpg',
     actionText: 'FLY'
   },
   {
@@ -229,8 +229,8 @@ export const zonesGames: ZoneGame[] = [
     id: 26,
     name: 'Fancy Skiing 2',
     genre: 'Sports',
-    steamUrl: 'https://store.steampowered.com/app/931090/Fancy_Skiing_VR/',
-    image: '/images/games/fancy_skiing.jpg',
+    steamUrl: 'https://store.steampowered.com/app/876930/Fancy_Skiing_2_Online/',
+    image: 'fancy_skiing_2.jpg',
     actionText: 'SKI'
   },
   {
@@ -263,8 +263,8 @@ export const zonesGames: ZoneGame[] = [
     id: 30,
     name: 'Private Property',
     genre: 'Shooter',
-    steamUrl: 'https://store.steampowered.com/app/1420590/Private_Property/',
-    image: '//private_property.jpg',
+    steamUrl: 'https://store.steampowered.com/app/1481700/Private_Property/',
+    image: 'private_property.jpg',
     actionText: 'DEFEND'
   },
   {
@@ -272,7 +272,7 @@ export const zonesGames: ZoneGame[] = [
     name: 'Arizona Sunshine',
     genre: 'Zombie-Shooter',
     steamUrl: 'https://store.steampowered.com/app/342180/Arizona_Sunshine/',
-    image: '//arizona_sunshine.jpg',
+    image: 'arizona_sunshine.jpg',
     actionText: 'SURVIVE',
     available: true,
   },
@@ -281,7 +281,7 @@ export const zonesGames: ZoneGame[] = [
     name: 'Arizona Sunshine 2',
     genre: 'Zombie-Shooter',
     steamUrl: 'https://store.steampowered.com/app/1540210/Arizona_Sunshine_2/',
-    image: '//arizona_sunshine_2.jpg',
+    image: 'arizona_sunshine_2.jpg',
     actionText: 'SURVIVE',
     available: true,
   },
@@ -290,7 +290,7 @@ export const zonesGames: ZoneGame[] = [
     name: 'After the Fall',
     genre: 'Zombie-Shooter',
     steamUrl: 'https://store.steampowered.com/app/751630/After_the_Fall/',
-    image: '//after_the_fall.jpg',
+    image: 'after_the_fall.jpg',
     actionText: 'FREEZE'
   },
   {
@@ -368,8 +368,8 @@ export const zonesGames: ZoneGame[] = [
     id: 42,
     name: 'Warhammer 40,000: Battle Sister',
     genre: 'Action',
-    steamUrl: 'https://store.steampowered.com/app/1340990/Warhammer_40000_Battle_Sister/',
-    image: '//warhammer.jpg',
+    steamUrl: 'https://store.steampowered.com/app/1733890/Warhammer_40000_Battle_Sister/',
+    image: 'warhammer_40k_bs.jpg',
     actionText: 'PURGE'
   },
   {
@@ -399,10 +399,10 @@ export const zonesGames: ZoneGame[] = [
   },
   {
     id: 46,
-    name: 'Forwarded',
+    name: 'Forewarned',
     genre: 'Horror',
-    steamUrl: '',
-    image: '//forwarded.jpg',
+    steamUrl: 'https://store.steampowered.com/app/1562420/FOREWARNED/',
+    image: 'forewarned.jpg',
     actionText: 'ESCAPE'
   },
   {
@@ -410,7 +410,7 @@ export const zonesGames: ZoneGame[] = [
     name: 'Don\'t Knock Twice',
     genre: 'Horror',
     steamUrl: '',
-    image: '//dont_knock.jpg',
+    image: 'dont_knock_twice.jpg',
     actionText: 'KNOCK'
   },
   {

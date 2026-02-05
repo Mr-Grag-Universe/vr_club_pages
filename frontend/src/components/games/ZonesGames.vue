@@ -16,6 +16,11 @@ const paginatedGames = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage
   return filteredGames.value.slice(start, start + itemsPerPage)
 })
+
+// Проверка доступности игры
+const isAvailable = (game: typeof zonesGames[0]) => {
+  return game.available === true
+}
 </script>
 
 <template>
@@ -42,13 +47,20 @@ const paginatedGames = computed(() => {
       <a 
         v-for="game in paginatedGames" 
         :key="game.id"
-        :href="game.steamUrl"
+        :href="isAvailable(game) ? game.steamUrl : undefined"
         target="_blank"
         rel="noopener noreferrer"
         class="zone-card"
+        :class="{ 'unavailable': !isAvailable(game) }"
       >
         <div class="card-image-wrapper">
           <img :src="game.image" :alt="game.name" class="game-image" />
+          
+          <!-- Надпись UNAVAILABLE для недоступных игр (видна всегда, кроме hover) -->
+          <div v-if="!isAvailable(game)" class="unavailable-badge">
+            <span>UNAVAILABLE</span>
+          </div>
+          
           <div class="image-overlay">
             <span class="steam-link">Открыть в Steam ↗</span>
           </div>
@@ -174,6 +186,20 @@ const paginatedGames = computed(() => {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px var(--glow);
 }
 
+/* Стили для недоступных игр */
+.zone-card.unavailable {
+  cursor: not-allowed;
+}
+
+.zone-card.unavailable:hover {
+  border-color: #ef4444;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(239, 68, 68, 0.3);
+}
+
+.zone-card.unavailable .card-glow {
+  background: linear-gradient(135deg, #ef4444, transparent, #f87171);
+}
+
 .card-image-wrapper {
   position: relative;
   height: 180px;
@@ -191,6 +217,34 @@ const paginatedGames = computed(() => {
   transform: scale(1.1);
 }
 
+/* Бейдж UNAVAILABLE */
+.unavailable-badge {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(239, 68, 68, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 2;
+  transition: opacity 0.3s;
+}
+
+.unavailable-badge span {
+  color: rgb(177, 7, 7);
+  font-weight: 900;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 5px 20px rgba(0,0,0,0.9);
+}
+
+/* При hover на карточку бейдж исчезает */
+.zone-card.unavailable:hover .unavailable-badge {
+  opacity: 0;
+}
+
 .image-overlay {
   position: absolute;
   inset: 0;
@@ -201,10 +255,16 @@ const paginatedGames = computed(() => {
   opacity: 0;
   transition: opacity 0.3s;
   backdrop-filter: blur(4px);
+  z-index: 3;
 }
 
 .zone-card:hover .image-overlay {
   opacity: 1;
+}
+
+/* Для недоступных игр overlay красный */
+.zone-card.unavailable:hover .image-overlay {
+  background: rgba(239, 68, 68, 0.4);
 }
 
 .steam-link {
@@ -224,6 +284,14 @@ const paginatedGames = computed(() => {
   color: var(--bg-primary);
 }
 
+/* Для недоступных игр Steam link неактивен */
+.zone-card.unavailable .steam-link {
+  color: #ef4444;
+  border-color: #ef4444;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .card-info {
   padding: 1.25rem;
 }
@@ -236,6 +304,11 @@ const paginatedGames = computed(() => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Для недоступных игр название серое */
+.zone-card.unavailable .zone-game-title {
+  color: var(--text-secondary);
 }
 
 .zone-genre {
