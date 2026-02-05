@@ -4,7 +4,8 @@ export interface ZoneGame {
   genre: string
   steamUrl: string
   image: string
-  actionText?: string
+  actionText?: string,
+  available?: boolean,
 }
 
 export const zonesGames: ZoneGame[] = [
@@ -14,7 +15,8 @@ export const zonesGames: ZoneGame[] = [
     genre: 'Rhythm',
     steamUrl: 'https://store.steampowered.com/app/620980/Beat_Saber/',
     image: 'beat_saber.jpg',
-    actionText: 'LAUNCH'
+    actionText: 'LAUNCH',
+    available: true,
   },
   {
     id: 2,
@@ -22,7 +24,8 @@ export const zonesGames: ZoneGame[] = [
     genre: 'Experience',
     steamUrl: 'https://store.steampowered.com/app/451520/The_Blu/',
     image: 'the_blu.jpg',
-    actionText: 'DIVE'
+    actionText: 'DIVE',
+    available: true,
   },
   {
     id: 3,
@@ -30,7 +33,8 @@ export const zonesGames: ZoneGame[] = [
     genre: 'Tower Defense',
     steamUrl: 'https://store.steampowered.com/app/503770/Elven_Assassin/',
     image: 'elven_assassin.jpg',
-    actionText: 'DEPLOY'
+    actionText: 'DEPLOY',
+    available: true,
   },
   {
     id: 4,
@@ -38,7 +42,8 @@ export const zonesGames: ZoneGame[] = [
     genre: 'Action-Shooter',
     steamUrl: 'https://store.steampowered.com/app/567670/Serious_Sam_3_VR_BFE/',
     image: 'serious_sam.jpg',
-    actionText: 'SHOOT'
+    actionText: 'SHOOT',
+    available: true,
   },
   {
     id: 5,
@@ -46,7 +51,8 @@ export const zonesGames: ZoneGame[] = [
     genre: 'Experience',
     steamUrl: 'https://store.steampowered.com/app/517160/Richies_Plank_Experience/',
     image: 'richies_plank.jpg',
-    actionText: 'WALK'
+    actionText: 'WALK',
+    available: true,
   },
   {
     id: 6,
@@ -54,7 +60,8 @@ export const zonesGames: ZoneGame[] = [
     genre: 'Puzzle',
     steamUrl: 'https://store.steampowered.com/app/322500/SUPERHOT/',
     image: 'superhot.jpg',
-    actionText: 'RUN'
+    actionText: 'RUN',
+    available: true,
   },
   {
     id: 7,
@@ -62,7 +69,8 @@ export const zonesGames: ZoneGame[] = [
     genre: 'Simulation',
     steamUrl: 'https://store.steampowered.com/app/448280/Job_Simulator/',
     image: 'job_simulator.jpg',
-    actionText: 'WORK'
+    actionText: 'WORK',
+    available: true,
   },
   {
     id: 8,
@@ -70,7 +78,8 @@ export const zonesGames: ZoneGame[] = [
     genre: 'Simulation',
     steamUrl: 'https://store.steampowered.com/app/726830/Vacation_Simulator/',
     image: 'vacation_sim.jpg',
-    actionText: 'RELAX'
+    actionText: 'RELAX',
+    available: true,
   },
   {
     id: 9,
@@ -78,7 +87,8 @@ export const zonesGames: ZoneGame[] = [
     genre: 'Arcade',
     steamUrl: 'https://store.steampowered.com/app/486780/Fruit_Ninja_VR/',
     image: 'fruit_ninja.jpg',
-    actionText: 'SLICE'
+    actionText: 'SLICE',
+    available: true,
   },
   {
     id: 10,
@@ -118,7 +128,8 @@ export const zonesGames: ZoneGame[] = [
     genre: 'Simulation',
     steamUrl: 'https://store.steampowered.com/app/1358140/Cooking_Simulator_VR/',
     image: 'cooking_sim.jpg',
-    actionText: 'COOK'
+    actionText: 'COOK',
+    available: true,
   },
   {
     id: 15,
@@ -126,7 +137,8 @@ export const zonesGames: ZoneGame[] = [
     genre: 'Shooter',
     steamUrl: 'https://store.steampowered.com/app/544610/Guns_and_Stories_Bulletproof_VR/',
     image: '/images/games/guns_stories.jpg',
-    actionText: 'DRAW'
+    actionText: 'DRAW',
+    available: true,
   },
   {
     id: 16,
@@ -150,7 +162,8 @@ export const zonesGames: ZoneGame[] = [
     genre: 'Party',
     steamUrl: 'https://store.steampowered.com/app/667800/Loco_Dojo/',
     image: 'loco_dojo.jpg',
-    actionText: 'PLAY'
+    actionText: 'PLAY',
+    available: true,
   },
   {
     id: 19,
@@ -158,7 +171,8 @@ export const zonesGames: ZoneGame[] = [
     genre: 'Action',
     steamUrl: 'https://store.steampowered.com/app/1427890/Blaston/',
     image: 'blaston.jpg',
-    actionText: 'DUEL'
+    actionText: 'DUEL',
+    available: true,
   },
   {
     id: 20,
@@ -174,7 +188,8 @@ export const zonesGames: ZoneGame[] = [
     genre: 'Social',
     steamUrl: 'https://store.steampowered.com/app/1533390/Gorilla_Tag/',
     image: 'gorilla_tag.jpg',
-    actionText: 'CLIMB'
+    actionText: 'CLIMB',
+    available: true,
   },
   {
     id: 22,
@@ -190,7 +205,8 @@ export const zonesGames: ZoneGame[] = [
     genre: 'Arcade',
     steamUrl: 'https://store.steampowered.com/app/418650/Space_Pirate_Trainer/',
     image: 'space_pirate.jpg',
-    actionText: 'TRAIN'
+    actionText: 'TRAIN',
+    available: true,
   },
   {
     id: 24,
@@ -206,7 +222,8 @@ export const zonesGames: ZoneGame[] = [
     genre: 'Fighting',
     steamUrl: 'https://store.steampowered.com/app/578170/GORN/',
     image: 'gorn.jpg',
-    actionText: 'CRUSH'
+    actionText: 'CRUSH',
+    available: true,
   },
   {
     id: 26,
@@ -221,7 +238,7 @@ export const zonesGames: ZoneGame[] = [
     name: 'Hellsplit: Arena',
     genre: 'Fighting',
     steamUrl: 'https://store.steampowered.com/app/1039880/Hellsplit_Arena/',
-    image: '/images/games/hellsplit.jpg',
+    image: 'hellsplit.jpg',
     actionText: 'SLAY'
   },
   {
@@ -229,23 +246,25 @@ export const zonesGames: ZoneGame[] = [
     name: 'Until You Fall',
     genre: 'RPG',
     steamUrl: 'https://store.steampowered.com/app/858260/Until_You_Fall/',
-    image: '/images/games/until_you_fall.jpg',
-    actionText: 'RISE'
+    image: 'until_you_fall.jpg',
+    actionText: 'RISE',
+    available: true,
   },
   {
     id: 29,
     name: 'Drunkn Bar Fight',
     genre: 'Party',
     steamUrl: 'https://store.steampowered.com/app/528550/Drunkn_Bar_Fight/',
-    image: '/images/games/drunkn_bar.jpg',
-    actionText: 'BRAWL'
+    image: 'drunkn_bar.jpg',
+    actionText: 'BRAWL',
+    available: true,
   },
   {
     id: 30,
     name: 'Private Property',
     genre: 'Shooter',
     steamUrl: 'https://store.steampowered.com/app/1420590/Private_Property/',
-    image: '/images/games/private_property.jpg',
+    image: '//private_property.jpg',
     actionText: 'DEFEND'
   },
   {
@@ -253,23 +272,25 @@ export const zonesGames: ZoneGame[] = [
     name: 'Arizona Sunshine',
     genre: 'Zombie-Shooter',
     steamUrl: 'https://store.steampowered.com/app/342180/Arizona_Sunshine/',
-    image: '/images/games/arizona_sunshine.jpg',
-    actionText: 'SURVIVE'
+    image: '//arizona_sunshine.jpg',
+    actionText: 'SURVIVE',
+    available: true,
   },
   {
     id: 32,
     name: 'Arizona Sunshine 2',
     genre: 'Zombie-Shooter',
     steamUrl: 'https://store.steampowered.com/app/1540210/Arizona_Sunshine_2/',
-    image: '/images/games/arizona_sunshine_2.jpg',
-    actionText: 'SURVIVE'
+    image: '//arizona_sunshine_2.jpg',
+    actionText: 'SURVIVE',
+    available: true,
   },
   {
     id: 33,
     name: 'After the Fall',
     genre: 'Zombie-Shooter',
     steamUrl: 'https://store.steampowered.com/app/751630/After_the_Fall/',
-    image: '/images/games/after_the_fall.jpg',
+    image: '//after_the_fall.jpg',
     actionText: 'FREEZE'
   },
   {
@@ -277,7 +298,7 @@ export const zonesGames: ZoneGame[] = [
     name: 'The Walking Dead: Saints & Sinners',
     genre: 'Survival',
     steamUrl: 'https://store.steampowered.com/app/916840/The_Walking_Dead_Saints__Sinners/',
-    image: '/images/games/walking_dead.jpg',
+    image: 'walking_dead.jpg',
     actionText: 'SURVIVE'
   },
   {
@@ -285,63 +306,70 @@ export const zonesGames: ZoneGame[] = [
     name: 'Half-Life: Alyx',
     genre: 'Action',
     steamUrl: 'https://store.steampowered.com/app/546560/HalfLife_Alyx/',
-    image: '/images/games/hla.jpg',
-    actionText: 'ACTIVATE'
+    image: 'hla.jpg',
+    actionText: 'ACTIVATE',
+    available: true,
   },
   {
     id: 36,
     name: 'Boneworks & Bonelab',
     genre: 'Physics',
     steamUrl: 'https://store.steampowered.com/app/823500/BONEWORKS/',
-    image: '/images/games/boneworks.jpg',
-    actionText: 'PHYSICS'
+    image: 'boneworks.jpg',
+    actionText: 'PHYSICS',
+    available: true,
   },
   {
     id: 37,
     name: 'STRIDE',
     genre: 'Parkour',
     steamUrl: 'https://store.steampowered.com/app/1292040/STRIDE/',
-    image: '/images/games/stride.jpg',
-    actionText: 'RUN'
+    image: 'stride.jpg',
+    actionText: 'RUN',
+    available: true,
   },
   {
     id: 38,
     name: 'Breachers',
     genre: 'Tactical-Shooter',
-    steamUrl: 'https://store.steampowered.com/app/1920180/Breachers/',
-    image: '/images/games/breachers.jpg',
-    actionText: 'BREACH'
+    steamUrl: 'https://store.steampowered.com/app/1922010/Breachers/',
+    image: 'breachers.jpg',
+    actionText: 'BREACH',
+    available: true,
   },
   {
     id: 39,
     name: 'SURV1V3',
     genre: 'Zombie-Shooter',
-    steamUrl: 'https://store.steampowered.com/app/1322710/SURV1V3/',
-    image: '/images/games/surv1v3.jpg',
-    actionText: 'ENDURE'
+    steamUrl: 'https://store.steampowered.com/app/722180/SURV1V3/',
+    image: 'surv1v3.jpg',
+    actionText: 'ENDURE',
+    available: true,
   },
   {
     id: 40,
     name: 'Pavlov VR',
     genre: 'Shooter',
     steamUrl: 'https://store.steampowered.com/app/555160/Pavlov_VR/',
-    image: '/images/games/pavlov.jpg',
-    actionText: 'CONNECT'
+    image: 'pavlov.jpg',
+    actionText: 'CONNECT',
+    available: true,
   },
   {
     id: 41,
     name: 'PayDay 2 VR',
     genre: 'Action',
     steamUrl: 'https://store.steampowered.com/app/218620/PAYDAY_2/',
-    image: '/images/games/payday2.jpg',
-    actionText: 'HEIST'
+    image: 'payday2.jpg',
+    actionText: 'HEIST',
+    available: true,
   },
   {
     id: 42,
     name: 'Warhammer 40,000: Battle Sister',
     genre: 'Action',
     steamUrl: 'https://store.steampowered.com/app/1340990/Warhammer_40000_Battle_Sister/',
-    image: '/images/games/warhammer.jpg',
+    image: '//warhammer.jpg',
     actionText: 'PURGE'
   },
   {
@@ -349,15 +377,16 @@ export const zonesGames: ZoneGame[] = [
     name: 'Phasmophobia',
     genre: 'Horror',
     steamUrl: 'https://store.steampowered.com/app/739630/Phasmophobia/',
-    image: '/images/games/phasmo.jpg',
-    actionText: 'ENTER'
+    image: 'phasmo.jpg',
+    actionText: 'ENTER',
+    available: true,
   },
   {
     id: 44,
     name: 'Propagation VR',
     genre: 'Horror',
     steamUrl: 'https://store.steampowered.com/app/1363430/Propagation_VR/',
-    image: '/images/games/propagation.jpg',
+    image: 'propagation.jpg',
     actionText: 'HIDE'
   },
   {
@@ -365,23 +394,23 @@ export const zonesGames: ZoneGame[] = [
     name: 'The Forest VR',
     genre: 'Survival',
     steamUrl: 'https://store.steampowered.com/app/242760/The_Forest/',
-    image: '/images/games/the_forest.jpg',
+    image: 'the_forest.jpg',
     actionText: 'CRAFT'
   },
   {
     id: 46,
     name: 'Forwarded',
     genre: 'Horror',
-    steamUrl: 'https://store.steampowered.com/app/1574270/Forwarded/',
-    image: '/images/games/forwarded.jpg',
+    steamUrl: '',
+    image: '//forwarded.jpg',
     actionText: 'ESCAPE'
   },
   {
     id: 47,
     name: 'Don\'t Knock Twice',
     genre: 'Horror',
-    steamUrl: 'https://store.steampowered.com/app/549020/Dont_Knock_Twice/',
-    image: '/images/games/dont_knock.jpg',
+    steamUrl: '',
+    image: '//dont_knock.jpg',
     actionText: 'KNOCK'
   },
   {
@@ -389,8 +418,9 @@ export const zonesGames: ZoneGame[] = [
     name: 'Five Nights at Freddy\'s: Help Wanted',
     genre: 'Horror',
     steamUrl: 'https://store.steampowered.com/app/732690/Five_Nights_at_Freddys_Help_Wanted/',
-    image: '/images/games/fnaf.jpg',
-    actionText: 'WATCH'
+    image: 'fnaf.jpg',
+    actionText: 'WATCH',
+    available: true,
   }
 ]
 
