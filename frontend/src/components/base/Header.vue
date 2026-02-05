@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import SocialLinks from './SocialLinks.vue'
 import metaforceLogo from '@/assets/icons/metaforce.svg'
+
+const router = useRouter()
+const route = useRoute()
 
 const isMobileMenuOpen = ref(false)
 const showNotification = ref(false)
@@ -21,13 +25,10 @@ const copyPhoneNumber = async (e: Event) => {
   e.preventDefault()
   
   try {
-    // Проверяем доступность Clipboard API
     if (navigator.clipboard && window.isSecureContext) {
-      // Современный метод (работает только на HTTPS)
       await navigator.clipboard.writeText(PHONE_NUMBER)
       showNotificationWithMessage('Номер скопирован!')
     } else {
-      // Fallback для HTTP/старых браузеров
       const textArea = document.createElement('textarea')
       textArea.value = PHONE_NUMBER
       textArea.style.position = 'fixed'
@@ -48,8 +49,6 @@ const copyPhoneNumber = async (e: Event) => {
   } catch (err) {
     console.error('Ошибка копирования:', err)
     showNotificationWithMessage('Не удалось скопировать. Попробуйте вручную.')
-    // Можно добавить дополнительную обратную связь:
-    // window.open(`tel:${PHONE_NUMBER}`)
   }
 }
 
@@ -59,6 +58,32 @@ const showNotificationWithMessage = (message: string) => {
   setTimeout(() => {
     showNotification.value = false
   }, 1500)
+}
+
+// Навигация с учётом якорей
+const navigateToAnchor = async (anchor: string) => {
+  closeMobileMenu()
+  
+  // Если уже на главной — просто скроллим
+  if (route.path === '/') {
+    scrollToAnchor(anchor)
+    return
+  }
+  
+  // Иначе переходим на главную с якорем
+  if (route.path == '/games' && anchor == 'games') {
+    return
+  }
+  await router.push({ path: '/', hash: `#${anchor}` })
+  // После перехода скроллим (с небольшой задержкой для рендера)
+  setTimeout(() => scrollToAnchor(anchor), 100)
+}
+
+const scrollToAnchor = (anchor: string) => {
+  const element = document.getElementById(anchor)
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 }
 </script>
 
@@ -70,24 +95,24 @@ const showNotificationWithMessage = (message: string) => {
       <!-- Десктопное меню -->
       <div class="nav-left desktop-menu">
         <div class="logo-wrapper">
-            <a href="/" class="logo glitch" data-text="VR ARENA">
+            <RouterLink to="/" class="logo glitch" data-text="VR ARENA">
                 VR ARENA
-            </a>
+            </RouterLink>
             <img :src="metaforceLogo" alt="Metaforce" class="metaforce-logo" />
         </div>
         
         <ul class="nav-menu">
           <li class="nav-item">
-            <a href="#events" class="nav-link">Мероприятия</a>
+            <a href="#" class="nav-link" @click.prevent="navigateToAnchor('events')">Мероприятия</a>
           </li>
           <li class="nav-item">
             <a href="https://metaforce.ru/vladimir/price" class="nav-link">Цены</a>
           </li>
           <li class="nav-item">
-            <a href="#games" class="nav-link">Игры</a>
+            <a href="#" class="nav-link" @click.prevent="navigateToAnchor('games')">Игры</a>
           </li>
           <li class="nav-item">
-            <a href="#faq" class="nav-link">FAQ</a>
+            <a href="#" class="nav-link" @click.prevent="navigateToAnchor('faq')">FAQ</a>
           </li>
         </ul>
       </div>
@@ -132,16 +157,16 @@ const showNotificationWithMessage = (message: string) => {
         <div class="mobile-menu-content">
           <ul class="mobile-nav-menu">
             <li class="mobile-nav-item">
-              <a href="#events" class="mobile-nav-link" @click="closeMobileMenu">Мероприятия</a>
+              <a href="#" class="mobile-nav-link" @click.prevent="navigateToAnchor('events')">Мероприятия</a>
             </li>
             <li class="mobile-nav-item">
               <a href="https://metaforce.ru/vladimir/price" class="mobile-nav-link" @click="closeMobileMenu">Цены</a>
             </li>
             <li class="mobile-nav-item">
-              <a href="#games" class="mobile-nav-link" @click="closeMobileMenu">Игры</a>
+              <a href="#" class="mobile-nav-link" @click.prevent="navigateToAnchor('games')">Игры</a>
             </li>
             <li class="mobile-nav-item">
-              <a href="#faq" class="mobile-nav-link" @click="closeMobileMenu">FAQ</a>
+              <a href="#" class="mobile-nav-link" @click.prevent="navigateToAnchor('faq')">FAQ</a>
             </li>
           </ul>
           

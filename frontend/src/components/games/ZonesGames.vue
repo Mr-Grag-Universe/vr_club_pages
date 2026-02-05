@@ -1,25 +1,72 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { zonesGames } from '@/src/composables/configs/zonesGames'
+import { ref, computed, watch } from 'vue'
+import { zonesGames, gameGenres } from '@/src/composables/configs/zonesGames'
 
 const itemsPerPage = 8
 const currentPage = ref(1)
 
-// Заглушка для фильтров (в будущем можно добавить реальную логику)
-const activeFilter = ref('Все')
-const filters = ['Все', 'Action', 'Shooter', 'Horror', 'Rhythm', 'Puzzle']
+// Используем жанры из конфига
+const activeFilter = ref<string>('Все')
 
-const filteredGames = computed(() => zonesGames)
+// Проверка доступности игры
+const isAvailable = (game: typeof zonesGames[0]) => {
+  return game.available === true
+}
+
+// Фильтрация и сортировка игр (доступные первыми)
+const filteredGames = computed(() => {
+  let games = [...zonesGames]
+  
+  if (activeFilter.value !== 'Все') {
+    games = games.filter(game => game.genre.includes(activeFilter.value))
+  }
+  
+  return games.sort((a, b) => {
+    const aAvailable = a.available === true ? 1 : 0
+    const bAvailable = b.available === true ? 1 : 0
+    return bAvailable - aAvailable
+  })
+})
 
 const totalPages = computed(() => Math.ceil(filteredGames.value.length / itemsPerPage))
+
 const paginatedGames = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage
   return filteredGames.value.slice(start, start + itemsPerPage)
 })
 
-// Проверка доступности игры
-const isAvailable = (game: typeof zonesGames[0]) => {
-  return game.available === true
+// Сброс страницы при смене фильтра
+watch(activeFilter, () => {
+  currentPage.value = 1
+})
+
+// Прокрутка наверх при смене страницы
+watch(currentPage, () => {
+  scrollToTop()
+})
+
+const scrollToTop = () => {
+  const section = document.getElementById('games-catalog')
+  if (section) {
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+}
+
+// Навигация с прокруткой
+const prevPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--
+  }
+}
+
+const nextPage = () => {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++
+  }
+}
+
+const goToPage = (page: number) => {
+  currentPage.value = page
 }
 </script>
 
@@ -32,13 +79,13 @@ const isAvailable = (game: typeof zonesGames[0]) => {
     <!-- Фильтры -->
     <div class="filters-bar">
       <button 
-        v-for="filter in filters" 
-        :key="filter"
+        v-for="genre in gameGenres" 
+        :key="genre"
         class="filter-chip"
-        :class="{ active: activeFilter === filter }"
-        @click="activeFilter = filter"
+        :class="{ active: activeFilter === genre }"
+        @click="activeFilter = genre"
       >
-        {{ filter }}
+        {{ genre }}
       </button>
     </div>
 
@@ -68,7 +115,7 @@ const isAvailable = (game: typeof zonesGames[0]) => {
         
         <div class="card-info">
           <h4 class="zone-game-title">{{ game.name }}</h4>
-          <span class="zone-genre">{{ game.genre }}</span>
+          <span class="zone-genre">{{ game.genre.join(', ') }}</span>
         </div>
 
         <div class="card-glow"></div>
@@ -80,7 +127,7 @@ const isAvailable = (game: typeof zonesGames[0]) => {
       <button 
         class="page-button" 
         :disabled="currentPage === 1"
-        @click="currentPage--"
+        @click="prevPage"
       >
         ← Назад
       </button>
@@ -91,7 +138,7 @@ const isAvailable = (game: typeof zonesGames[0]) => {
           :key="page"
           class="page-number"
           :class="{ active: currentPage === page }"
-          @click="currentPage = page"
+          @click="goToPage(page)"
         >
           {{ page }}
         </button>
@@ -100,21 +147,10 @@ const isAvailable = (game: typeof zonesGames[0]) => {
       <button 
         class="page-button" 
         :disabled="currentPage === totalPages"
-        @click="currentPage++"
+        @click="nextPage"
       >
         Вперед →
       </button>
-    </div>
-
-    <div class="view-all-link">
-      <a 
-        href="https://metaforce.ru/vladimir/games" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        class="external-link"
-      >
-        Полный каталог на metaforce.ru ↗
-      </a>
     </div>
   </div>
 </template>
@@ -136,6 +172,9 @@ const isAvailable = (game: typeof zonesGames[0]) => {
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-bottom: 2.5rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .filter-chip {
@@ -147,6 +186,7 @@ const isAvailable = (game: typeof zonesGames[0]) => {
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s;
+  white-space: nowrap;
 }
 
 .filter-chip:hover {
@@ -394,30 +434,6 @@ const isAvailable = (game: typeof zonesGames[0]) => {
   border-color: var(--accent);
   color: var(--bg-primary);
   box-shadow: 0 0 15px var(--glow);
-}
-
-.view-all-link {
-  text-align: center;
-  margin-top: 2rem;
-}
-
-.external-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 1rem 2rem;
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-family: 'Courier New', monospace;
-  border: 1px solid var(--bg-accent);
-  border-radius: 8px;
-  transition: all 0.3s;
-}
-
-.external-link:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: rgba(99, 102, 241, 0.05);
 }
 
 @media (max-width: 768px) {

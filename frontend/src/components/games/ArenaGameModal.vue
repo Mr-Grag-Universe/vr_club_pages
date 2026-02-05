@@ -144,9 +144,15 @@ const isScreenshotActive = (idx: number) => activeMedia.value === idx
           </div>
 
           <div class="modal-actions">
-            <button class="action-button primary">
-              Забронировать Arena
-            </button>
+            <a 
+                href="https://metaforce.ru/vladimir/price"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <button class="action-button primary">
+                    Забронировать Arena
+                </button>
+            </a>
             <button class="action-button secondary" @click="emit('close')">
               Назад к играм
             </button>

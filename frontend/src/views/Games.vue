@@ -57,6 +57,18 @@ onMounted(() => {
         <ArenaGames v-if="activeTab === 'arena'" key="arena" />
         <ZonesGames v-else key="zones" />
       </Transition>
+
+      
+        <div class="view-all-link">
+        <a 
+            href="https://metaforce.ru/vladimir/games" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="external-link"
+        >
+            Полный каталог на metaforce.ru ↗
+        </a>
+        </div>
     </section>
   </BaseLayout>
 </template>
@@ -83,5 +95,29 @@ onMounted(() => {
   .catalog-section {
     padding: 2rem 1rem;
   }
+}
+
+.view-all-link {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.external-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-family: 'Courier New', monospace;
+  border: 1px solid var(--bg-accent);
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.external-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(99, 102, 241, 0.05);
 }
 </style>
