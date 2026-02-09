@@ -46,7 +46,7 @@ onMounted(() => {
     console.log("> scroll up!!!")
     // const scrollingElement = document.documentElement || document.body; 
     // document.body.scrollTo({ top: 0, behavior: 'smooth' });
-    document.body.scrollTo(0, 600);
+    window.scrollTo(0, 600);
   });
 })
 

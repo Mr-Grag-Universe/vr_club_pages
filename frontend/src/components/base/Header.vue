@@ -137,7 +137,9 @@ const scrollToAnchor = (anchor: string) => {
           <span class="home-icon">←</span>
           <span class="home-text">На главную</span>
         </button>
-        
+      </div>
+
+      <div class="nav-right desktop-menu">
         <SocialLinks />
         
         <div class="cta-wrapper">

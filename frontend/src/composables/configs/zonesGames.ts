@@ -96,7 +96,8 @@ export const zonesGames: ZoneGame[] = [
     genre: ['Coop', 'Survival', 'Adventure'],
     steamUrl: 'https://www.minecraft.net/',
     image: 'minecraft.jpg',
-    actionText: 'BUILD'
+    actionText: 'BUILD',
+    available: true,
   },
   {
     id: 11,
@@ -154,7 +155,8 @@ export const zonesGames: ZoneGame[] = [
     genre: ['Simulation'],
     steamUrl: 'https://store.steampowered.com/app/512270/Home__A_VR_Spacewalk/',
     image: 'home_spacewalk.jpg',
-    actionText: 'FLOAT'
+    actionText: 'FLOAT',
+    available: true,
   },
   {
     id: 18,
@@ -215,7 +217,8 @@ export const zonesGames: ZoneGame[] = [
     genre: ['Simulation', 'Adventure'],
     steamUrl: 'https://store.steampowered.com/app/408250/Eagle_Flight/',
     image: 'eagle_flight.jpg',
-    actionText: 'FLY'
+    actionText: 'FLY',
+    available: true,
   },
   {
     id: 25,
@@ -294,7 +297,8 @@ export const zonesGames: ZoneGame[] = [
     genre: ['Shooter', 'Survival'],
     steamUrl: 'https://store.steampowered.com/app/751630/After_the_Fall/',
     image: 'after_the_fall.jpg',
-    actionText: 'FREEZE'
+    actionText: 'FREEZE',
+    available: true,
   },
   {
     id: 34,
