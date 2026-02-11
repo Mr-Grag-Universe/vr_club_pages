@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
-import type { ArenaGame } from '@/src/composables/configs/arenaGames'
+import type { ArenaGame } from '@/src/scripts/games/arenaGames'
 
 const props = defineProps<{
   game: ArenaGame | null

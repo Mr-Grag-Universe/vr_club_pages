@@ -1,7 +1,7 @@
 <!-- GiftCertificate.vue -->
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { glitchText } from '@/src/composables/glitchEffects'
+import { glitchText } from '@/src/scripts/glitchEffects'
 import cardImg from '@/assets/images/gift-cards/gift-card-pack.jpg'
 
 interface Props {

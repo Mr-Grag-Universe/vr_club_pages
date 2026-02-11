@@ -126,18 +126,6 @@ const scrollToAnchor = (anchor: string) => {
           </li>
         </ul>
       </div>
-      
-      <div class="nav-right desktop-menu">
-        <!-- Кнопка "На главную" (только если не на главной) -->
-        <button 
-          v-if="!isHomePage" 
-          class="home-button"
-          @click="goToHome"
-        >
-          <span class="home-icon">←</span>
-          <span class="home-text">На главную</span>
-        </button>
-      </div>
 
       <div class="nav-right desktop-menu">
         <SocialLinks />

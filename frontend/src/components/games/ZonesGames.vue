@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
-import { zonesGames, gameGenres } from '@/src/composables/configs/zonesGames'
+import { zonesGames, gameGenres } from '@/src/scripts/games/zonesGames'
 
 const itemsPerPage = 8
 const currentPage = ref(1)

@@ -1,7 +1,7 @@
 <!-- src/components/home/GamesGrid.vue -->
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { glitchText } from '@/src/composables/glitchEffects'
+import { glitchText } from '@/src/scripts/glitchEffects'
 
 let _ = import.meta.glob('@/assets/images/games/*.jpg', { 
   eager: true,

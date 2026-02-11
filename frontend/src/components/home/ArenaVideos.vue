@@ -3,7 +3,7 @@ import { ref, nextTick, onMounted } from 'vue'
 import { VideoPlayer } from '@videojs-player/vue'
 import videojs from 'video.js'
 import type { VideoJsPlayer } from 'video.js'
-import { glitchText } from '@/src/composables/glitchEffects'
+import { glitchText } from '@/src/scripts/glitchEffects'
 
 import teamForceVideo from '@/assets/videos/team_force.mp4'
 import spaceWarVideo from '@/assets/videos/space_war.mp4'

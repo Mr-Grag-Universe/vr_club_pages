@@ -1,7 +1,7 @@
 <!-- src/components/home/Events.vue -->
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { glitchText } from '@/src/composables/glitchEffects'
+import { glitchText } from '@/src/scripts/glitchEffects'
 
 import imgKidsBD from '@/assets/images/events/birthday_child.jpg'
 import imgAdultBD from '@/assets/images/events/birthday_adult.jpg'

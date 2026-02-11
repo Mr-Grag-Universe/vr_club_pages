@@ -1,7 +1,7 @@
 <!-- SmartGallery.vue -->
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted, nextTick } from 'vue'
-import { glitchText } from '@/src/composables/glitchEffects';
+import { glitchText } from '@/src/scripts/glitchEffects';
 
 const imageWrapperRef = ref<HTMLElement | null>(null);
 const imageWrapperWidth = ref(0);

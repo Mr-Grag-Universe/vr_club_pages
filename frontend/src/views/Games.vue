@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from 'vue'
 import BaseLayout from '@/src/components/base/BaseLayout.vue'
-import { glitchText } from '@/src/composables/glitchEffects'
+import { glitchText } from '@/src/scripts/glitchEffects'
 import GamesTabs from '@/src/components/games/GamesTabs.vue'
 import ArenaGames from '@/src/components/games/ArenaGames.vue'
 import ZonesGames from '@/src/components/games/ZonesGames.vue'

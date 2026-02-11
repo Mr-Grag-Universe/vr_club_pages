@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { arenaGames } from '@/src/composables/configs/arenaGames'
+import { arenaGames } from '@/src/scripts/games/arenaGames'
 import ArenaGameModal from './ArenaGameModal.vue'
 
 const hoveredGame = ref<string | null>(null)

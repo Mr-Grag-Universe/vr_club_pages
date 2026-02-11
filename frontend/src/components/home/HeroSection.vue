@@ -30,7 +30,7 @@ const lightParticles = Array.from({ length: 15 }, (_, i) => ({
 <template>
   <section class="hero">
     <div class="hero-bg" :class="{ loaded: isLoaded }">
-      <img src="@/assets/images/hero-gpt.jpg" alt="VR Arena" />
+      <!-- <img src="@/assets/images/hero-gpt.jpg" alt="VR Arena" /> -->
       <div class="scanline"></div>
       <div class="vignette"></div>
     </div>
@@ -84,7 +84,7 @@ const lightParticles = Array.from({ length: 15 }, (_, i) => ({
   inset: 0;
   filter: grayscale(30%) brightness(0.5) contrast(1.1);
   transition: filter 2.5s ease;
-  background: url('@/assets/images/hero-gpt.jpg') no-repeat center center fixed;
+  background: url('@/assets/images/hero-gpt.webp') no-repeat center center fixed;
   background-size: cover;
 }
 
