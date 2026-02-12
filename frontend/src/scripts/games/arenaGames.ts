@@ -8,12 +8,12 @@ import spaceWarThumb from '@/assets/videos/thumb/space_war.jpg'
 import elevatorsThumb from '@/assets/videos/thumb/elevators.jpg'
 import portalsThumb from '@/assets/videos/thumb/portals.jpg'
 
-import teamForceImg1 from '@/assets/images/games/arena/1.jpg'
-import teamForceImg2 from '@/assets/images/games/arena/7.jpg'
-import teamForceImg3 from '@/assets/images/games/arena/3.jpg'
+import teamForceImg1 from '@/assets/images/games/arena/jpg/1.jpg'
+import teamForceImg2 from '@/assets/images/games/arena/jpg/7.jpg'
+import teamForceImg3 from '@/assets/images/games/arena/jpg/3.jpg'
 
-import spaceWarImg1 from '@/assets/images/games/arena/2.jpg'
-import spaceWarImg2 from '@/assets/images/games/arena/5.jpg'
+import spaceWarImg1 from '@/assets/images/games/arena/jpg/2.jpg'
+import spaceWarImg2 from '@/assets/images/games/arena/jpg/5.jpg'
 
 import portalsImg1 from '@/assets/images/games/library/arena/portals-1.jpg'
 import portalsImg2 from '@/assets/images/games/library/arena/portals-2.jpg'

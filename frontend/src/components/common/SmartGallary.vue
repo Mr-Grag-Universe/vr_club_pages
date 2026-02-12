@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { glitchText } from '@/src/scripts/glitchEffects';
+import AdaptiveImage from '@/src/components/common/AdaptiveImage.vue';
 
 const imageWrapperRef = ref<HTMLElement | null>(null);
 const imageWrapperWidth = ref(0);
@@ -12,15 +13,15 @@ const containerWidth = ref(0);
 const windowWidth = ref(window.innerWidth);
 const MIN_ITEM_WIDTH = 250;
 
-const updateGridItemWidth = () => {
-  if (galleryGridRef.value && galleryGridRef.value.children.length > 0) {
-    const firstItem = galleryGridRef.value.children[0] as HTMLElement;
-    gridItemWidth.value = firstItem.clientWidth || 250;
-  }
-};
+interface GalleryImage {
+  src: string;      // jpg fallback
+  webpSrc?: string;
+  avifSrc?: string;
+  alt: string;
+}
 
 interface Props {
-  images: Array<{ src: string; alt: string }>
+  images: GalleryImage[]
   title?: {ru: string, en: string}
 }
 
@@ -243,7 +244,15 @@ onUnmounted(() => {
         @click="openLightbox(index)"
       >
         <div class="image-wrapper">
-          <img :src="img.src" :alt="img.alt" loading="lazy" />
+          <!-- <img :src="img.src" :alt="img.alt" loading="lazy" /> -->
+          <AdaptiveImage
+            :jpg-src="img.src"
+            :webp-src="img.webpSrc"
+            :avif-src="img.avifSrc"
+            :alt="img.alt"
+            loading="lazy"
+            class="gallery-img"
+          />
           <div class="image-overlay"></div>
         </div>
       </div>
@@ -340,7 +349,8 @@ onUnmounted(() => {
   }
 }
 
-.image-wrapper img {
+.image-wrapper :deep(picture),
+.image-wrapper :deep(img) {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -348,7 +358,8 @@ onUnmounted(() => {
   filter: grayscale(30%) contrast(1.1);
 }
 
-.image-wrapper:hover img {
+.image-wrapper:hover :deep(picture),
+.image-wrapper:hover :deep(img) {
   transform: scale(1.1);
   filter: grayscale(0%) contrast(1.2);
 }

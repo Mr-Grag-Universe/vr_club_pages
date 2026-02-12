@@ -84,7 +84,7 @@ const lightParticles = Array.from({ length: 15 }, (_, i) => ({
   inset: 0;
   filter: grayscale(30%) brightness(0.5) contrast(1.1);
   transition: filter 2.5s ease;
-  background: url('@/assets/images/hero-gpt.webp') no-repeat center center fixed;
+  background: url('@/assets/images/hero-gpt.jpg') no-repeat center center fixed;
   background-size: cover;
 }
 
