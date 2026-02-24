@@ -9,7 +9,6 @@ import SmartGallary from '@/src/components/common/SmartGallary.vue'
 import GiftCards from '@/src/components/home/GiftCards.vue'
 import Events from '@/src/components/home/Events.vue'
 import ArenaVideos from '@/src/components/home/ArenaVideos.vue'
-import { import_files } from '../scripts/utils'
 
 import { ref, computed } from 'vue'
 

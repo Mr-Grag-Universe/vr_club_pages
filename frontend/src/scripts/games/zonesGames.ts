@@ -113,7 +113,8 @@ export const zonesGames: ZoneGame[] = [
     genre: ['Adventure'],
     steamUrl: 'https://store.steampowered.com/app/469610/Rick_and_Morty_Virtual_Rickality/',
     image: 'rick_morty.jpg',
-    actionText: 'WUBBA'
+    actionText: 'WUBBA',
+    available: true,
   },
   {
     id: 13,
@@ -147,7 +148,8 @@ export const zonesGames: ZoneGame[] = [
     genre: ['Simulator'],
     steamUrl: 'https://store.steampowered.com/app/327140/Tilt_Brush/',
     image: 'tilt_brush.jpg',
-    actionText: 'PAINT'
+    actionText: 'PAINT',
+    available: true,
   },
   {
     id: 17,
@@ -271,7 +273,8 @@ export const zonesGames: ZoneGame[] = [
     genre: ['Shooter'],
     steamUrl: 'https://store.steampowered.com/app/1481700/Private_Property/',
     image: 'private_property.jpg',
-    actionText: 'DEFEND'
+    actionText: 'DEFEND',
+    available: true,
   },
   {
     id: 31,
@@ -306,7 +309,8 @@ export const zonesGames: ZoneGame[] = [
     genre: ['Shooter', 'Survival'],
     steamUrl: 'https://store.steampowered.com/app/916840/The_Walking_Dead_Saints__Sinners/',
     image: 'walking_dead.jpg',
-    actionText: 'SURVIVE'
+    actionText: 'SURVIVE',
+    available: true,
   },
   {
     id: 35,
@@ -422,7 +426,8 @@ export const zonesGames: ZoneGame[] = [
     genre: ['Horror'],
     steamUrl: '',
     image: 'dont_knock_twice.jpg',
-    actionText: 'KNOCK'
+    actionText: 'KNOCK',
+    available: true,
   },
   {
     id: 48,
